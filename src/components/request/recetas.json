@@ -1,0 +1,131 @@
+{
+    "recetario" : [
+        {
+            "id":1,
+            "nombre" : "Pollo a la cerverza",
+            "dificultad" : "Baja",
+            "image": "https://cocina-casera.com/wp-content/uploads/2016/11/pollo_cerveza.jpg",
+            "duracion" : "2 horas",
+            "ingredientes" : ["pollo", "cerveza", "sal", "pimienta", "cebolla"],
+            "categoria" : "carnes",
+            "autor" : {
+              "nombre" : "Carlos Arguiñano",
+              "restaurante" : "el suyo",
+              "estrellas" : 1
+             }
+        },
+        {
+              "id":2,
+              "nombre" : "Sorbete de limón",
+              "dificultad" : "Baja",
+              "image": "https://cdn.20m.es/img2/recortes/2018/06/21/728841-600-338.jpg",
+              "duracion" : "0.5 horas",
+              "ingredientes" : ["4 limones", "1 litro de agua", "1 kg de azúcar", "hielo"],
+              "categoria" : "postres",
+              "autor" : {
+                "nombre" : "Juan Mari Arzak",
+                "restaurante" : "sorbetilandia",
+                "estrellas" : 1
+                }
+        },
+        {
+            "nombre" : "Milanesa a la napolitana",
+            "id":3,
+            "dificultad" : "Baja",
+            "image": "https://t2.rg.ltmcdn.com/es/images/5/9/8/img_milanesa_a_la_napolitana_11895_orig.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["nalga", "jamon", "queso", "salsa"],
+            "categoria" : "carnes",
+            "autor" : {
+              "nombre" : "Leonel Messi",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        },
+        {
+            "nombre" : "Bondiola de cerdo",
+            "id":4,
+            "dificultad" : "Baja",
+            "image": "http://www.anaduran.com/wp-content/uploads/bondiola-agridulce.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["bondiola", "salsa", "queso", "papas"],
+            "categoria" : "carnes",
+            "autor" : {
+              "nombre" : "Mauricio Macri",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        },
+        {
+            "nombre" : "Bife de Chorizo riojano",
+            "id":5,
+            "dificultad" : "Baja",
+            "image": "https://media-cdn.tripadvisor.com/media/photo-s/0f/61/2a/2c/bife-de-chorizo-a-la.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["bife de chorizo", "huevo", "papa", "salsa"],
+            "categoria" : "carnes",
+            "autor" : {
+              "nombre" : "Axel Canigia",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        },
+        {
+            "nombre" : "Raviolones de Jamon y Queso",
+            "id":6,
+            "dificultad" : "Baja",
+            "image": "http://www.nuevodiarioweb.com.ar/uploads/imagenes/repositorio/2018/04/03/163394/201804030729343a54a70dee5b703b763ce258587181ca_med.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["arina", "jamon", "queso", "salsa"],
+            "categoria" : "pastas",
+            "autor" : {
+              "nombre" : "Diego Maradona",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        },
+        {
+            "nombre" : "Ravioles de verdura y queso",
+            "id":7,
+            "dificultad" : "Baja",
+            "image": "https://i.ytimg.com/vi/oZIiD-Gv09U/maxresdefault.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["arina", "verdura", "queso", "salsa"],
+            "categoria" : "pastas",
+            "autor" : {
+              "nombre" : "Alexis Maclister",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        },
+        {
+            "nombre" : "Ñoquis de batata",
+            "id":8,
+            "dificultad" : "Baja",
+            "image": "https://www.cocinayvino.com/wp-content/uploads/2017/10/n%CC%83oquis-de-batata.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["arina", "jamon", "batata", "salsa"],
+            "categoria" : "pastas",
+            "autor" : {
+              "nombre" : "Sergio Romero",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        },
+        {
+            "nombre" : "Tallarines al huevo",
+            "id":9,
+            "dificultad" : "Baja",
+            "image": "https://img-global.cpcdn.com/002_recipes/0400244129a75911/751x532cq70/tallarines-al-huevo-foto-principal.jpg",
+            "duracion" : "1 horas",
+            "ingredientes" : ["arina", "jamon", "queso", "salsa"],
+            "categoria" : "pastas",
+            "autor" : {
+              "nombre" : "Sergio Aguero",
+              "restaurante" : "sorbetilandia",
+              "estrellas" : 1
+              }
+        }
+
+    ]
+}
