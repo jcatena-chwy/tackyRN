@@ -5,12 +5,13 @@ import Place from './components/stack/Place'
 import Comments from './components/comments/Comments'
 import Home from './components/prueba/Home'
 import CookBook from './components/cookBook/CookBook'
-import Photo from './components/photos/Photo'
+import DetalleReceta from './components/detalleReceta/DetalleReceta'
 import Footer from './components/footer/Footer'
 import Profile from './components/prueba/Profile'
 import Login from './components/auth/Login'
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
+  DetalleReceta: { screen: DetalleReceta},
    Map: { screen: Mapa,
          navigationOptions: {
              title: "Mapa",
@@ -21,7 +22,6 @@ const MainNavigator = createStackNavigator({
      Place: { screen: Place },
      Home: { screen: Home},
      CookBook: { screen: CookBook},
-    Photo: { screen: Photo},
    Profile: { 
        screen: Profile,
        navigationOptions: {
