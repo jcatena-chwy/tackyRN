@@ -1,22 +1,10 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  Button,
-  Clipboard,
-  Image,
-  Share,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
   TextInput
 } from 'react-native';
-import { Constants } from 'expo';
 import { Container, Header, Content, Textarea, Form, Input, Label, Icon, Item } from "native-base";
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
 import Photo from './components/Photo'
+import Paso from './components/Paso'
 import Ingrediente from './components/Ingrediente'
 export default class DetalleReceta extends Component {
   render() {
@@ -29,13 +17,15 @@ export default class DetalleReceta extends Component {
         <Item >  
           <TextInput style={{ marginTop:'8%', marginBottom:'10%', fontSize: 20}} placeholder="Titulo de tu Receta" /> 
         </Item>
-        <Item style={{flex: 1}}>  
+        <Item style={{ marginTop:'0%', marginBottom:'0%', fontSize: 20}}>  
           <Ingrediente></Ingrediente>
         </Item>
-       
+        <Item>
+        <Paso></Paso>
+        </Item>
         </Content>
     </Container>
-      
+
     );
   }
 }

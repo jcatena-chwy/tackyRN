@@ -39,7 +39,7 @@ deleteRow(r){
  
   render() {
     return (
-      <Container>
+      <View>
       {this.state.rows.map((r) =>
         <Item key={r.id}>
           <Button  onPress={() => this.deleteRow(r)} transparent textStyle={{color: '#87838B'}}>
@@ -57,7 +57,7 @@ deleteRow(r){
                 </Button>
         </Left>
         </Content>
-      </Container>
+      </View>
     );
   }
 }
