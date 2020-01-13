@@ -62,7 +62,7 @@ export default class CookBook extends Component {
             </List>
             </Content>
             
-                <Button full primary onPress={() => navigation.navigate('Photo')}>
+                <Button full primary onPress={() => navigation.navigate('DetalleReceta')}>
                     <Icon active name="ios-add-circle" />
                     <Text>Agrega tu Receta</Text>
                 </Button>

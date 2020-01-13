@@ -11,25 +11,29 @@ import Profile from './components/prueba/Profile'
 import Login from './components/auth/Login'
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
-  DetalleReceta: { screen: DetalleReceta},
-   Map: { screen: Mapa,
-         navigationOptions: {
-             title: "Mapa",
-             headerLeft: null
-           }
-     },
-     Footer: { screen: Footer },
-     Place: { screen: Place },
-     Home: { screen: Home},
-     CookBook: { screen: CookBook},
-   Profile: { 
-       screen: Profile,
-       navigationOptions: {
-         title: "FirstPage",
-         headerLeft: null
-       }    
-   },
-   Comments: { screen: Comments},
+  DetalleReceta: { screen: DetalleReceta,
+    navigationOptions: {
+      headerLeft: null
+    } 
+  },
+  Map: { screen: Mapa,
+    navigationOptions: {
+      title: "Mapa",
+      headerLeft: null
+    }
+  },
+  Footer: { screen: Footer },
+  Place: { screen: Place},
+  Home: { screen: Home},
+  CookBook: { screen: CookBook},
+  Profile: { 
+      screen: Profile,
+      navigationOptions: {
+        title: "FirstPage",
+        headerLeft: null
+      }    
+  }, 
+  Comments: { screen: Comments},
 }); 
  
 const App = createAppContainer(MainNavigator);

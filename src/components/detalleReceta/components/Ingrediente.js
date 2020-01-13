@@ -19,7 +19,6 @@ export default class Ingrediente extends Component {
   }
 
 addRow(){ 
-  debugger;
   console.log(this.state)
   this.state.rows;
   var r = {};

@@ -13,7 +13,7 @@ const  config = {
 firebase.initializeApp(config);
 
 // Leer Datos
-var database = firebase.database();
+var database = firebase.database(); 
 
 // var ref = database.ref("Platos/");
 // ref.on("value", function(snapshot) {
