@@ -13,19 +13,24 @@ const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
   Map: { screen: Mapa,
     navigationOptions: {
-      title: "Mapa",
+      title: "Tacky",
       headerLeft: null
     }
   },
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
+      title: "Tacky",
       headerLeft: null
     } 
   },
   Footer: { screen: Footer },
-  Place: { screen: Place},
+  Place: { screen: Place, navigationOptions: {
+    title: "Tacky",
+  } },
   Home: { screen: Home},
-  CookBook: { screen: CookBook},
+  CookBook: { screen: CookBook, navigationOptions: {
+    title: "Tacky",
+  }},
   Profile: { 
       screen: Profile,
       navigationOptions: {
@@ -33,8 +38,10 @@ const MainNavigator = createStackNavigator({
         headerLeft: null
       }    
   }, 
-  Comments: { screen: Comments},
-}); 
+  Comments: { screen: Comments, navigationOptions: {
+    title: "Tacky",
+  }},
+}, {headerLayoutPreset: 'center'}); 
  
 const App = createAppContainer(MainNavigator);
 
