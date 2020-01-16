@@ -28,11 +28,13 @@ addRow(){
   })
 }
 deleteRow(r){
-  var array = [...this.state.rows]; // make a separate copy of the array
-  var index = array.indexOf(r)
-  if (index !== -1) {
-    array.splice(index, 1);
-    this.setState({rows: array});
+  if(this.state.rows.length>1){
+    var array = [...this.state.rows]; // make a separate copy of the array
+    var index = array.indexOf(r)
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({rows: array});
+    }
   }
 }
  

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, Image, TouchableHighlight, StyleSheet,Text } from 'react-native';
+import { View, ScrollView, Image, TouchableHighlight, StyleSheet,Text, Dimensions } from 'react-native';
 import { Button, Icon, Badge, Item, List, ListItem, Left, Body, Container, Header, Content, Right, Card, CardItem} from 'native-base';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet'
 import { TextInput } from 'react-native-gesture-handler';
@@ -62,6 +62,7 @@ export default class Paso extends React.Component {
     this.actualizarOrdenPaso = this.actualizarOrdenPaso.bind(this)
     this.viewImage = this.viewImage.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
+    this.eliminarFoto = this.eliminarFoto.bind(this)
   }
   
   analizarOpcion(index){
@@ -74,11 +75,23 @@ export default class Paso extends React.Component {
         this.takePhoto(index)
         break;
       case 2:
+        this.eliminarFoto();
         break; 
       default:
         break;
     }
     console.log(index);
+  }
+  eliminarFoto(){
+    debugger
+    let newArrayPhotos = [...this.state.pasos];
+    console.log(newArrayPhotos[this.state.posFila])
+    newArrayPhotos[this.state.posFila].photos[this.state.posColumna].image = null
+    newArrayPhotos[this.state.posFila].image = null;
+    newArrayPhotos[this.state.posFila].flag = false
+    let newArray = [...this.state.pasos];
+    newArray[this.state.posFila].photos = newArrayPhotos;
+    this.setState({ pasos:newArray });
   }
   toggleModal () {
     this.setState({ isModalVisible: !this.state.isModalVisible });
@@ -224,17 +237,19 @@ export default class Paso extends React.Component {
       this.state.pasos;
     }
     deleteRow(r){
-      var array = [...this.state.pasos]; // make a separate copy of the array
-      var index = array.indexOf(r)
-      if (index !== -1) {
-        array.splice(index, 1);
-        setTimeout(() => { 
-          for(i =0; i<array.length ; i++){
-            array[i].paso = i+1;
-          }
-          this.setState({pasos: array});
-        }, 100)
-        console.log(this.state.pasos);
+      if(this.state.pasos.length>1){
+        var array = [...this.state.pasos]; // make a separate copy of the array
+        var index = array.indexOf(r)
+        if (index !== -1) {
+          array.splice(index, 1);
+          setTimeout(() => { 
+            for(i =0; i<array.length ; i++){
+              array[i].paso = i+1;
+            }
+            this.setState({pasos: array});
+          }, 100)
+          console.log(this.state.pasos);
+        }
       }
     }
     actualizarOrdenPaso(pasos){
@@ -252,11 +267,25 @@ export default class Paso extends React.Component {
             <TextInput style={{textAlign: 'right', fontSize: 15, bottom:10}} placeholder='Tiempo'></TextInput>
             {this.state.pasos.map((r) =>
             <Card key={r.paso}  style={{ width:350 }}>
-              <CardItem  style={{ height:50 }} header >
-              <Badge style={{ backgroundColor: r.colorBadge, fontSize:5 }} >
+              <CardItem  style={{ height:50 }} header > 
+              {/* <Badge style={{ backgroundColor: r.colorBadge, fontSize:5 }} >
                   <Text style={{ width:15, left:2, color:'white', fontSize:13 }}>{r.paso}</Text>
-              </Badge>
-              <TextInput style={{ fontSize: 17, left: 10,top:3}} placeholder='Describe cómo lo hiciste...'/>
+              </Badge> */}
+              <TouchableHighlight
+                style = {{
+                borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+                width: Dimensions.get('window').width * 0.09,
+                height: Dimensions.get('window').width * 0.09,
+                backgroundColor:r.colorBadge,
+                justifyContent: 'center',
+                alignItems: 'center'
+                }} 
+                underlayColor = '#ccc'
+                // onPress = { () => alert('Yaay!') }
+              >
+              <Text  style={{color:'white'}}>{r.paso}</Text>
+              </TouchableHighlight>
+              <TextInput style={{ fontSize: 17, left: 10}} placeholder='Describe cómo lo hiciste...'/>
               
               <Right  >
               <Button   onPress={() => this.deleteRow(r)} transparent textStyle={{color: '#87838B'}}>
@@ -292,7 +321,7 @@ export default class Paso extends React.Component {
                           //Title of the Bottom Sheet
                           title={'¿Que desea hacer?'}
                           //Options Array to show in bottom sheet
-                          options={['Ver', 'Tomar Foto', 'Eliminar', 'Cancelar']}
+                          options={['Ver', 'Cambiar Foto', 'Eliminar', 'Cancelar']}
                           //Define cancel button index in the option array
                           //this will take the cancel option in bottom and will highlight it
                           cancelButtonIndex={3}

@@ -11,16 +11,16 @@ import Profile from './components/prueba/Profile'
 import Login from './components/auth/Login'
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
-  DetalleReceta: { screen: DetalleReceta,
-    navigationOptions: {
-      headerLeft: null
-    } 
-  },
   Map: { screen: Mapa,
     navigationOptions: {
       title: "Mapa",
       headerLeft: null
     }
+  },
+  DetalleReceta: { screen: DetalleReceta,
+    navigationOptions: {
+      headerLeft: null
+    } 
   },
   Footer: { screen: Footer },
   Place: { screen: Place},

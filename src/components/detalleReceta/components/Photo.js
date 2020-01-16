@@ -15,8 +15,8 @@ export default class ImagePickerExample extends React.Component {
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Icon active name='camera' onPress={this._pickImage} style={{ fontSize: 80 }}/>
-        <Text style={{ fontSize: 20}}>Publicar foto del Plato Terminado</Text>
+        <Icon active name='image' onPress={this._pickImage} style={{ fontSize: 80 }}/>
+        {!image &&<Text style={{ fontSize: 20}}>Publicar foto del Plato Terminado</Text>}
         {image &&
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </View>
