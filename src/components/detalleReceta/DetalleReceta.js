@@ -8,6 +8,7 @@ import Paso from './components/Paso'
 import Ingrediente from './components/Ingrediente'
 import Header from './components/Header'
 import Modal from "react-native-modal";
+import firebase from '../../config.js'
 export default class DetalleReceta extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +47,15 @@ export default class DetalleReceta extends Component {
     })
   }
   toggleModal () {
+    debugger;
+    console.log(firebase)
+    firebase.ref("Hola").push({
+          Descripcion:'Lechuga, Doble Carne, Tomate',
+          Nombre: 'Mac Combo',
+          Precio:100,
+          id:2,
+          idRestaurant:2
+    })
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
   render() {
@@ -72,6 +82,7 @@ export default class DetalleReceta extends Component {
             <Button style={{ width:80, height:40, backgroundColor:"white"}} onPress={this.toggleModal}>
               <Text style={{fontSize:18, color:"#1a0dab"}} >Cerrar</Text>
             </Button>
+           
           </View>
         </Modal>
         </Content>

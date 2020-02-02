@@ -17,6 +17,9 @@ const MainNavigator = createStackNavigator({
       headerLeft: null
     }
   },
+      Comments: { screen: Comments, navigationOptions: {
+        title: "Tacky",
+      }},
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
       title: "Tacky",
@@ -38,9 +41,6 @@ const MainNavigator = createStackNavigator({
         headerLeft: null
       }    
   }, 
-  Comments: { screen: Comments, navigationOptions: {
-    title: "Tacky",
-  }},
 }, {headerLayoutPreset: 'center'}); 
  
 const App = createAppContainer(MainNavigator);

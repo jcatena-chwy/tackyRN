@@ -2,7 +2,7 @@ import firebase from 'firebase';
 
 
 const  config = {
-  apiKey: "AIzaSyDlCPFd6NJ2FDQtrJfnpnr4anivleJ5ZNY",
+  apiKey: "AIzaSyBU9LIUt1XYz5bQYYBbCP6j2YgykHwicYk",
   authDomain: "tesis-celiacos.firebaseapp.com",
   databaseURL: "https://tesis-celiacos.firebaseio.com",
   projectId: "tesis-celiacos",
