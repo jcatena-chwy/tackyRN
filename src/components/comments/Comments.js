@@ -11,16 +11,26 @@ export default class Comments extends Component {
     this.state = {
         comments: comments,
         isModalVisible: false,
-        paso1:true
+        paso1:false,
+        image:false
     }
     this.toggleModal= this.toggleModal.bind(this);
     this.setPaso1=this.setPaso1.bind(this);
+    this.validarCampos=this.validarCampos.bind(this);
   }
   setPaso1(val){
-    this.setState({ paso1: false});
+    this.setState({ image: val});
   }
   toggleModal(){
     this.setState({ isModalVisible: !this.state.isModalVisible });
+  }
+  validarCampos(){
+    debugger
+    if(this.state.image){
+      this.setState({ paso1: true, image:false});
+    }else {
+      this.setState({ paso1: false, image:true});
+    }
   }
   render() {
     const navigation = this.props.navigation;
@@ -50,11 +60,12 @@ export default class Comments extends Component {
           onPress={ this.toggleModal }
        >
         <Text style={styles.TextStyle}> Agregar un comentario </Text>
+        
       </TouchableOpacity>
       <Modal style={styles.container} isVisible={this.state.isModalVisible}>
           <View style={styles.content}>
-            {this.state.paso1 ? (
-              <Paso1 sendData={this.setPaso1}></Paso1>
+            {!this.state.paso1 ? (
+              <Paso1 image = {this.state.image} sendData={this.setPaso1}></Paso1>
               ) : (
               <Paso2></Paso2>
             )}
@@ -65,7 +76,7 @@ export default class Comments extends Component {
                 </Button>
               </View>
               <View style={styles.buttonContainer}>
-                  <Button style={{ float: 'right',marginLeft:25, marginRight:5}} success onPress={this.toggleModal}>
+                  <Button style={{ float: 'right',marginLeft:25, marginRight:5}} success onPress={this.validarCampos}>
                     <Text style={styles.TextStyle} >Siguiente</Text>
                   </Button>
               </View>

@@ -11,15 +11,15 @@ import Profile from './components/prueba/Profile'
 import Login from './components/auth/Login'
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
+  Comments: { screen: Comments, navigationOptions: {
+    title: "Tacky",
+  }},
   Map: { screen: Mapa,
     navigationOptions: {
       title: "Tacky",
       headerLeft: null
     }
   },
-      Comments: { screen: Comments, navigationOptions: {
-        title: "Tacky",
-      }},
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
       title: "Tacky",

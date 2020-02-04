@@ -11,7 +11,8 @@ export default class Paso1 extends Component {
     super(props);
     this.state = {
         image: null,
-        pepe:null
+        imagentexto:false,
+        comentario: ""
     }
     this.seleccionoFoto = this.seleccionoFoto.bind(this)
   }
@@ -20,8 +21,14 @@ export default class Paso1 extends Component {
     console.log('hi');
   }
   seleccionoFoto(){ 
-      debugger;
-      this.props.sendData(true);
+    debugger;
+      if(this.state.image!= null){
+        this.setState({imagentexto:this.props.image});
+        this.props.sendData(true);
+      }else {
+        this.setState({imagentexto:this.props.image});
+        this.props.sendData(false);
+      }
   }
   getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -46,6 +53,14 @@ export default class Paso1 extends Component {
         this.seleccionoFoto()
     }
   };
+
+  handleChange(event = {}) {
+    if(event == "" || event == null){
+      this.props.sendDataValueText(false);
+    }else{
+      this.props.sendDataValueText(true);
+    }
+  }
   
   render() {
     let { image } = this.state;
@@ -65,8 +80,10 @@ export default class Paso1 extends Component {
                     placeholderTextColor="grey"
                     numberOfLines={10}
                     multiline={true}
+                    onChangeText={this.handleChange}
                 />
-              </Body>
+                {this.props.textComentario &&<Text style={styles.textStyleAlert}> Por favor ingrese un texto </Text>}
+              </Body> 
               <Right>
                 <Text note>3:43 pm</Text>
               </Right>
@@ -74,6 +91,7 @@ export default class Paso1 extends Component {
           </List>
           {!image && <Icon active name='image' onPress={this._pickImage} style={styles.navBarLeftButton} />}
           {!image &&<Text style={{ fontSize: 20}}>Publicar foto del Plato Terminado</Text>}
+          {this.props.image &&<Text style={styles.textStyleAlert}> Por favor ingrese una imagen </Text>}
           {image &&
             <Image source={{ uri: image }}  style={{ width: 200, height: 180 ,marginLeft:30}} />}
         </Content>
@@ -81,8 +99,6 @@ export default class Paso1 extends Component {
     );
   }
 }
-
-
  
 const styles = StyleSheet.create({
     textAreaContainer: {
@@ -96,5 +112,8 @@ const styles = StyleSheet.create({
     navBarLeftButton: {
         paddingLeft: 100,
         fontSize:80
-      }
+    },
+    textStyleAlert: {
+      color:"red"
+    }
   })
