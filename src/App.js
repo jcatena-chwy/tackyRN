@@ -11,6 +11,12 @@ import Profile from './components/prueba/Profile'
 import Login from './components/auth/Login'
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
+  DetalleReceta: { screen: DetalleReceta,
+    navigationOptions: {
+      title: "Tacky",
+      headerLeft: null
+    } 
+  },
   Comments: { screen: Comments, navigationOptions: {
     title: "Tacky",
   }},
@@ -19,12 +25,6 @@ const MainNavigator = createStackNavigator({
       title: "Tacky",
       headerLeft: null
     }
-  },
-  DetalleReceta: { screen: DetalleReceta,
-    navigationOptions: {
-      title: "Tacky",
-      headerLeft: null
-    } 
   },
   Footer: { screen: Footer },
   Place: { screen: Place, navigationOptions: {

@@ -24,7 +24,7 @@ export default class Comments extends Component {
   toggleModal(){
     this.setState({ isModalVisible: !this.state.isModalVisible });
   }
-  validarCampos(){
+  validarCampos(){ 
     debugger
     if(this.state.image){
       this.setState({ paso1: true, image:false});

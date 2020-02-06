@@ -8,7 +8,7 @@ import Paso from './components/Paso'
 import Ingrediente from './components/Ingrediente'
 import Header from './components/Header'
 import Modal from "react-native-modal";
-import firebase from '../../config.js'
+import firebase from '../../config';
 export default class DetalleReceta extends Component {
   constructor(props) {
     super(props);
@@ -48,15 +48,69 @@ export default class DetalleReceta extends Component {
   }
   toggleModal () {
     debugger;
+    //Link documentacion
+    // https://firebase.google.com/docs/reference/js/firebase.database.Query
     console.log(firebase)
-    firebase.ref("Hola").push({
+    const db = firebase.database()
+    // Ejemplo de Insertar un elemento.
+    db.ref("Combo/001").push({
           Descripcion:'Lechuga, Doble Carne, Tomate',
           Nombre: 'Mac Combo',
           Precio:100,
           id:2,
           idRestaurant:2
+    }).then(() =>{
+      console.log("Inserted")
+    }).catch((error) =>{
+      console.log("error")
     })
-    this.setState({ isModalVisible: !this.state.isModalVisible });
+
+    // Ejemplo para leer un elemento.
+    db.ref('Combo').once('value', (data) =>{
+      console.log(data.toJSON())
+    })
+
+    // El once no se queda escuchando si hubo una insercion en la bd, pero el on si actua como un listener por ejemplo
+    setTimeout(() =>{
+      db.ref("Combo/007").push({
+        Descripcion:'Lechuga, Doble Carne, Tomate',
+        Nombre: 'Mac Combo',
+        Precio:100,
+        id:2,
+        idRestaurant:2
+      }).then(() =>{
+        console.log("Inserted")
+      }).catch((error) =>{
+        console.log("error")
+      })
+    },5000)
+    db.ref('Combo').on('value', (data) =>{
+      console.log(data.toJSON())
+    })
+
+    // Ejemplo para hacer una actualizacion a un elemento
+    db.ref("Combo/005").update({
+      Nombre: 'Mac Super 2'
+    }).then(() =>{
+      console.log("Update")
+    }).catch((error) =>{
+      console.log("error")
+    })
+    //Ejemplo de eliminar un campo del json
+    db.ref("Combo/005/Nombre").remove(
+    ).then(() =>{
+      console.log("Delete")
+    }).catch((error) =>{
+      console.log("error")
+    })
+    //Ejemplo de eliminar un elemento
+    db.ref("Combo/005").remove(
+    ).then(() =>{
+      console.log("Delete")
+    }).catch((error) =>{
+      console.log("error")
+    })
+    //this.setState({ isModalVisible: !this.state.isModalVisible });
   };
   render() {
     return (
