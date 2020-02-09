@@ -44,7 +44,7 @@
         },
         {
           "type": "pastas",
-          "price": "$10",
+          "price": "$10", 
           "title": "Raviolones",
           "composite": "de jamón y mozarrella.",
           "image": "http://www.nuevodiarioweb.com.ar/uploads/imagenes/repositorio/2018/04/03/163394/201804030729343a54a70dee5b703b763ce258587181ca_med.jpg",

@@ -10,11 +10,23 @@ export default class Ingrediente extends Component {
     tituloReceta = this.props.tituloReceta;
     this.guardarReceta = this.guardarReceta.bind(this)
   }
-  guardarReceta(){ 
-    if(this.props.tituloReceta == null){
-      this.props.sendData(true);
-    }else{
-      this.props.sendData(false);
+  guardarReceta(){
+    debugger
+    if(!this.props.imagenGaleria) {
+      this.props.sendData("Por favor, elija una imagen de la galeria", true)
+      return
+    }
+    if(this.props.tituloReceta == null || this.props.tituloReceta == "" ){
+      this.props.sendData("Por favor, escriba un titulo para la receta", true)
+      return
+    }
+    if(!this.props.isIngredientes ){
+      this.props.sendData("Por favor, escriba al menos un ingrediente", true)
+      return
+    }
+    if(!this.props.isPasos ){
+      this.props.sendData("Por favor, escriba al menos una descripcion en el paso o cargue una imagen, en un paso", true)
+      return
     }
   }
 

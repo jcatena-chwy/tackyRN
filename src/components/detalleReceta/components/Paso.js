@@ -26,19 +26,19 @@ export default class Paso extends React.Component {
     super(props);
     this.state = { 
       pasos: [
-        { "paso":1, photos: [
+        { "orden":1, photos: [
           { "photo":1, image:null, flag:false },
           { "photo":2, image:null, flag:false  },
           { "photo":3, image:null, flag:false  }
           ], colorBadge:'green'
         },
-        { "paso":2 , photos: [
+        { "orden":2 , photos: [
           { "photo":1, image:null, flag:false },
           { "photo":2, image:null, flag:false  },
           { "photo":3, image:null, flag:false  }
         ], colorBadge:'blue'
        },
-        { "paso":3 , photos: [
+        { "orden":3 , photos: [
           { "photo":1, image:null, flag:false },
           { "photo":2, image:null, flag:false  },
           { "photo":3, image:null, flag:false  }
@@ -174,7 +174,7 @@ export default class Paso extends React.Component {
    
     addRow(){ 
       var row= 
-        { "paso":this.state.pasos.length+1, photos: [
+        { "orden":this.state.pasos.length+1, photos: [
           { "photo":1, image:null, flag:false },
           { "photo":2, image:null, flag:false  },
           { "photo":3, image:null, flag:false  }
@@ -244,7 +244,7 @@ export default class Paso extends React.Component {
           array.splice(index, 1);
           setTimeout(() => { 
             for(i =0; i<array.length ; i++){
-              array[i].paso = i+1;
+              array[i].orden = i+1;
             }
             this.setState({pasos: array});
           }, 100)
@@ -255,7 +255,23 @@ export default class Paso extends React.Component {
     actualizarOrdenPaso(pasos){
       var array = [...this.state.pasos];
       for(i =1; i<this.state.pasos ; i++){
-        array[i].paso = i;
+        array[i].orden = i;
+      }
+    }
+
+    validarCargaPasos(){
+      debugger;
+      let newArray = [];
+      var paso = {}
+      for(i = 0 ; i< this.state.pasos.length ; i++){
+        if(this.state.pasos[i].descripcion != null && this.state.rows[i].descripcion != ""){
+          newArray.push(this.state.rows[i])
+        }
+      }
+      if(newArray.length > 0){
+        this.props.isIngredientes(true , newArray);
+      } else {
+        this.props.isIngredientes(false , newArray);
       }
     }
   
@@ -266,7 +282,7 @@ export default class Paso extends React.Component {
             <Text style={{ fontSize: 20,bottom:10}}>Pasos</Text>
             <TextInput style={{textAlign: 'right', fontSize: 15, bottom:10}} placeholder='Tiempo'></TextInput>
             {this.state.pasos.map((r) =>
-            <Card key={r.paso}  style={{ width:350 }}>
+            <Card key={r.orden}  style={{ width:350 }}>
               <CardItem  style={{ height:50 }} header > 
               {/* <Badge style={{ backgroundColor: r.colorBadge, fontSize:5 }} >
                   <Text style={{ width:15, left:2, color:'white', fontSize:13 }}>{r.paso}</Text>
@@ -283,7 +299,7 @@ export default class Paso extends React.Component {
                 underlayColor = '#ccc'
                 // onPress = { () => alert('Yaay!') }
               >
-              <Text  style={{color:'white'}}>{r.paso}</Text>
+              <Text  style={{color:'white'}}>{r.orden}</Text>
               </TouchableHighlight>
               <TextInput style={{ fontSize: 17, left: 10}} placeholder='Describe cómo lo hiciste...'/>
               
@@ -304,7 +320,7 @@ export default class Paso extends React.Component {
                     >
                     {r.photos.map((paso) =>
                     <Item key={paso.photo} >
-                        <TouchableHighlight onPress={() => this.updatePosImage(r.paso, paso.photo)}>
+                        <TouchableHighlight onPress={() => this.updatePosImage(r.orden, paso.photo)}>
                           <Image
                               source={paso.image
                                   ? {uri: paso.image}                      
@@ -312,7 +328,7 @@ export default class Paso extends React.Component {
                                   style={{ width: 80, height: 80, right:5 }} 
                           />
                         </TouchableHighlight>
-                        <Button  onPress={() => this.updatePosImage(r.paso, paso.photo)} transparent style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+                        <Button  onPress={() => this.updatePosImage(r.orden, paso.photo)} transparent style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
                             <Icon active name='camera'   style={{ fontSize: 200, opacity:0 }}/>
                         </Button>
 

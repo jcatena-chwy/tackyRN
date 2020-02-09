@@ -17,15 +17,15 @@ const MainNavigator = createStackNavigator({
       headerLeft: null
     } 
   },
-  Comments: { screen: Comments, navigationOptions: {
-    title: "Tacky",
-  }},
   Map: { screen: Mapa,
     navigationOptions: {
       title: "Tacky",
       headerLeft: null
     }
   },
+  Comments: { screen: Comments, navigationOptions: {
+    title: "Tacky",
+  }},
   Footer: { screen: Footer },
   Place: { screen: Place, navigationOptions: {
     title: "Tacky",
