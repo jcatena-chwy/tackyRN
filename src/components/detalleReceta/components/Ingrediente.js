@@ -3,15 +3,19 @@ import { Text} from 'react-native';
 import { Container, Button, Icon, Item, Input, Content, Left} from 'native-base';
 import { View} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+YellowBox.ignoreWarnings(['Setting a timer']);
 export default class Ingrediente extends Component {
   constructor(props){
     super(props);
     this.state = {
         // rows: ['row 1', 'row 2'],
         rows: [
-          { "orden":1, descripcion: "", "id": this.guidGenerator() },
-          { "orden":2, descripcion: "" , "id": this.guidGenerator()  },
-          { "orden":3, descripcion: "", "id": this.guidGenerator()   }
+          { "orden":1, description: "", "id": this.guidGenerator() },
+          { "orden":2, description: "" , "id": this.guidGenerator()  },
+          { "orden":3, description: "", "id": this.guidGenerator()   }
         ]
     }
     this.handleChange= this.handleChange.bind(this);
@@ -23,7 +27,7 @@ addRow(){
   this.state.rows; 
   var r = {};
   r.orden = this.state.rows.length+1;
-  r.descripcion = ""
+  r.description = ""
   r.id = this.guidGenerator()
   this.setState({
     rows:[...this.state.rows,r]
@@ -45,7 +49,6 @@ deleteRow(r){
 }
 
 actualizarOrden(){
-  debugger;
   var array = [...this.state.rows];
   for(i =0; i<array.length ; i++){
     array[i].orden = i+1;
@@ -60,17 +63,15 @@ actualizarOrden(){
 handleChange(text, posicion) {
   
   let newArray = [...this.state.rows];
-  newArray[posicion-1].descripcion = text
+  newArray[posicion-1].description = text
   this.setState({ rows:newArray });
   this.validarCargaIngredientes()
 }
 
 validarCargaIngredientes(){
-  debugger;
   let newArray = [];
-  var ingrediente = {}
   for(i = 0 ; i< this.state.rows.length ; i++){
-    if(this.state.rows[i].descripcion != null && this.state.rows[i].descripcion != ""){
+    if(this.state.rows[i].description != null && this.state.rows[i].description != ""){
       newArray.push(this.state.rows[i])
     }
   }

@@ -13,14 +13,14 @@ export default class DetalleReceta extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tituloReceta:"", 
+      tituloReceta:"", // "" 
       isModalVisible: false,
       visibleModal: null,
-      imagenGaleria: false, 
-      uriImagenGaleria: "", 
+      imagenGaleria: false,
+      nameMainImage: "", 
       tituloModal: "", 
       listaIngredientes:{},
-      isIngredientes: false,
+      isIngredientes: false, 
       listaPasos:{},
       isPasos: false
     }
@@ -30,6 +30,12 @@ export default class DetalleReceta extends Component {
     this.guardarImagenPrincipal=this.guardarImagenPrincipal.bind(this);
     this.guardarIngredientes=this.guardarIngredientes.bind(this);
     this.guardarPasos=this.guardarPasos.bind(this);
+    this.goBackToCookBook=this.goBackToCookBook.bind(this);
+  }
+
+  goBackToCookBook(value){
+    var receta = {}
+    this.props.navigation.navigate('CookBook', {receta})
   }
 
   callModal(texto, value){
@@ -37,17 +43,15 @@ export default class DetalleReceta extends Component {
       this.setState({ isModalVisible: !this.state.isModalVisible, tituloModal:texto });
   }
 
-  guardarImagenPrincipal(uri){
-    debugger; 
-    this.setState({ imagenGaleria:true, uriImagenGaleria: uri });
+  guardarImagenPrincipal(nameMainImage){
+     
+    this.setState({ imagenGaleria:true, nameMainImage: nameMainImage });
   }
   guardarIngredientes(value,ingredientes){
-    debugger
     this.setState({ isIngredientes:value, listaIngredientes: ingredientes });
   }
   guardarPasos(value,pasos){
-    debugger
-    this.setState({ isIngredientes:value, listaPasos: pasos });
+    this.setState({ isPasos:value, listaPasos: pasos });
   }
   _renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
@@ -64,13 +68,13 @@ export default class DetalleReceta extends Component {
     </View>
   );
   handleChange(event = {}) {
-    debugger;
+    
     this.setState({
       tituloReceta:event
     })
   }
   toggleModal () {
-    // debugger;
+    // 
     // //Link documentacion
     // // https://firebase.google.com/docs/reference/js/firebase.database.Query
     // console.log(firebase)
@@ -136,9 +140,15 @@ export default class DetalleReceta extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
   render() {
+    const navigation = this.props.navigation;
     return (
       <Container>
-        <Header imagenGaleria = {this.state.imagenGaleria} isIngredientes = {this.state.isIngredientes} isPasos = {this.guardarPasos} tituloReceta = {this.state.tituloReceta} sendData={this.callModal}></Header>
+        <Header imagenGaleria = {this.state.imagenGaleria} nameMainImage = {this.state.nameMainImage}
+                tituloReceta = {this.state.tituloReceta} sendData={this.callModal} 
+                isIngredientes = {this.state.isIngredientes} listaIngredientes = {this.state.listaIngredientes}
+                isPasos = {this.state.isPasos} listaPasos = {this.state.listaPasos} 
+                goBackToDetalleReceta = {this.goBackToCookBook}
+                ></Header>
         <Content>
         <Item>
           <Photo isImageToGalery={this.guardarImagenPrincipal}></Photo>
@@ -148,7 +158,7 @@ export default class DetalleReceta extends Component {
         </Item>
         <Item style={{ marginTop:'0%', marginBottom:'0%', fontSize: 20}}>  
           <Ingrediente isIngredientes = {this.guardarIngredientes}></Ingrediente>
-        </Item>
+        </Item> 
         <Item>
         <Paso isPasos = {this.guardarPasos}></Paso>
         </Item>
@@ -156,8 +166,8 @@ export default class DetalleReceta extends Component {
           <View style={styles.content}>
             {/* <Text style={styles.contentTitle}>Hi 👋!</Text> */}
             <Text style={styles.contentTitle}>{this.state.tituloModal} 👋!</Text>
-            <Button style={{ width:80, height:40, backgroundColor:"white"}} onPress={this.toggleModal}>
-              <Text style={{fontSize:18, color:"#1a0dab"}} >Cerrar</Text>
+            <Button danger style={{ width:80, height:40}} onPress={this.toggleModal}>
+              <Text style={{fontSize:18, color:"white", alignSelf : "center", left:8 }} >Cerrar</Text>
             </Button>
            
           </View>
@@ -179,7 +189,7 @@ const styles = StyleSheet.create({
     height:280
   },
   button: {
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     width: 30, 
     height:20,
     justifyContent: 'center',

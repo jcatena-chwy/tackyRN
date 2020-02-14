@@ -5,12 +5,19 @@ import Place from './components/stack/Place'
 import Comments from './components/comments/Comments'
 import Home from './components/prueba/Home'
 import CookBook from './components/cookBook/CookBook'
+import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
 import Footer from './components/footer/Footer'
 import Profile from './components/prueba/Profile'
 import Login from './components/auth/Login'
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
+  CookBook: { screen: CookBook, navigationOptions: {
+    title: "Tacky",
+  }},
+  CookBookDetail: { screen: CookBookDetail, navigationOptions: {
+    title: "Tacky",
+  } },
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
       title: "Tacky",
@@ -31,9 +38,6 @@ const MainNavigator = createStackNavigator({
     title: "Tacky",
   } },
   Home: { screen: Home},
-  CookBook: { screen: CookBook, navigationOptions: {
-    title: "Tacky",
-  }},
   Profile: { 
       screen: Profile,
       navigationOptions: {

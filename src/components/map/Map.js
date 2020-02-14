@@ -13,6 +13,12 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
+
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(['Warning']);
 export default class Map extends React.Component {
   constructor(props){
     super(props) 

@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { Button, Image, View, Text, Platform } from 'react-native';
-import {Icon} from 'native-base';
+import { Button, Image, View, Text, Platform, StyleSheet } from 'react-native';
+import {Icon, Spinner } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import firebase from '../../../config';
+import Modal from "react-native-modal";
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 
+YellowBox.ignoreWarnings(['Setting a timer']);
 
 
 export default class ImagePickerExample extends React.Component {
   state = {
     image: null,
-    textoImagen:false 
+    textoImagen:false,
+    isModalVisible: false,
   }; 
 
   render() {
@@ -22,6 +27,11 @@ export default class ImagePickerExample extends React.Component {
         {!image && <Icon active name='image' onPress={this._pickImage} style={{ fontSize: 80 }}/>}
         {!image && <Text style={{ fontSize: 20}}>Publicar foto del Plato Terminado</Text>}
         { image && <Image source={{ uri: image }} style={{ width: 200, height: 200,marginTop:10 }} />}
+        <Modal style={styles.container} isVisible={this.state.isModalVisible}>
+          <View style={styles.content}> 
+            <Spinner color='red' />
+          </View>
+        </Modal>
       </View>
     ); 
   }
@@ -39,54 +49,56 @@ export default class ImagePickerExample extends React.Component {
     }
   }
 
+  // uploadImage = async (uri, imageName) => {
+  //   const response = await fetch(uri);
+  //   const blob = await response.blob();
+
+  //   //Ejemplo para guardar una imagen
+  //   var ref = firebase.storage().ref().child("images/ImageRecetas/" + imageName);
+  //   return ref.put(blob)
+
+  //   //Ejemplo para recuperar una imagen
+  //   var ref = firebase.storage().ref("images/ImageRecetas/imagePrueba5").getDownloadURL()
+  //       .then(resolve => {
+  //         console.log(resolve)
+  //       })
+  //       .catch(error => {
+  //         console.log(error)
+  //       })
+  //   //
+  // }
+
+  isImageMain(uri){
+    let name = Math.random().toString(36).substring(7);
+    this.uploadImage(uri,name).then((responseData) => {
+      console.log("La data es: " + responseData)
+      this.setState({ isModalVisible: !this.state.isModalVisible});
+      this.props.isImageToGalery(responseData.metadata.name)
+    })
+  }
+
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-
-    //Ejemplo para guardar una imagen
-    var ref = firebase.storage().ref().child("images/ImageRecetas/" + imageName);
+    var ref = firebase.storage().ref().child("images/ImageRecipe/" + imageName);
     return ref.put(blob)
-
-    //Ejemplo para recuperar una imagen
-    var ref = firebase.storage().ref("images/ImageRecetas/imagePrueba5").getDownloadURL()
-        .then(resolve => {
-          console.log(resolve)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    //
   }
 
-  isImageMain(uri){
-    this.props.isImageToGalery(uri)
-  }
-
-  _pickImage = async () => {
+  _pickImage = async () => { 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1 
     });
- 
+  
     console.log(result);
 
     if (!result.cancelled) {
-      // const db = firebase.database()
-      // this.uploadImage(result.uri,'imagePrueba8').then((responseData) => {
-      //      // Ejemplo de Insertar un elemento.
-      //      console.log("La data es: " + responseData)
-      //     db.ref("Photos/001").push({
-      //       Descripcion:responseData.metadata.name
-      //     }).then(() =>{
-      //       console.log("Inserted")  
-      //     }).catch((error) =>{
-      //       console.log("error")  
-      //     })
-      // })
-      this.setState({ image: result.uri });
-      this.isImageMain(result.uri, "imagenMain")
+      this.setState({ image: result.uri, isModalVisible: !this.state.isModalVisible });
+      setTimeout(() => { 
+        this.isImageMain(result.uri)
+      }, 1000)
     }
   };
   guidGenerator() {
@@ -96,3 +108,48 @@ export default class ImagePickerExample extends React.Component {
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowRadius:10,
+    width: 350, 
+    height:280
+  },
+  button: {
+    backgroundColor: 'lightblue',
+    width: 30, 
+    height:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  content: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width:330,
+    height:200,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  contentTitle: {
+    fontSize: 20,
+    marginBottom: 12,
+  }
+});

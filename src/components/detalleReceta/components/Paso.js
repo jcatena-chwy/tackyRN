@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, ScrollView, Image, TouchableHighlight, StyleSheet,Text, Dimensions } from 'react-native';
-import { Button, Icon, Badge, Item, List, ListItem, Left, Body, Container, Header, Content, Right, Card, CardItem} from 'native-base';
+import { Button,Spinner, Icon, Badge, Item, List, ListItem, Left, Body, Container, Header, Content, Right, Card, CardItem} from 'native-base';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet'
 import { TextInput } from 'react-native-gesture-handler';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { IMAGENAME } from '../../../assets/camera.png';
+import firebase from '../../../config';
 import Modal from 'react-native-modal';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+YellowBox.ignoreWarnings(['Setting a timer']);
 const options = [
   'Cancel', 
   'Apple', 
@@ -25,24 +30,24 @@ export default class Paso extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      pasos: [
+      steps: [
         { "orden":1, photos: [
-          { "photo":1, image:null, flag:false },
-          { "photo":2, image:null, flag:false  },
-          { "photo":3, image:null, flag:false  }
-          ], colorBadge:'green'
+          { "photo":1, image:null, flag:false, name:"" },
+          { "photo":2, image:null, flag:false, name:""   },
+          { "photo":3, image:null, flag:false, name:""   }
+          ], colorBadge:'green', description: ""
         },
         { "orden":2 , photos: [
-          { "photo":1, image:null, flag:false },
-          { "photo":2, image:null, flag:false  },
-          { "photo":3, image:null, flag:false  }
-        ], colorBadge:'blue'
+          { "photo":1, image:null, flag:false, name:""  },
+          { "photo":2, image:null, flag:false, name:""   },
+          { "photo":3, image:null, flag:false, name:""   }
+        ], colorBadge:'blue', description: ""
        },
         { "orden":3 , photos: [
-          { "photo":1, image:null, flag:false },
-          { "photo":2, image:null, flag:false  },
-          { "photo":3, image:null, flag:false  }
-        ],colorBadge:'red'}
+          { "photo":1, image:null, flag:false, name:""  },
+          { "photo":2, image:null, flag:false, name:""   },
+          { "photo":3, image:null, flag:false, name:""   }
+        ],colorBadge:'red', description: ""}
       ], 
       camera: [
         { "photo":1, image:null, flag:false },
@@ -53,7 +58,8 @@ export default class Paso extends React.Component {
       posColumna:null,
       image: '../../../assets/camera.png',
       uploading: false,
-      isModalVisible: false
+      isModalVisible: false,
+      isModalVisibleSpinner: false
     }
     this.analizarOpcion = this.analizarOpcion.bind(this)
     this.updatePosImage = this.updatePosImage.bind(this)
@@ -63,6 +69,8 @@ export default class Paso extends React.Component {
     this.viewImage = this.viewImage.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
     this.eliminarFoto = this.eliminarFoto.bind(this)
+    this.handleChange= this.handleChange.bind(this);
+    this.isImagePaso= this.isImagePaso.bind(this);
   }
   
   analizarOpcion(index){
@@ -83,15 +91,14 @@ export default class Paso extends React.Component {
     console.log(index);
   }
   eliminarFoto(){
-    debugger
-    let newArrayPhotos = [...this.state.pasos];
+    let newArrayPhotos = [...this.state.steps];
     console.log(newArrayPhotos[this.state.posFila])
     newArrayPhotos[this.state.posFila].photos[this.state.posColumna].image = null
     newArrayPhotos[this.state.posFila].image = null;
     newArrayPhotos[this.state.posFila].flag = false
-    let newArray = [...this.state.pasos];
+    let newArray = [...this.state.steps];
     newArray[this.state.posFila].photos = newArrayPhotos;
-    this.setState({ pasos:newArray });
+    this.setState({ steps:newArray });
   }
   toggleModal () {
     this.setState({ isModalVisible: !this.state.isModalVisible });
@@ -121,15 +128,40 @@ export default class Paso extends React.Component {
       });
 
       if (!pickerResult.cancelled) {
-        let newArray = [...this.state.pasos];
+        
+        let newArray = [...this.state.steps];
         newArray[this.state.posFila].photos[this.state.posColumna].image = pickerResult.uri
         newArray[this.state.posFila].photos[this.state.posColumna].flag = true
-        this.setState({ image: pickerResult.uri, camera:newArray });
+        this.setState({ image: pickerResult.uri, steps:newArray, isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
+        setTimeout(() => { 
+          this.isImagePaso(pickerResult.uri)
+        }, 1000)
       }
-
-      this.uploadImageAsync(pickerResult.uri);
+      // this.uploadImageAsync(pickerResult.uri);
     }
   };
+
+  isImagePaso(uri){
+    let name = Math.random().toString(36).substring(7);
+    this.uploadImage(uri,name).then((responseData) => {
+      
+      console.log("La data es: " + responseData)
+      let newArray = [...this.state.steps];
+      newArray[this.state.posFila].photos[this.state.posColumna].name = responseData.metadata.name
+      this.setState({
+        isModalVisibleSpinner: !this.state.isModalVisibleSpinner, steps:newArray
+      }, () => {
+        this.validarCargaPasos();
+      });
+    })
+  } 
+
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    var ref = firebase.storage().ref().child("images/ImageRecipe/" + imageName);
+    return ref.put(blob)
+  }
 
   uploadImageAsync(pictureuri) {
     let apiUrl = 'http://123.123.123.123/ABC';
@@ -160,39 +192,39 @@ export default class Paso extends React.Component {
         console.log(err)
       } )
   
-  
+   
     }
     updatePosImage(fila,columna){
       this.setState({ posFila:fila-1, posColumna:columna-1 });
-      if(this.state.pasos[fila-1].photos[columna-1].flag){
+      if(this.state.steps[fila-1].photos[columna-1].flag){
       // if(true){
         this.ActionSheet.show();
       }else {
         this.takePhoto(fila);
-      }
+      } 
     }
    
     addRow(){ 
       var row= 
-        { "orden":this.state.pasos.length+1, photos: [
-          { "photo":1, image:null, flag:false },
-          { "photo":2, image:null, flag:false  },
-          { "photo":3, image:null, flag:false  }
-          ]
+        { "orden":this.state.steps.length+1, photos: [
+          { "photo":1, image:null, flag:false, name:"" },
+          { "photo":2, image:null, flag:false, name:""  },
+          { "photo":3, image:null, flag:false, name:""  }
+          ], description: ""
         }
       var numero = Math.floor(Math.random() * 10);
-      if(this.state.pasos[this.state.pasos.length-1] !=null){
-        var color1 = this.state.pasos[this.state.pasos.length-1].colorBadge
+      if(this.state.steps[this.state.steps.length-1] !=null){
+        var color1 = this.state.steps[this.state.steps.length-1].colorBadge
       }else{
         var color1 = "red"
       }
-      if(this.state.pasos[this.state.pasos.length-2] !=null){
-      var color2 = this.state.pasos[this.state.pasos.length-2].colorBadge
+      if(this.state.steps[this.state.steps.length-2] !=null){
+      var color2 = this.state.steps[this.state.steps.length-2].colorBadge
       }else{
         var color2 = "grey"
       }
-      if(this.state.pasos[this.state.pasos.length-3] !=null){
-      var color3 = this.state.pasos[this.state.pasos.length-3].colorBadge
+      if(this.state.steps[this.state.steps.length-3] !=null){
+      var color3 = this.state.steps[this.state.steps.length-3].colorBadge
       }else{
         var color3 = "coral"
       }
@@ -232,56 +264,71 @@ export default class Paso extends React.Component {
       }
         
       this.setState({
-        pasos:[...this.state.pasos,row]
+        steps:[...this.state.steps,row]
       })
-      this.state.pasos;
+      this.state.steps;
     }
     deleteRow(r){
-      if(this.state.pasos.length>1){
-        var array = [...this.state.pasos]; // make a separate copy of the array
+      if(this.state.steps.length>1){
+        var array = [...this.state.steps]; // make a separate copy of the array
         var index = array.indexOf(r)
         if (index !== -1) {
           array.splice(index, 1);
-          setTimeout(() => { 
-            for(i =0; i<array.length ; i++){
-              array[i].orden = i+1;
-            }
-            this.setState({pasos: array});
-          }, 100)
-          console.log(this.state.pasos);
+          this.setState({
+            steps: array
+          }, () => {
+            this.actualizarOrdenPaso()
+          });
         }
       }
     }
-    actualizarOrdenPaso(pasos){
-      var array = [...this.state.pasos];
-      for(i =1; i<this.state.pasos ; i++){
-        array[i].orden = i;
+    actualizarOrdenPaso(){
+      var array = [...this.state.steps];
+      for(i =0; i<array.length ; i++){
+        array[i].orden = i+1;
       }
+      this.setState({
+        steps: array
+      }, () => {
+        this.validarCargaPasos()
+      });
+    }
+
+    handleChange(text, posicion) {
+      let newArray = [...this.state.steps];
+      newArray[posicion-1].description = text
+      this.setState({ steps:newArray });
+      this.validarCargaPasos()
     }
 
     validarCargaPasos(){
-      debugger;
       let newArray = [];
       var paso = {}
-      for(i = 0 ; i< this.state.pasos.length ; i++){
-        if(this.state.pasos[i].descripcion != null && this.state.rows[i].descripcion != ""){
-          newArray.push(this.state.rows[i])
+      for(i = 0 ; i< this.state.steps.length ; i++){
+        if(this.state.steps[i].description != null && this.state.steps[i].description != ""){
+          newArray.push(this.state.steps[i])
+        } else {
+          for(f = 0 ; f< 3 ; f++){
+            if(this.state.steps[i].photos[f].flag){
+              newArray.push(this.state.steps[i])
+            }
+          }
         }
       }
       if(newArray.length > 0){
-        this.props.isIngredientes(true , newArray);
+        this.props.isPasos(true , newArray);
       } else {
-        this.props.isIngredientes(false , newArray);
+        this.props.isPasos(false , newArray);
       }
     }
   
-    render() {
+    render() { 
         return (
           <View>
           <Content  style={{ top:10,bottom:20}} padder> 
             <Text style={{ fontSize: 20,bottom:10}}>Pasos</Text>
             <TextInput style={{textAlign: 'right', fontSize: 15, bottom:10}} placeholder='Tiempo'></TextInput>
-            {this.state.pasos.map((r) =>
+            {this.state.steps.map((r) =>
             <Card key={r.orden}  style={{ width:350 }}>
               <CardItem  style={{ height:50 }} header > 
               {/* <Badge style={{ backgroundColor: r.colorBadge, fontSize:5 }} >
@@ -301,7 +348,7 @@ export default class Paso extends React.Component {
               >
               <Text  style={{color:'white'}}>{r.orden}</Text>
               </TouchableHighlight>
-              <TextInput style={{ fontSize: 17, left: 10}} placeholder='Describe cómo lo hiciste...'/>
+              <TextInput ref={input => { this.textInput = input }} onChangeText={(text) => this.handleChange(text, r.orden)} style={{ fontSize: 17, left: 10}}/>
               
               <Right  >
               <Button   onPress={() => this.deleteRow(r)} transparent textStyle={{color: '#87838B'}}>
@@ -377,6 +424,11 @@ export default class Paso extends React.Component {
               </Button>
             </View>
           </Modal>
+          <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner}>
+          <View style={styles.contentSpinner}> 
+            <Spinner color='red' />
+          </View>
+        </Modal>
           </Content>
         </View>
         );
@@ -422,6 +474,16 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width:330,
     height:400,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  contentSpinner: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width:200,
+    height:200,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   contentTitle: {
