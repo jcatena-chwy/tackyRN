@@ -16,13 +16,14 @@ export default class DetalleReceta extends Component {
       tituloReceta:"", // "" 
       isModalVisible: false,
       visibleModal: null,
-      imagenGaleria: false,
+      imagenGaleria: true,
       nameMainImage: "", 
       tituloModal: "", 
       listaIngredientes:{},
       isIngredientes: false, 
       listaPasos:{},
-      isPasos: false
+      isPasos: false,
+      time:""
     }
     this.handleChange= this.handleChange.bind(this);
     this.callModal=this.callModal.bind(this);
@@ -50,8 +51,8 @@ export default class DetalleReceta extends Component {
   guardarIngredientes(value,ingredientes){
     this.setState({ isIngredientes:value, listaIngredientes: ingredientes });
   }
-  guardarPasos(value,pasos){
-    this.setState({ isPasos:value, listaPasos: pasos });
+  guardarPasos(value,pasos,time){
+    this.setState({ isPasos:value, listaPasos: pasos, time:time });
   }
   _renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
@@ -146,12 +147,12 @@ export default class DetalleReceta extends Component {
         <Header imagenGaleria = {this.state.imagenGaleria} nameMainImage = {this.state.nameMainImage}
                 tituloReceta = {this.state.tituloReceta} sendData={this.callModal} 
                 isIngredientes = {this.state.isIngredientes} listaIngredientes = {this.state.listaIngredientes}
-                isPasos = {this.state.isPasos} listaPasos = {this.state.listaPasos} 
+                isPasos = {this.state.isPasos} listaPasos = {this.state.listaPasos} time = {this.state.time}
                 goBackToDetalleReceta = {this.goBackToCookBook}
                 ></Header>
         <Content>
         <Item>
-          <Photo isImageToGalery={this.guardarImagenPrincipal}></Photo>
+          <Photo isImageToGalery={this.guardarImagenPrincipal} tituloReceta = {this.state.tituloReceta} ></Photo>
         </Item>
         <Item >  
           <TextInput name="tituloReceta" onChangeText={this.handleChange} value={this.state.tituloReceta} style={{ marginTop:'8%', marginBottom:'10%', fontSize: 20}} placeholder="Titulo de tu Receta" /> 
@@ -160,7 +161,7 @@ export default class DetalleReceta extends Component {
           <Ingrediente isIngredientes = {this.guardarIngredientes}></Ingrediente>
         </Item> 
         <Item>
-        <Paso isPasos = {this.guardarPasos}></Paso>
+        <Paso isPasos = {this.guardarPasos} tituloReceta = {this.state.tituloReceta}></Paso>
         </Item>
         <Modal style={styles.container} isVisible={this.state.isModalVisible}>
           <View style={styles.content}>

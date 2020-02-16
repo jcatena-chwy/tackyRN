@@ -14,7 +14,7 @@ export default class Ingrediente extends Component {
     this.guardarReceta = this.guardarReceta.bind(this)
     this.guidGenerator = this.guidGenerator.bind(this)
     this.goBack = this.goBack.bind(this)
-  }
+  } 
   validarReceta(){
       if(!this.props.imagenGaleria) {
         this.props.sendData("Por favor, elija una imagen de la galeria", true)
@@ -43,7 +43,8 @@ export default class Ingrediente extends Component {
       mainImage:this.props.nameMainImage,
       title: this.props.tituloReceta,
       ingredients: this.props.listaIngredientes,
-      steps: this.props.listaPasos
+      steps: this.props.listaPasos,
+      time: this.props.time
     }).then(() =>{
       this.setState({isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
       this.props.goBackToDetalleReceta();

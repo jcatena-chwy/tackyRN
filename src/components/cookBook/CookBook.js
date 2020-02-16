@@ -62,21 +62,22 @@ export default class CookBook extends Component {
               obj.mainImage = jsonRecetas[key].mainImage
               obj.steps = jsonRecetas[key].steps
               obj.title = jsonRecetas[key].title
+              obj.time = jsonRecetas[key].time
               recetas[i] = obj
               i = i +1; 
           }
           this.setState({ recetas: recetas});
           setTimeout(() => { 
               for(f =0; f<recetas.length; f++){ 
-                  this.uploadImage(recetas[f].mainImage )
+                  this.uploadImage(recetas[f].mainImage , recetas[f].title )
               }
               
           }, 100)
       })
     }
    
-    uploadImage = async (imageName) => {
-     var ref = firebase.storage().ref("images/ImageRecipe/"+ imageName).getDownloadURL()
+    uploadImage = async (imageName, title) => {
+     var ref = firebase.storage().ref("images/ImageRecipe/"+ title + "/" + imageName).getDownloadURL()
          .then(resolve => { 
             let newArray = [...this.state.recetas];
             var cantCall = this.state.posicion;

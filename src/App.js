@@ -15,15 +15,15 @@ const MainNavigator = createStackNavigator({
   CookBook: { screen: CookBook, navigationOptions: {
     title: "Tacky",
   }},
-  CookBookDetail: { screen: CookBookDetail, navigationOptions: {
-    title: "Tacky",
-  } },
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
       title: "Tacky",
       headerLeft: null
     } 
-  },
+  }, 
+  CookBookDetail: { screen: CookBookDetail, navigationOptions: {
+    title: "Tacky",
+  } },
   Map: { screen: Mapa,
     navigationOptions: {
       title: "Tacky",

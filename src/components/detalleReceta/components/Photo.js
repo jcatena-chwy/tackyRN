@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { Button, Image, View, Text, Platform, StyleSheet } from 'react-native';
+import { Image, View, Platform, StyleSheet } from 'react-native';
+import { Button, Text} from 'native-base';
+
+
 import {Icon, Spinner } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -17,6 +20,7 @@ export default class ImagePickerExample extends React.Component {
     image: null,
     textoImagen:false,
     isModalVisible: false,
+    isTituloReceta:false
   }; 
 
   render() {
@@ -29,7 +33,10 @@ export default class ImagePickerExample extends React.Component {
         { image && <Image source={{ uri: image }} style={{ width: 200, height: 200,marginTop:10 }} />}
         <Modal style={styles.container} isVisible={this.state.isModalVisible}>
           <View style={styles.content}> 
-            <Spinner color='red' />
+            {this.state.isTituloReceta && <Spinner color='red' />}
+            {!this.state.isTituloReceta && <Text style={{ fontSize: 20}}>Por favor, complete el titulo de la receta  👋!</Text>}
+            {!this.state.isTituloReceta && <Button danger style={{ width:90, }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color:"white", left:4}}>Cerrar</Text></Button>}
+
           </View>
         </Modal>
       </View>
@@ -38,6 +45,12 @@ export default class ImagePickerExample extends React.Component {
 
   componentDidMount() {
     this.getPermissionAsync();
+  }
+
+  toggleModal= () =>{
+    this.setState({
+      isModalVisible: !this.state.isModalVisible 
+    })
   }
 
   getPermissionAsync = async () => {
@@ -80,25 +93,30 @@ export default class ImagePickerExample extends React.Component {
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    var ref = firebase.storage().ref().child("images/ImageRecipe/" + imageName);
+    var ref = firebase.storage().ref().child("images/ImageRecipe/" + this.props.tituloReceta + "/" + imageName);
     return ref.put(blob)
   }
 
   _pickImage = async () => { 
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1 
-    });
+    if(this.props.tituloReceta == "" || this.props.tituloReceta == null){
+      this.setState({isModalVisible: !this.state.isModalVisible});
+      return
+    } else {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1 
+      });
+    
+      console.log(result);
   
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri, isModalVisible: !this.state.isModalVisible });
-      setTimeout(() => { 
-        this.isImageMain(result.uri)
-      }, 1000)
+      if (!result.cancelled) {
+        this.setState({ image: result.uri, isModalVisible: !this.state.isModalVisible , isTituloReceta:true });
+        setTimeout(() => { 
+          this.isImageMain(result.uri)
+        }, 1000)
+      }
     }
   };
   guidGenerator() {

@@ -59,7 +59,10 @@ export default class Paso extends React.Component {
       image: '../../../assets/camera.png',
       uploading: false,
       isModalVisible: false,
-      isModalVisibleSpinner: false
+      isModalVisibleSpinner: false,
+      tituloReceta : this.props.tituloReceta,
+      isTituloReceta : false,
+      time:""
     }
     this.analizarOpcion = this.analizarOpcion.bind(this)
     this.updatePosImage = this.updatePosImage.bind(this)
@@ -70,7 +73,9 @@ export default class Paso extends React.Component {
     this.toggleModal = this.toggleModal.bind(this)
     this.eliminarFoto = this.eliminarFoto.bind(this)
     this.handleChange= this.handleChange.bind(this);
+    this.handleChangeTime= this.handleChangeTime.bind(this);
     this.isImagePaso= this.isImagePaso.bind(this);
+    this.toggleModalSpinner= this.toggleModalSpinner.bind(this);
   }
   
   analizarOpcion(index){
@@ -159,7 +164,7 @@ export default class Paso extends React.Component {
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    var ref = firebase.storage().ref().child("images/ImageRecipe/" + imageName);
+    var ref = firebase.storage().ref().child("images/ImageRecipe/" + this.state.tituloReceta + "/"+ "Steps" + "/" + imageName);
     return ref.put(blob)
   }
 
@@ -195,13 +200,20 @@ export default class Paso extends React.Component {
    
     }
     updatePosImage(fila,columna){
-      this.setState({ posFila:fila-1, posColumna:columna-1 });
-      if(this.state.steps[fila-1].photos[columna-1].flag){
-      // if(true){
-        this.ActionSheet.show();
-      }else {
-        this.takePhoto(fila);
-      } 
+      debugger
+      if(this.props.tituloReceta == "" || this.props.tituloReceta == null){
+        this.setState({ isTituloReceta: true, isModalVisibleSpinner: !this.state.isModalVisibleSpinner});
+        return
+      } else {
+        this.setState({ posFila:fila-1, posColumna:columna-1, isTituloReceta: false, tituloReceta:this.props.tituloReceta });
+        if(this.state.steps[fila-1].photos[columna-1].flag){
+        // if(true){
+          this.ActionSheet.show();
+        }else {
+          this.takePhoto(fila);
+        } 
+      }
+      
     }
    
     addRow(){ 
@@ -300,6 +312,16 @@ export default class Paso extends React.Component {
       this.setState({ steps:newArray });
       this.validarCargaPasos()
     }
+    handleChangeTime(text) {
+      this.setState({ time:text });
+      this.validarCargaPasos()
+    }
+
+    toggleModalSpinner(){
+      this.setState({
+        isModalVisibleSpinner: !this.state.isModalVisibleSpinner 
+      })
+    }
 
     validarCargaPasos(){
       let newArray = [];
@@ -316,21 +338,21 @@ export default class Paso extends React.Component {
         }
       }
       if(newArray.length > 0){
-        this.props.isPasos(true , newArray);
+        this.props.isPasos(true , newArray, this.state.time);
       } else {
-        this.props.isPasos(false , newArray);
+        this.props.isPasos(false , newArray, this.state.time);
       }
     }
-  
+    
     render() { 
         return (
           <View>
           <Content  style={{ top:10,bottom:20}} padder> 
             <Text style={{ fontSize: 20,bottom:10}}>Pasos</Text>
-            <TextInput style={{textAlign: 'right', fontSize: 15, bottom:10}} placeholder='Tiempo'></TextInput>
+            <TextInput onChangeText={(text) => this.handleChangeTime(text)}  style={{textAlign: 'right', fontSize: 15, bottom:10}} placeholder='Tiempo'></TextInput>
             {this.state.steps.map((r) =>
             <Card key={r.orden}  style={{ width:350 }}>
-              <CardItem  style={{ height:50 }} header > 
+              <CardItem  style={{ height:120 }} header > 
               {/* <Badge style={{ backgroundColor: r.colorBadge, fontSize:5 }} >
                   <Text style={{ width:15, left:2, color:'white', fontSize:13 }}>{r.paso}</Text>
               </Badge> */}
@@ -342,21 +364,33 @@ export default class Paso extends React.Component {
                 backgroundColor:r.colorBadge,
                 justifyContent: 'center',
                 alignItems: 'center'
-                }} 
+                }}  
                 underlayColor = '#ccc'
                 // onPress = { () => alert('Yaay!') }
               >
               <Text  style={{color:'white'}}>{r.orden}</Text>
               </TouchableHighlight>
-              <TextInput ref={input => { this.textInput = input }} onChangeText={(text) => this.handleChange(text, r.orden)} style={{ fontSize: 17, left: 10}}/>
-              
-              <Right  >
+              <View style={styles.textAreaContainerSteps} >
+                <TextInput
+                placeholder="Describe como lo hiciste..."
+                textAlignVertical="top"
+                onChangeText={(text) => this.handleChange(text, r.orden)} 
+                style={styles.textAreaSteps}
+                underlineColorAndroid="transparent" 
+                placeholderTextColor="grey"
+                numberOfLines={10} 
+                multiline={true}
+                />   
+              </View>
+               {/* <TextInput placeholder="Describe como lo hiciste..." ref={input => { this.textInput = input }} onChangeText={(text) => this.handleChange(text, r.orden)} style={{ fontSize: 17, left: 10}}/> */}
+               
+              <Right  > 
               <Button   onPress={() => this.deleteRow(r)} transparent textStyle={{color: '#87838B'}}>
                   <Icon name="close" style={{ fontSize: 30}} />
                 </Button>
               </Right>
             </CardItem>
-            
+             
             <CardItem style={{alignItems: 'center', flex: 1,
     justifyContent: 'center'}} >
               <Content>
@@ -418,17 +452,21 @@ export default class Paso extends React.Component {
           </View>
           <Modal style={styles.container} isVisible={this.state.isModalVisible}>
             <View style={styles.content}>
-              <Image source={{ uri: this.state.image }} style={{ width: 300, height: 300 }} />
-              <Button style={{ width:80, height:40, backgroundColor:"white"}} onPress={this.toggleModal}>
-                <Text style={{fontSize:18, color:"#1a0dab"}} >Cerrar</Text> 
-              </Button>
+                <Image source={{ uri: this.state.image }} style={{ width: 300, height: 300 }} />
+                <Button style={{ width:80, height:40, backgroundColor:"white"}} onPress={this.toggleModal}>
+                  <Text style={{fontSize:18, color:"#1a0dab"}} >Cerrar</Text> 
+                </Button>
             </View>
           </Modal>
           <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner}>
-          <View style={styles.contentSpinner}> 
-            <Spinner color='red' />
-          </View>
-        </Modal>
+              <View style={styles.contentSpinner}> 
+                {!this.state.isTituloReceta && <Spinner color='red' />}
+                {/* {this.state.tituloReceta && <Text>Por favor, complete el titulo de la receta</Text>} */}
+                {this.state.isTituloReceta && <Text style={{ fontSize: 20}}>Por favor, complete el titulo de la receta  👋!</Text>}
+                {this.state.isTituloReceta && <Button danger style={{ width:80, }} onPress={this.toggleModalSpinner}><Text style={{ fontSize: 20, color:"white", left:5}}>Cerrar</Text></Button>}
+                
+              </View>
+          </Modal>
           </Content>
         </View>
         );
@@ -482,12 +520,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    width:200,
+    width:300,
     height:200,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   contentTitle: {
     fontSize: 20,
     marginBottom: 12,
+  },
+  textAreaContainerSteps: {
+    left:6,
+    borderColor:'#ccc9bc',
+    borderWidth: 1,
+    padding: 5,
+    width:'70%',
+    borderRadius:7
+  },
+  textAreaSteps: {
+    height: 80,
+    // justifyContent: "flex-start"
   }
 });
