@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TextInput,TouchableHighlight, View, StyleSheet, Image, Dimensions, ScrollView} from 'react-native';
-import { Text, Card, CardItem} from 'native-base';
+import { TextInput,Text,TouchableHighlight, View, StyleSheet, Image, Dimensions, ScrollView} from 'react-native';
+import { Card, CardItem} from 'native-base';
 import firebase from '../../config';
 import Modal from "react-native-modal";
 import { YellowBox } from 'react-native';
@@ -22,10 +22,14 @@ export default class CookBookDetail extends Component {
             stepsImage:[],
             cantPhotos:0,
             cantCall:0,
+            viewImage:false,
+            imagenSeleccionada:"",
             receta: this.props.navigation.state.params.receta
         }
         this.cargarReceta = this.cargarReceta.bind(this);
         this.isLongString = this.isLongString.bind(this);
+        this.visualizarFoto = this.visualizarFoto.bind(this);
+        this.toggleModal = this.toggleModal.bind(this)
     }
     componentWillMount() {
         this.state
@@ -154,6 +158,13 @@ export default class CookBookDetail extends Component {
             })
       }
 
+    visualizarFoto(photo){
+      this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner, viewImage:true, imagenSeleccionada:photo.image });
+    }
+    toggleModal(){
+      this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner, viewImage:false, imagenSeleccionada:"" });
+    }
+
     render() {
         return (
         <Container style={{ left:10}}>
@@ -220,7 +231,7 @@ export default class CookBookDetail extends Component {
                     >
                     {step.photos.map((photo) =>
                     <Item key={photo.photo} >
-                        <TouchableHighlight >
+                        <TouchableHighlight onPress={() => this.visualizarFoto(photo)} >
                           <Image
                               source={{ uri: photo.image }}
                               style={{ width: 80, height: 80, right:5 }}
@@ -260,11 +271,16 @@ export default class CookBookDetail extends Component {
 
 
             <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner} >
-                <View style={styles.content}>
+               {!this.state.viewImage &&<View style={styles.content}>
                     <Spinner color='red' />
-                </View>
+                </View>}
+                {/* {this.state.viewImage &&<View style={styles.content}> >
+                {this.state.viewImage && <Text style={{ fontSize: 20}}>ver foto</Text>}
+                {this.state.viewImage && <Button danger style={{ width:90, }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color:"white", left:4}}>Cerrar</Text></Button>}
+                    </View>} */}
+                {this.state.viewImage &&<View style={styles.content}><Image source={{ uri: this.state.imagenSeleccionada }} style={{ width: 200, height: 200,marginTop:10 }}></Image><Button danger style={{ width:90, top:5 }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color:"white", left:4}}>Cerrar</Text></Button></View>}          
             </Modal>
-
+ 
         </ScrollView>
 
 
@@ -311,7 +327,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       borderRadius: 4,
       width:330,
-      height:200,
+      height:300,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     contentTitle: {
