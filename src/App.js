@@ -1,20 +1,66 @@
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+//This is an example code for NavigationDrawer//
+import React, { Component } from 'react';
+//import react in our code.
+import { View, Text, TouchableOpacity } from 'react-native';
+import {createAppContainer} from 'react-navigation';
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import {createStackNavigator} from 'react-navigation-stack';
 import Mapa from './components/map/Map'
-import Place from './components/stack/Place'
-import Comments from './components/comments/Comments'
-import Home from './components/prueba/Home'
 import CookBook from './components/cookBook/CookBook'
+import Screen3 from './components/cookBook/CookBookDetail'
+import Comments from './components/comments/Comments'
+import Place from './components/stack/Place'
+import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
-import Footer from './components/footer/Footer'
-import Profile from './components/prueba/Profile'
-import Login from './components/auth/Login'
+
+class NavigationDrawerStructure extends Component {
+  toggleDrawer = () => {
+    this.props.navigationProps.toggleDrawer();
+  };
+  render() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
+          <Ionicons name="ios-menu" size={32} style={{  marginLeft: 10 }} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
 const MainNavigator = createStackNavigator({
   //  Login: { screen: Login},
-  CookBook: { screen: CookBook, navigationOptions: {
+  Map: {
+    screen: Mapa,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTintColor: 'black',
+    }),
+  },
+  Place: { screen: Place, navigationOptions: {
     title: "Tacky",
-  }},
+  } },
+  Comments: { screen: Comments, navigationOptions: {
+    title: "Tacky",
+  }} 
+}, {headerLayoutPreset: 'center'});
+
+const SecondNavigator = createStackNavigator({
+  CookBook: { screen: CookBook,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTintColor: 'black',
+    }),
+  },
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
       title: "Tacky",
@@ -24,29 +70,28 @@ const MainNavigator = createStackNavigator({
   CookBookDetail: { screen: CookBookDetail, navigationOptions: {
     title: "Tacky",
   } },
-  Map: { screen: Mapa,
-    navigationOptions: {
-      title: "Tacky",
-      headerLeft: null
-    }
-  },
-  Comments: { screen: Comments, navigationOptions: {
-    title: "Tacky",
-  }},
-  Footer: { screen: Footer },
-  Place: { screen: Place, navigationOptions: {
-    title: "Tacky",
-  } },
-  Home: { screen: Home},
-  Profile: { 
-      screen: Profile,
-      navigationOptions: {
-        title: "FirstPage",
-        headerLeft: null
-      }    
-  }, 
-}, {headerLayoutPreset: 'center'}); 
+}, {headerLayoutPreset: 'center'});
  
-const App = createAppContainer(MainNavigator);
 
-export default App;
+// https://expo.github.io/vector-icons/
+const DrawerNavigatorExample = createDrawerNavigator({
+  //Drawer Optons and indexing
+  Mapa: {
+    //Title
+    screen: MainNavigator,
+    navigationOptions: {
+      drawerLabel: 'Mapa',
+      drawerIcon: () => <Ionicons name="md-home"></Ionicons>
+    },
+  },
+  CookBook: {
+    //Title
+    screen: SecondNavigator,
+    navigationOptions: {
+      drawerLabel: 'Recetario',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    },
+  }
+});
+ 
+export default createAppContainer(DrawerNavigatorExample);

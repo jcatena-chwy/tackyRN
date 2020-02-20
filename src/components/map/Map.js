@@ -31,6 +31,8 @@ export default class Map extends React.Component {
       visibility:false,
       restaurantes: restaurantes
     }
+    debugger
+    this.props;
   }
 
   // componentDidMount() {
@@ -93,7 +95,7 @@ export default class Map extends React.Component {
           ></MapView.Marker>
         )}
         </MapView>
-        <Footer navigate = {this.props.navigation}></Footer>
+        {/* <Footer navigate = {this.props.navigation}></Footer> */}
       </View>
     ); 
   }
