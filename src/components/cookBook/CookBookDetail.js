@@ -186,8 +186,8 @@ export default class CookBookDetail extends Component {
             </View> 
 
 
+             {this.state.receta.time != ""&&<View style={{flexDirection: 'row',color:'#ccc9bc'}}><Text style={{fontSize: 20,left:6,color:'#ccc9bc'}}>Tiempo de Preparación: </Text><Text style={{fontSize: 15,left:6, top:5}}>{this.state.receta.time}</Text><Icon active name='time' style={{ fontSize: 15, left:12, top:3 }}/></View>}
             <Text style={{ fontSize: 20,bottom:10, marginTop:10, color:'#ccc9bc'}}>Pasos</Text>
-             {this.state.receta.time != ""&&<View style={{flexDirection: 'row',color:'#ccc9bc'}}><Text style={{fontSize: 20,left:6,color:'#ccc9bc'}}>Tiempo: </Text><Text style={{fontSize: 15,left:6, top:5}}>{this.state.receta.time}</Text><Icon active name='time' style={{ fontSize: 15, left:12, top:3 }}/></View>}
 
             {this.state.stepsImage.map((step, index) =>
             <Card key={index}  style={{ width:350, borderColor:"black"  }}>

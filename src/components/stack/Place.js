@@ -1,76 +1,105 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet,SafeAreaView,View, ScrollView, Text} from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Right } from 'native-base';
+import { Image,View, ScrollView, Text, StyleSheet} from 'react-native';
+import { Container, Card, Button, Icon,Spinner } from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 import restaurantes from '../request/restaurantes.json'
-
+import ImageOverlay from "react-native-image-overlay";
+import { Rating, AirbnbRating } from 'react-native-ratings';
+import Detalle from './components/Detalle.js';
+import Comentarios from './components/Comentarios.js';
+import Productos from './components/Productos.js';
+import Modal from "react-native-modal";
+const WATER_IMAGE = require('../../assets/camera.png')
 export default class CardExample extends Component {
   constructor(props){
     super(props);
     this.state = {
-      place: this.props.navigation.state.params.restaurante
+      place: this.props.navigation.state.params.establecimiento,
+      widthStyle: 360,
+      isModalVisibleSpinner: false
     }
+    this.props.navigation.state.params.establecimiento
+    this.ratingCompleted = this.ratingCompleted.bind(this);
 }
-onPress = () => {
-  this.props.updateState();
+componentWillMount() {
+  setTimeout(() => { 
+    this.setState({
+      isModalVisibleSpinner: !this.state.isModalVisibleSpinner 
+    }, () => {
+      setTimeout(() => { 
+        this.setState({
+          isModalVisibleSpinner: !this.state.isModalVisibleSpinner 
+        }, () => {
+          this.state.place
+        });
+      }, 2000)
+    });
+  }, 1000)
+}
+ratingCompleted(rating) {
+  console.log("Rating is: " + rating)
 }
   render() {
     const navigation = this.props.navigation;
     return (
       <Container>
-      <Content>
-        <Card>
-          <CardItem>
-            <Left>
-              <Thumbnail source={{uri: 'https://logosmarcas.com/wp-content/uploads/2018/05/McDonalds-S%C3%ADmbolo.png'}} />
-              <Body>
-                <Text>{this.state.place.title}</Text>
-              </Body>
-            </Left>
-          </CardItem>
-         
-          <CardItem cardBody>
-            <Image source={{uri: this.state.place.image}} style={{height: 150, width: null, flex: 1}}/>
-          </CardItem>
-          <CardItem>
-            <Left>
-              <Button transparent >
-                <Icon active name="thumbs-up" />
-                <Text>{this.state.place.like}</Text>
-              </Button>
-            </Left>
-            <Body>
-              <Button transparent onPress={() => navigation.navigate('Comments')}>
-                <Icon active name="chatbubbles" />
-                <Text>31 Comentarios</Text>
-              </Button>
-            </Body>
-            {/* <Right>
-              <Text>{place.date}</Text> 
-            </Right> */}
-          </CardItem>
-        </Card>
-        <Text style={{padding: 10}}>Platos recomendados</Text>
-        <ScrollView
-					horizontal={true}
-					showsHorizontalScrollIndicator={false}
-          >
-           {this.state.place.plate.map((plato) =>
-					<View key={plato.id} style={{ height: 180, width: 200, marginLeft: 20, borderWidth: 0.5, borderColor: '#dddddd' }}>
-                <View style={{ flex: 3 }}>
-                    <Image source={{uri: plato.image}}
-                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }}
-                    />
-                </View>
-                <View style={{ flex: 1, paddingLeft: 10, paddingTop: 10 }}>
-                    <Text>{plato.title}</Text>
-										<Text>{plato.price}</Text>
-                </View>
-          </View>
-        )} 
-				</ScrollView>
-      </Content>
+        <ScrollView>
+            <ImageOverlay widthStyle = {this.props.widthStyle} source={{ uri: this.state.place.imageUri }}  width = "10%"
+        contentPosition="bottom" titleStyle={{ color: 'yellow'}}>
+                        <View>
+                        <Text style={{fontSize:30,  fontWeight: 'bold', left:6, textAlign:'center', color:'#97bc00'}}>{this.state.place.name}</Text>
+                        </View>
+            </ImageOverlay>
+            <Card title="CUSTOM RATING" >
+    <View style={{flexDirection: 'row',color:'#ccc9bc', left:100}}><Text style={{fontSize: 20,left:6,color:'#f1c40e', top:20}}>Rating: </Text><Text style={{fontSize: 45,left:6, top:5, color:'#f1c40e'}}>{this.state.place.score.averageScore}</Text><Text style={{fontSize: 20,left:10, top:20, color:'#f1c40e'}}>/5</Text></View>
+                <Rating
+                  ratingCount={5}
+                  fractions={2}
+                  startingValue={this.state.place.score.averageScore}
+                  imageSize={40}
+                  onFinishRating={this.ratingCompleted}
+                  style={{ paddingVertical: 10 }}
+                  readonly = {true}
+                  showReadOnlyText = {true}
+                />
+          </Card>
+          <Card style={{height:140}} title="CUSTOM RATING" >
+            <Detalle score = {this.state.place.score} schedule = {this.state.place.schedule}  phone = {this.state.place.phone}></Detalle>
+          </Card>
+          <Card style={{height:60}} title="CUSTOM RATING" >
+            <Comentarios comentarios = {this.state.place.cantidadComentarios}></Comentarios>
+          </Card>
+            <Productos products = {this.state.place.products}></Productos>
+        </ScrollView>
+
+        <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
+                    <View style={styles.contentSpinner}> 
+                        <Spinner color='red' />
+                    </View>
+        </Modal>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+ 
+  containerSpinner: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		shadowRadius:10,
+		width: 350, 
+		height:280
+	  },
+	  contentSpinner: {
+		backgroundColor: 'white',
+		padding: 22,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		width:200,
+		height:200,
+		borderColor: 'rgba(0, 0, 0, 0.1)',
+	  }
+});

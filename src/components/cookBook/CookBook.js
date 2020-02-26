@@ -26,6 +26,7 @@ export default class CookBook extends Component {
           posicion: 0,
           isModalVisibleSpinner: false,
           copiaRecetas: [],
+          widthStyle: 30,
           nuevaReceta: this.props.navigation ? this.props.navigation : ""
         }
         this.guidGenerator = this.guidGenerator.bind(this);
@@ -71,9 +72,9 @@ export default class CookBook extends Component {
               for(f =0; f<recetas.length; f++){ 
                   this.uploadImage(recetas[f].mainImage , recetas[f].title )
               }
-              
+               
           }, 100)
-      })
+      }) 
     }
    
     uploadImage = async (imageName, title) => {
@@ -178,7 +179,7 @@ export default class CookBook extends Component {
                 <ListItem key={receta.id} thumbnail>
               
               <Body style={{width:20}}>
-              <ImageOverlay source={{ uri: receta.imageName }}  
+              <ImageOverlay widthStyle = {this.props.widthStyle}  source={{ uri: receta.imageName }}  
     contentPosition="bottom" titleStyle={{ color: 'yellow', fontWeight: 'bold'}}>
                     <View>
                         <Image style={styles.avatar} source={{uri:"http://example.com/user/avatar.png"}} />
