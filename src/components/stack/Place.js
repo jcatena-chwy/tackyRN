@@ -15,10 +15,10 @@ export default class CardExample extends Component {
     super(props);
     this.state = {
       place: this.props.navigation.state.params.establecimiento,
+      navigation: this.props.navigation,
       widthStyle: 360,
       isModalVisibleSpinner: false
     }
-    this.props.navigation.state.params.establecimiento
     this.ratingCompleted = this.ratingCompleted.bind(this);
 }
 componentWillMount() {
@@ -40,7 +40,7 @@ ratingCompleted(rating) {
   console.log("Rating is: " + rating)
 }
   render() {
-    const navigation = this.props.navigation;
+    const navigation = this.props.navigation.state.params.navigation;
     return (
       <Container>
         <ScrollView>
@@ -67,7 +67,7 @@ ratingCompleted(rating) {
             <Detalle score = {this.state.place.score} schedule = {this.state.place.schedule}  phone = {this.state.place.phone}></Detalle>
           </Card>
           <Card style={{height:60}} title="CUSTOM RATING" >
-            <Comentarios comentarios = {this.state.place.cantidadComentarios}></Comentarios>
+            <Comentarios comentarios = {this.state.place.cantidadComentarios}   idComentarios = {this.state.place.id} navigation = {this.state.navigation}></Comentarios>
           </Card>
             <Productos products = {this.state.place.products}></Productos>
         </ScrollView>

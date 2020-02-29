@@ -5,19 +5,80 @@ import comments from '../request/comments.json'
 import Modal from "react-native-modal";
 import Paso1 from "./Paso1"
 import Paso2 from './Paso2.js';
+import firebase from '../../config';
 export default class Comments extends Component {
   constructor(props){
     super(props);
     this.state = {
-        comments: comments,
+        comments: [],
         isModalVisible: false,
         paso1:false,
-        image:false
-    }
+        image:false,
+        imageUrl:"",
+        contieneTexto:false,
+        textoPaso1:"",
+        infoPaso1:{},
+        idComments: this.props.navigation.state.params.idComments,
+    } 
     this.toggleModal= this.toggleModal.bind(this);
     this.setPaso1=this.setPaso1.bind(this);
+    this.analizarTexto=this.analizarTexto.bind(this);
+    this.analizarImagen=this.analizarImagen.bind(this);
     this.validarCampos=this.validarCampos.bind(this);
+    this.validarPaso2=this.validarPaso2.bind(this);
   }
+
+  componentWillMount() {
+    this.cargarLista(); 
+  }
+
+  cargarLista(){
+    var jsonComments = []
+    var comments = []
+    const db2 = firebase.database().ref('Comments')
+    db2.orderByChild('idEstablecimiento')
+    .equalTo(this.state.idComments)
+    .once('value')
+    .then((snapshot) => { 
+      var value = snapshot.val();
+      i = 0; 
+      if (value) {
+        snapshot.forEach((child) => {
+          console.log(child.key, child.val());
+          jsonComments.date = child.val().date ; 
+          jsonComments.description = child.val().description ; 
+          jsonComments.id = child.val().id ; 
+          jsonComments.idEstablecimiento = child.val().idEstablecimiento ; 
+          jsonComments.idProducto = child.val().idProducto ; 
+          jsonComments.userName = child.val().userName ; 
+          jsonComments.id = child.val().id ; 
+          comments[i] = jsonComments
+          i = i + 1
+        });
+      }
+      this.setState({ comments: comments });
+    });
+  }
+
+  validarPaso2(){
+    debugger
+    if(this.state.contieneTexto){
+      var json = {
+        text: this.state.textoPaso1,
+        image: this.state.imageUrl
+      }
+      this.setState({ paso1: true, infoPaso1:json});
+    }
+  }
+
+  analizarTexto(val, text){
+    this.setState({ contieneTexto: val, textoPaso1:text});
+  }
+
+  analizarImagen(image){
+    this.setState({ imageUrl:image});
+  }
+  
   setPaso1(val){
     this.setState({ image: val});
   }
@@ -25,7 +86,6 @@ export default class Comments extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   }
   validarCampos(){ 
-    debugger
     if(this.state.image){
       this.setState({ paso1: true, image:false});
     }else {
@@ -38,15 +98,15 @@ export default class Comments extends Component {
       <Container>
         <Header />
         <Content>
-          {this.state.comments.comments.map((comment) =>
-            <List key={comment.id}>
+          {this.state.comments.map((comment, index) =>
+            <List key={index}>
                 <ListItem  avatar>
                 <Left>
-                    <Thumbnail source={{ uri: comment.image }} />
+                    {/* <Thumbnail source={{ uri: comment.image }} /> */}
                 </Left>
                 <Body>
-                    <Text>{comment.autor.nombre}</Text>
-                    <Text note>{comment.autor.opinion}</Text>
+                    {/* <Text>{comment.autor.nombre}</Text> */}
+                    <Text note>{comment.description}</Text>
                 </Body>
                 <Right>
                     <Text note>{comment.date}</Text>
@@ -65,9 +125,9 @@ export default class Comments extends Component {
       <Modal style={styles.container} isVisible={this.state.isModalVisible}>
           <View style={styles.content}>
             {!this.state.paso1 ? (
-              <Paso1 image = {this.state.image} sendData={this.setPaso1}></Paso1>
+              <Paso1 image = {this.state.image} sendDataText={this.analizarTexto} sendDataImage={this.analizarImagen}></Paso1>
               ) : (
-              <Paso2></Paso2>
+              <Paso2 infoPaso1 = {this.state.infoPaso1}></Paso2>
             )}
             <View style={styles.container2}>
               <View style={styles.buttonContainer}>
@@ -77,7 +137,7 @@ export default class Comments extends Component {
               </View>
               <View style={styles.buttonContainer}>
                   <Button style={{ float: 'right',marginLeft:25, marginRight:5}} success onPress={this.validarCampos}>
-                    <Text style={styles.TextStyle} >Siguiente</Text>
+                    <Text style={styles.TextStyle} onPress={this.validarPaso2} >Siguiente</Text>
                   </Button>
               </View>
             </View> 

@@ -9,6 +9,7 @@ import Mapa from './components/map/Map'
 import CookBook from './components/cookBook/CookBook'
 import Screen3 from './components/cookBook/CookBookDetail'
 import Comments from './components/comments/Comments'
+import Paso2 from './components/comments/Paso2'
 import Place from './components/stack/Place'
 import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
@@ -47,7 +48,10 @@ const MainNavigator = createStackNavigator({
   } },
   Comments: { screen: Comments, navigationOptions: {
     title: "Tacky",
-  }} 
+  }}, 
+  Paso2: { screen: Paso2, navigationOptions: {
+    title: "Tacky",
+  }}, 
 }, {headerLayoutPreset: 'center'});
 
 const SecondNavigator = createStackNavigator({

@@ -45,30 +45,42 @@ export default class Paso2 extends Component {
                 { "id":5,  color: 'black' , name:'md-star-outline' , isclickStart:false },
                 ]
             },
-          ]
+          ],
+          infoPaso1: this.props.infoPaso1
     }
+    this.props.infoPaso1
+    debugger
     this.pickStart = this.pickStart.bind(this)
   }
   pickStart (row,col)  {
-    debugger;
    let newArray = [...this.state.rows];
    var startElegida = newArray[row-1].start[col-1].isclickStart
+   debugger
    for(i=0;i<newArray[row-1].start.length;i++){
-    if(i < col){
-      if(!startElegida){
-        newArray[row-1].start[i].color = "yellow"
-        newArray[row-1].start[i].name = "md-star"
-        newArray[row-1].start[i].isclickStart = true
+    if(startElegida){
+      if(i>=col){
+        newArray[row-1].start[i].color = "black"
+        newArray[row-1].start[i].name = "md-star-outline"
+        newArray[row-1].start[i].isclickStart = false 
+      }
+    } else {
+      if(i < col){
+        if(!startElegida){
+          newArray[row-1].start[i].color = "yellow"
+          newArray[row-1].start[i].name = "md-star"
+          newArray[row-1].start[i].isclickStart = true
+        }else {
+          newArray[row-1].start[i].color = "black"
+          newArray[row-1].start[i].name = "md-star-outline"
+          newArray[row-1].start[i].isclickStart = false 
+        }
       }else {
         newArray[row-1].start[i].color = "black"
         newArray[row-1].start[i].name = "md-star-outline"
         newArray[row-1].start[i].isclickStart = false 
       }
-    }else {
-      newArray[row-1].start[i].color = "black"
-      newArray[row-1].start[i].name = "md-star-outline"
-      newArray[row-1].start[i].isclickStart = false 
     }
+    
    }
    this.setState({ rows:newArray });
   };

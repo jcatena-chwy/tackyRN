@@ -249,7 +249,8 @@ export default class Map extends React.Component {
                       cantCall: 0,
                       isModalVisibleSpinner: !this.state.isModalVisibleSpinner
                     }, () => {  
-                          this.props.navigation.navigate('Place',{establecimiento} )
+                          navigation = this.props.navigation
+                          this.props.navigation.navigate('Place',{establecimiento, navigation} )
                     });
                     }
                 });

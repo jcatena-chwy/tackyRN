@@ -15,19 +15,19 @@ export default class Paso1 extends Component {
         comentario: ""
     }
     this.seleccionoFoto = this.seleccionoFoto.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount() {
     this.getPermissionAsync();
-    console.log('hi');
   }
   seleccionoFoto(){ 
-    debugger;
+    debugger
       if(this.state.image!= null){
         this.setState({imagentexto:this.props.image});
-        this.props.sendData(true);
+        this.props.sendDataImage(this.state.image);
       }else {
         this.setState({imagentexto:this.props.image});
-        this.props.sendData(false);
+        this.props.sendDataImage(this.state.image);
       }
   }
   getPermissionAsync = async () => {
@@ -45,9 +45,6 @@ export default class Paso1 extends Component {
       aspect: [4, 3],
       quality: 1
     });
-
-    console.log(result);
-
     if (!result.cancelled) {
         this.setState({ image: result.uri });
         this.seleccionoFoto()
@@ -56,9 +53,9 @@ export default class Paso1 extends Component {
 
   handleChange(event = {}) {
     if(event == "" || event == null){
-      this.props.sendDataValueText(false);
+      this.props.sendDataText(false,event);
     }else{
-      this.props.sendDataValueText(true);
+      this.props.sendDataText(true,event);
     }
   }
   
@@ -90,7 +87,7 @@ export default class Paso1 extends Component {
             </ListItem>
           </List>
           {!image && <Icon active name='image' onPress={this._pickImage} style={styles.navBarLeftButton} />}
-          {!image &&<Text style={{ fontSize: 20}}>Publicar foto del Plato Terminado</Text>}
+          {!image &&<Text style={{ fontSize: 20}}>Publicar una foto </Text>}
           {this.props.image &&<Text style={styles.textStyleAlert}> Por favor ingrese una imagen </Text>}
           {image &&
             <Image source={{ uri: image }}  style={{ width: 200, height: 180 ,marginLeft:30}} />}

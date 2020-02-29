@@ -7,20 +7,21 @@ export default class Comentarios extends Component {
     super(props);
     this.state = {
       widthStyle: 360,
-      comentarios : this.props.comentarios
-    }
-   
+      comentarios : this.props.comentarios,
+      navigation: this.props.navigation,
+      idComments: this.props.idComentarios,
+    } 
 }
-
+ 
   render() {
-    const navigation = this.props.navigation;
+    var idComments = this.props.idComentarios
     return (
       <Container>
           <View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center', top:10}}>
-                <Button  onPress={() => this.addRow()} transparent textStyle={{color: '#87838B'}}>
+                <Button  onPress={() => navigation.navigate('Comments')} transparent textStyle={{color: '#87838B'}}>
                   <Icon name="ios-add" />
                 </Button>
-          <Text style={{ fontSize: 20 }}>{this.state.comentarios} Comentarios</Text>
+          <Text onPress={() => this.props.navigation.navigate('Comments', {idComments})} style={{ fontSize: 20 }}>{this.state.comentarios} Comentarios</Text>
           </View>
       </Container>
     );

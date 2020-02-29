@@ -25,7 +25,6 @@ export default class Authentication extends React.Component {
           //   iosClientId: '64424012176-bl0km2g6nrbm0qujjigas56fjuk1ntvq.apps.googleusercontent.com',
           //   scopes: ['profile', 'email']
           // });
-          debugger;
            const result = await Google.logInAsync({
            iosClientId: '64424012176-bl0km2g6nrbm0qujjigas56fjuk1ntvq.apps.googleusercontent.com',
              scopes: ['profile', 'email']
