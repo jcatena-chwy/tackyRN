@@ -196,7 +196,6 @@ export default class Comments extends Component {
     const navigation = this.props.navigation;
     return (
       <Container>
-        <Header />
         <Content>
           {this.state.comments.map((comment, index) =>
             <List key={index}>
