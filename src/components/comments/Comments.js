@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Button } from 'native-base';
+import { Text, TouchableOpacity, StyleSheet, View, Image } from 'react-native';
+import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Button, Spinner } from 'native-base';
 import comments from '../request/comments.json'
 import Modal from "react-native-modal";
 import Paso1 from "./Paso1"
@@ -12,13 +12,21 @@ export default class Comments extends Component {
     this.state = {
         comments: [],
         isModalVisible: false,
-        paso1:false,
+        paso1:true,
         image:false,
         imageUrl:"",
         contieneTexto:false,
         textoPaso1:"",
         infoPaso1:{},
+        image: null,
+        isModalVisibleSpinner: false,
         idComments: this.props.navigation.state.params.idComments,
+        name: this.props.navigation.state.params.name,
+        score: this.props.navigation.state.params.score,
+        cantCall:0,
+        posicion:0,
+        textComentario:false,
+        averageScore: null
     } 
     this.toggleModal= this.toggleModal.bind(this);
     this.setPaso1=this.setPaso1.bind(this);
@@ -26,6 +34,9 @@ export default class Comments extends Component {
     this.analizarImagen=this.analizarImagen.bind(this);
     this.validarCampos=this.validarCampos.bind(this);
     this.validarPaso2=this.validarPaso2.bind(this);
+    this.setearValorPaso1=this.setearValorPaso1.bind(this);
+    this.uploadImage=this.uploadImage.bind(this);
+    this.toggleModalandReloadList=this.toggleModalandReloadList.bind(this);
   }
 
   componentWillMount() {
@@ -33,7 +44,7 @@ export default class Comments extends Component {
   }
 
   cargarLista(){
-    var jsonComments = []
+    this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
     var comments = []
     const db2 = firebase.database().ref('Comments')
     db2.orderByChild('idEstablecimiento')
@@ -45,29 +56,93 @@ export default class Comments extends Component {
       if (value) {
         snapshot.forEach((child) => {
           console.log(child.key, child.val());
-          jsonComments.date = child.val().date ; 
-          jsonComments.description = child.val().description ; 
-          jsonComments.id = child.val().id ; 
-          jsonComments.idEstablecimiento = child.val().idEstablecimiento ; 
-          jsonComments.idProducto = child.val().idProducto ; 
-          jsonComments.userName = child.val().userName ; 
-          jsonComments.id = child.val().id ; 
-          comments[i] = jsonComments
-          i = i + 1
+          comments[i] = child.val()
+          i++
         });
       }
-      this.setState({ comments: comments });
+      this.setState({
+        comments: comments
+      }, () => {
+        this.cargarFotos(this.state.comments)
+      });
     });
   }
 
+  cargarFotos() {
+    var cantCall=0;
+    for(f =0; f<this.state.comments.length; f++){
+      var obj = this.state.comments[f]
+      if( 'idImagen' in  obj ) {
+        if(obj.idImagen != '' ){
+          soloTexto= true
+          cantCall = cantCall + 1;
+          // this.uploadImage(obj.idImagen, this.state.name)
+        }
+      }
+    }
+    this.setState({
+      cantCall: cantCall
+    }, () => {
+      if(cantCall>0){
+        for(f =0; f<this.state.comments.length; f++){
+          var obj = this.state.comments[f]
+          if( 'idImagen' in  obj ) {
+            if(obj.idImagen != '' ){
+               this.uploadImage(obj.idImagen, this.state.name, cantCall)
+            }
+          }
+        }
+      }else {
+        this.setState({
+          isModalVisibleSpinner: !this.state.isModalVisibleSpinner
+        }, () => {
+        });
+      }
+    });
+  }
+
+  uploadImage = async (imageName, nameEstablecimiento, cantCall) => {
+    var ref = firebase.storage().ref("images/ImageEstablecimiento/"+ nameEstablecimiento + "/Comentarios/" + imageName).getDownloadURL()
+        .then(resolve => { 
+          let newArray = [...this.state.comments]
+          for(f =0; f<newArray.length; f++){
+            var obj = this.state.comments[f]
+            if( 'idImagen' in  obj ) {
+              if(obj.idImagen === imageName ){
+                obj.urlImage = resolve
+              }
+            }
+          }
+          posicion = this.state.posicion + 1
+          this.setState({
+            comments: newArray,
+            posicion : posicion
+          }, () => {
+            if(this.state.posicion === this.state.cantCall){
+              this.setState({
+                isModalVisibleSpinner: !this.state.isModalVisibleSpinner
+              }, () => {
+              });
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error)
+        }) 
+  }
+
   validarPaso2(){
-    debugger
     if(this.state.contieneTexto){
       var json = {
         text: this.state.textoPaso1,
-        image: this.state.imageUrl
+        image: this.state.imageUrl,
+        idEstablecimiento: this.state.idComments,
+        name: this.state.name,
+        score: this.state.score,
       }
-      this.setState({ paso1: true, infoPaso1:json});
+      this.setState({ paso1: false, infoPaso1:json});
+    } else {
+      this.setState({ textComentario: true});
     }
   }
 
@@ -78,12 +153,37 @@ export default class Comments extends Component {
   analizarImagen(image){
     this.setState({ imageUrl:image});
   }
+
+  setearValorPaso1() {
+    this.setState({paso1:true})
+  }
   
   setPaso1(val){
     this.setState({ image: val});
   }
+  
   toggleModal(){
-    this.setState({ isModalVisible: !this.state.isModalVisible });
+    var json = {
+      text: '',
+      image: '',
+      idEstablecimiento: this.state.idComments,
+      name: this.state.name,
+      score: this.state.score,
+    }
+    this.setState({ isModalVisible: !this.state.isModalVisible, infoPaso1:json });
+  }
+  toggleModalandReloadList(averageScore){
+    this.setState({
+      averageScore: averageScore,
+      isModalVisible: !this.state.isModalVisible, paso1: true, contieneTexto:false,  textComentario: false, posicion : 0
+    }, () => {
+      setTimeout(() => { 
+        this.setState({
+        }, () => { 
+          this.cargarLista();
+        });
+      }, 100)
+    });
   }
   validarCampos(){ 
     if(this.state.image){
@@ -104,10 +204,16 @@ export default class Comments extends Component {
                 <Left>
                     {/* <Thumbnail source={{ uri: comment.image }} /> */}
                 </Left>
+                {comment.urlImage === "" ? (
                 <Body>
-                    {/* <Text>{comment.autor.nombre}</Text> */}
                     <Text note>{comment.description}</Text>
                 </Body>
+                ) : (
+                  <Body>
+                <Image source={{ uri: comment.urlImage }}  style={{ width: 200, height: 180}} />
+                    <Text note>{comment.description}</Text>
+                </Body>
+                  )}
                 <Right>
                     <Text note>{comment.date}</Text>
                 </Right>
@@ -124,25 +230,30 @@ export default class Comments extends Component {
       </TouchableOpacity>
       <Modal style={styles.container} isVisible={this.state.isModalVisible}>
           <View style={styles.content}>
-            {!this.state.paso1 ? (
-              <Paso1 image = {this.state.image} sendDataText={this.analizarTexto} sendDataImage={this.analizarImagen}></Paso1>
+            {this.state.paso1 ? (
+              <Content>
+                <Paso1 image = {this.state.image} sendDataText={this.analizarTexto}
+                       sendDataImage={this.analizarImagen}
+                       cerrarModal = {this.toggleModal}
+                       validarCampos = {this.validarPaso2}
+                       textComentario = {this.state.textComentario}
+                       infoPaso1 = {this.state.infoPaso1}
+                       ></Paso1>
+              </Content>
               ) : (
-              <Paso2 infoPaso1 = {this.state.infoPaso1}></Paso2>
+                  <Paso2 infoPaso1 = {this.state.infoPaso1} 
+                   regresarPaso1 = {this.setearValorPaso1}
+                   cerrarModal = {this.toggleModalandReloadList}
+                   ></Paso2>
             )}
-            <View style={styles.container2}>
-              <View style={styles.buttonContainer}>
-                <Button style={{float: 'right', marginLeft:30}} danger onPress={this.toggleModal}>
-                            <Text style={styles.TextStyle} >Cerrar</Text>
-                </Button>
-              </View>
-              <View style={styles.buttonContainer}>
-                  <Button style={{ float: 'right',marginLeft:25, marginRight:5}} success onPress={this.validarCampos}>
-                    <Text style={styles.TextStyle} onPress={this.validarPaso2} >Siguiente</Text>
-                  </Button>
-              </View>
-            </View> 
+          
           </View> 
         </Modal>
+        <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner}>
+                    <View style={styles.contentSpinner}> 
+                        <Spinner color='red' />
+                    </View>
+                </Modal>
         </Content>
       </Container>
     );
@@ -231,6 +342,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-  }
+  },
+  contentSpinner: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width:200,
+    height:200,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
  
 });

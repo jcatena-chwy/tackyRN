@@ -9,6 +9,7 @@ import Detalle from './components/Detalle.js';
 import Comentarios from './components/Comentarios.js';
 import Productos from './components/Productos.js';
 import Modal from "react-native-modal";
+import firebase from '../../config';
 const WATER_IMAGE = require('../../assets/camera.png')
 export default class CardExample extends Component {
   constructor(props){
@@ -30,11 +31,44 @@ componentWillMount() {
         this.setState({
           isModalVisibleSpinner: !this.state.isModalVisibleSpinner 
         }, () => {
-          this.state.place
         });
       }, 2000)
     });
   }, 1000)
+  const db = firebase.database()
+  db.ref('Scores').on('value', (data) =>{
+    setTimeout(() => { 
+      this.setState({
+      }, () => { 
+      });
+    }, 4000)
+    const db2 = firebase.database().ref('Scores')
+    db2.orderByChild('id')
+    .equalTo(this.state.place.score.id)
+    .once('value')
+    .then((snapshot) => { 
+      var jsonComments = {
+        averageScore:null,
+        id:null 
+      }
+      var value = snapshot.val();
+      score = 0;
+      if (value) {
+        snapshot.forEach((child) => {
+          console.log(child.key, child.val());
+          jsonComments.averageScore = child.val().averageScore ; 
+          jsonComments.id = child.val().id ; 
+        });
+        var copiaPlace = this.state.place
+        copiaPlace.score.averageScore = jsonComments.averageScore 
+        this.setState({
+          place: copiaPlace 
+        }, () => {
+        });
+      }
+      console.log(jsonComments)
+    });
+})
 }
 ratingCompleted(rating) {
   console.log("Rating is: " + rating)
@@ -67,7 +101,7 @@ ratingCompleted(rating) {
             <Detalle score = {this.state.place.score} schedule = {this.state.place.schedule}  phone = {this.state.place.phone}></Detalle>
           </Card>
           <Card style={{height:60}} title="CUSTOM RATING" >
-            <Comentarios comentarios = {this.state.place.cantidadComentarios}   idComentarios = {this.state.place.id} navigation = {this.state.navigation}></Comentarios>
+            <Comentarios comentarios = {this.state.place.cantidadComentarios}   idComentarios = {this.state.place.id} name = {this.state.place.name} score = {this.state.place.score.id} navigation = {this.state.navigation}></Comentarios>
           </Card>
             <Productos products = {this.state.place.products}></Productos>
         </ScrollView>
