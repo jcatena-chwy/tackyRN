@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StyleSheet, Image } from 'react-native';
-import { Container, Header, Content,Item, Icon, View, Button } from 'native-base';
+import { Container, Header, Content,Item, Icon, View, Button, Spinner } from 'native-base';
 import firebase from '../../config';
 export default class Paso2 extends Component {
   constructor(props){
@@ -9,6 +9,7 @@ export default class Paso2 extends Component {
         image: null,
         isCompleted:true,
         puntaje:{},
+        loading:true,
         rows: [
             { "id":1, pregunta:"Que te parecio la comida?",recomend: false,
                 start:[
@@ -196,10 +197,12 @@ export default class Paso2 extends Component {
         if(this.state.infoPaso1.image != "" ) {
           this.uploadImage().then(() => {
             this.toggleModal()
+            this.setState({ loading:true });
           }).catch(() => {
           })
         } else {
          this.toggleModal()
+         this.setState({ loading:true });
         }
       });
        
@@ -218,6 +221,7 @@ export default class Paso2 extends Component {
 
   guardarComentario(){ 
      if(this.validarRespuestas()){
+        this.setState({ loading:false });
         const db = firebase.database()
         var formattedDate = new Date();
         var fecha = formattedDate.getDay().toString() + "-" + formattedDate.getMonth().toString() + "-" + formattedDate.getFullYear().toString();
@@ -251,6 +255,7 @@ export default class Paso2 extends Component {
     let { image } = this.state;
     return (
       <Container>
+        {this.state.loading ? (
         <Content>
         {this.state.rows.map((r) =>
         <Content key={r.id}>
@@ -277,6 +282,11 @@ export default class Paso2 extends Component {
                 </View>
                 </View>
         </Content>
+        ) : (
+          <Content>
+            <Spinner color='red' />
+          </Content>
+        )}
       </Container>
     );
   }
