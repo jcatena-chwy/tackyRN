@@ -128,7 +128,6 @@ export default class Paso2 extends Component {
       var key ;
       if (value) {
         snapshot.forEach((child) => {
-          console.log(child.key, child.val());
           key = child.key
           puntaje = child.val()
           puntaje.key = child.key
@@ -195,7 +194,10 @@ export default class Paso2 extends Component {
         averageScore:averageScore
       }, () => {
         if(this.state.infoPaso1.image != "" ) {
-          this.uploadImage()
+          this.uploadImage().then(() => {
+            this.toggleModal()
+          }).catch(() => {
+          })
         } else {
          this.toggleModal()
         }
@@ -210,7 +212,6 @@ export default class Paso2 extends Component {
     const response = await fetch(this.state.infoPaso1.image);
     const blob = await response.blob();
     var ref = firebase.storage().ref().child("images/ImageEstablecimiento/" + this.state.infoPaso1.name + "/Comentarios/" + this.state.idImagen);
-    this.toggleModal()
     return ref.put(blob)
   }
 
@@ -233,7 +234,6 @@ export default class Paso2 extends Component {
         }).then(() =>{
           this.setState({ idImagen:idImagen });
           this.obtenerPuntaje()
-          console.log("Inserted")
         }).catch((error) =>{
           console.log("error")
         })

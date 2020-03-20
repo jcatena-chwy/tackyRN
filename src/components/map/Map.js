@@ -95,9 +95,6 @@ export default class Map extends React.Component {
     this.setState({
       visibility:true
     });
-    console.log("click")
-    // this.props.updateState(restaurante);
-    
   }
 
   getPlace(establecimiento){
@@ -115,7 +112,6 @@ export default class Map extends React.Component {
             this.setState({
             }, () => {
               this.getComments(establecimiento);
-              console.log("resolve")
             });
           }, 1000)
           
@@ -138,7 +134,6 @@ export default class Map extends React.Component {
       cantComentarios = 0;
       if (value) {
         snapshot.forEach((child) => {
-          console.log(child.key, child.val());
           cantComentarios = cantComentarios + 1; 
         });
         establecimiento.cantidadComentarios = cantComentarios;
@@ -172,7 +167,6 @@ export default class Map extends React.Component {
       score = 0;
       if (value) {
         snapshot.forEach((child) => {
-          console.log(child.key, child.val());
           jsonComments.averageScore = child.val().averageScore ; 
           jsonComments.id = child.val().id ; 
         });
@@ -197,7 +191,6 @@ export default class Map extends React.Component {
       cantidadImagenesProductos = 0;
       if (value) {
         snapshot.forEach((child) => {
-          console.log(child.key, child.val());
           productos[cantidadImagenesProductos] = child.val()
           cantidadImagenesProductos++
         });

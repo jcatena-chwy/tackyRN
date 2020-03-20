@@ -11,7 +11,7 @@ import Productos from './components/Productos.js';
 import Modal from "react-native-modal";
 import firebase from '../../config';
 const WATER_IMAGE = require('../../assets/camera.png')
-export default class CardExample extends Component {
+export default class Place extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -35,43 +35,17 @@ componentWillMount() {
       }, 2000)
     });
   }, 1000)
-  const db = firebase.database()
-  db.ref('Scores').on('value', (data) =>{
-    setTimeout(() => { 
-      this.setState({
-      }, () => { 
-      });
-    }, 4000)
-    const db2 = firebase.database().ref('Scores')
-    db2.orderByChild('id')
-    .equalTo(this.state.place.score.id)
-    .once('value')
-    .then((snapshot) => { 
-      var jsonComments = {
-        averageScore:null,
-        id:null 
-      }
-      var value = snapshot.val();
-      score = 0;
-      if (value) {
-        snapshot.forEach((child) => {
-          console.log(child.key, child.val());
-          jsonComments.averageScore = child.val().averageScore ; 
-          jsonComments.id = child.val().id ; 
-        });
-        var copiaPlace = this.state.place
-        copiaPlace.score.averageScore = jsonComments.averageScore 
-        this.setState({
-          place: copiaPlace 
-        }, () => {
-        });
-      }
-      console.log(jsonComments)
-    });
-})
+}
+componentWillReceiveProps(nextProps){
+  var copyState = this.state.place 
+  copyState.score.averageScore = nextProps.navigation.state.params.json.averageScore
+  copyState.cantidadComentarios = copyState.cantidadComentarios +1 
+  this.setState({
+    place: copyState
+  }, () => {
+  });
 }
 ratingCompleted(rating) {
-  console.log("Rating is: " + rating)
 }
   render() {
     const navigation = this.props.navigation.state.params.navigation;

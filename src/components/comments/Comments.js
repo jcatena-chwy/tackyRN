@@ -55,7 +55,6 @@ export default class Comments extends Component {
       i = 0; 
       if (value) {
         snapshot.forEach((child) => {
-          console.log(child.key, child.val());
           comments[i] = child.val()
           i++
         });
@@ -177,12 +176,9 @@ export default class Comments extends Component {
       averageScore: averageScore,
       isModalVisible: !this.state.isModalVisible, paso1: true, contieneTexto:false,  textComentario: false, posicion : 0
     }, () => {
-      setTimeout(() => { 
-        this.setState({
-        }, () => { 
-          this.cargarLista();
-        });
-      }, 100)
+      var json = {}
+      json.averageScore = averageScore
+      this.props.navigation.navigate('Place',{json} )
     });
   }
   validarCampos(){ 

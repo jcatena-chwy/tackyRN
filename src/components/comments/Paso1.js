@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StyleSheet, Image, View } from 'react-native';
 import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Button, Textarea, Form, Icon } from 'native-base';
-import comments from '../request/comments.json'
-import Modal from "react-native-modal";
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
