@@ -194,21 +194,24 @@ export default class Paso2 extends Component {
       this.setState({
         averageScore:averageScore
       }, () => {
-        if(this.state.infoPaso1.image != "" ) {
-          this.uploadImage().then(() => {
-            this.toggleModal()
-            this.setState({ loading:true });
-          }).catch(() => {
-          })
-        } else {
-         this.toggleModal()
-         this.setState({ loading:true });
-        }
+        this.toggleModal()
       });
        
      }).catch((error) =>{
        console.log("error")
      })
+  }
+
+  componentWillUnmount() {
+    if(this.state.infoPaso1.image != "" ) {
+           this.uploadImage().then(() => {
+            this.props.cerrarModal(this.state.averageScore, true)
+           }).catch(() => {
+            this.props.cerrarModal(this.state.averageScore, true)
+           })
+         } else {
+      this.props.cerrarModal(this.state.averageScore, true)
+    }
   }
 
   uploadImage = async () => {
