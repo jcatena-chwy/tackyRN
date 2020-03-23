@@ -200,7 +200,7 @@ export default class Paso2 extends Component {
      }).catch((error) =>{
        console.log("error")
      })
-  }
+  } 
 
   componentWillUnmount() {
     if(this.state.infoPaso1.image != "" ) {

@@ -77,7 +77,7 @@ ratingCompleted(rating) {
           <Card style={{height:60}} title="CUSTOM RATING" >
             <Comentarios comentarios = {this.state.place.cantidadComentarios}   idComentarios = {this.state.place.id} name = {this.state.place.name} score = {this.state.place.score.id} navigation = {this.state.navigation}></Comentarios>
           </Card>
-            <Productos products = {this.state.place.products}></Productos>
+            <Productos  name = {this.state.place.name} products = {this.state.place.products}></Productos>
         </ScrollView>
 
         <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
