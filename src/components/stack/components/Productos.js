@@ -6,6 +6,7 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import firebase from '../../../config';
 
 import * as ImagePicker from 'expo-image-picker';
+import ModalProducto from './ModalProducto';
 export default class Productos extends Component {
   constructor(props) {
     super(props);
@@ -76,13 +77,13 @@ export default class Productos extends Component {
       this.setState({ isTextProduct: true });
       return
     }
-    this.setState({ idImagen:Math.random().toString(36).substring(7) }).then(() => {
+    this.setState({ idImagen: Math.random().toString(36).substring(7) }).then(() => {
       this.uploadImage().then(() => {
         this.guardarProducto()
-       }).catch(() => {
-       })
+      }).catch(() => {
+      })
     })
-   
+
   }
 
   uploadImage = async () => {
@@ -142,39 +143,9 @@ export default class Productos extends Component {
         </ScrollView>
 
         <Modal style={styles.container} isVisible={this.state.isModalAddProducto}>
-          {this.state.loading ? (
-            <View style={styles.content}>
-              {!image && <Icon active name='image' onPress={() => this._pickImage()} style={{ fontSize: 80 }} />}
-              {imageText && <Text style={{ color: 'red', fontSize: 15 }} >Publicar foto del Plato Terminado</Text>}
-              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-              <TextInput
-                style={styles.textArea}
-                underlineColorAndroid="transparent"
-                placeholder="Escribir..."
-                placeholderTextColor="grey"
-                numberOfLines={3}
-                onChangeText={this.handleChange}
-                multiline={true}
-              />
-              {isTextProduct && <Text style={{ color: 'red', fontSize: 12 }} >Escriba un titulo</Text>}
-              <View style={styles.container2}>
-                <View style={styles.buttonContainer}>
-                  <Button danger onPress={this.toggleModalAddProducto}>
-                    <Text onPress={this.toggleModalAddProducto} style={styles.TextStyle} >Cerrar</Text>
-                  </Button>
-                </View>
-                <View style={styles.buttonContainer}>
-                  <Button success onPress={this.validarCampos}>
-                    <Text onPress={this.validarCampos} style={styles.TextStyle} >Guardar</Text>
-                  </Button>
-                </View>
-              </View>
-            </View>
-          ) : (
-              <View style={styles.content}>
-                <ActivityIndicator size="large" color="red" style={{ marginTop: 40 }} />
-              </View>
-            )}
+          <View style={styles.content}>
+            <ModalProducto name={this.state.name} cerrarModal={this.toggleModalAddProducto} ></ModalProducto>
+          </View>
         </Modal>
       </View>
     );
