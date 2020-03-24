@@ -194,9 +194,7 @@ export default class Map extends React.Component {
           productos[cantidadImagenesProductos] = child.val()
           cantidadImagenesProductos++
         });
-      } else {
-      }
-      firebase.database()
+      } 
       establecimiento.products = productos
       this.setState({ establecimiento: establecimiento });
       if(establecimiento.products.length > 0){
@@ -219,7 +217,7 @@ export default class Map extends React.Component {
 
   uploadImageProductos = async (imageName, establecimiento, cantidadImagenesProductos) => {
     const db = firebase.database()
-    var ref = firebase.storage().ref("images/ImageEstablecimiento/"+ establecimiento.name +"/" + "Productos/" + imageName).getDownloadURL()
+    var ref = firebase.storage().ref("images/ImageEstablecimiento/"+ establecimiento.name +"/" + "Products/" + imageName).getDownloadURL()
         .then(resolve => { 
           
                 let newArray = [...establecimiento.products];

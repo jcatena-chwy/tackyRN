@@ -20,6 +20,7 @@ export default class ModalProducto extends Component {
             loading: true,
             name: this.props.name,
             idImagen: '',
+            idEstablecimiento: this.props.idEstablecimiento,
         }
         this.selectModal = this.selectModal.bind(this);
         this.showModalAddProducto = this.showModalAddProducto.bind(this);
@@ -30,6 +31,15 @@ export default class ModalProducto extends Component {
         this.guardarProducto = this.guardarProducto.bind(this);
     }
 
+    componentWillUnmount() {
+        this.props.cerrarModal('loading');
+        this.uploadImage().then(() => {
+            this.guardarProducto();
+        }).catch(() => {
+
+        })
+    }
+
     selectModal(value) {
         if (value === 'addProducto') {
             this.showModalAddProducto()
@@ -38,21 +48,12 @@ export default class ModalProducto extends Component {
         }
     }
 
-    componentWillUnmount() {
-            this.uploadImage().then(() => {
-                this.guardarProducto()
-            }).catch(() => {
-
-            })
-    }
-
-
     showModalAddProducto() {
         this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
     }
 
     toggleModalAddProducto() {
-        this.props.cerrarModal();
+        this.props.cerrarModal('cerrar');
     }
 
     _pickImage = async () => {
@@ -84,7 +85,7 @@ export default class ModalProducto extends Component {
             this.setState({ isTextProduct: true });
             return
         }
-        var idImagen = Math.random().toString(36).substring(7) 
+        var idImagen = Math.random().toString(36).substring(7)
         this.setState({
             idImagen: idImagen
         }, () => {
@@ -101,14 +102,15 @@ export default class ModalProducto extends Component {
 
     guardarProducto() {
         const db = firebase.database()
-        var id = Math.random().toString(36).substring(7) 
+        var id = Math.random().toString(36).substring(7)
         db.ref("Products/").push({
             id: id,
             name: this.state.textProduct,
             image: this.state.idImagen,
+            idEstablecimiento: this.state.idEstablecimiento,
             score: 0
         }).then(() => {
-            console.log("Inserted")
+            this.props.cerrarModal('completed');
         }).catch((error) => {
             console.log("error")
         })

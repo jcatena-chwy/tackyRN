@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
 import { Button, Icon, Container, Content } from 'native-base';
 import Modal from "react-native-modal";
-import { Rating, AirbnbRating } from 'react-native-ratings';
-import firebase from '../../../config';
-
-import * as ImagePicker from 'expo-image-picker';
 import ModalProducto from './ModalProducto';
 export default class Productos extends Component {
   constructor(props) {
@@ -22,14 +18,22 @@ export default class Productos extends Component {
       loading: true,
       name: this.props.name,
       idImagen: '',
+      isModalActivityIndicator:false,
+      idEstablecimiento: this.props.idEstablecimiento
     }
     this.selectModal = this.selectModal.bind(this);
     this.showModalAddProducto = this.showModalAddProducto.bind(this);
     this.toggleModalAddProducto = this.toggleModalAddProducto.bind(this);
-    this.validarCampos = this.validarCampos.bind(this);
-    this._pickImage = this._pickImage.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.guardarProducto = this.guardarProducto.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.products.update != undefined){
+      this.setState({
+        products: nextProps.products
+      }, () => {
+        console.log('update')
+      });
+    }
   }
 
   selectModal(value) {
@@ -44,77 +48,22 @@ export default class Productos extends Component {
     this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
   }
 
-  toggleModalAddProducto() {
-    this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
+  toggleModalAddProducto(value) {
+      if(value === 'loading') {
+        this.setState({ isModalActivityIndicator: !this.state.isModalActivityIndicator });
+      } 
+      if(value === 'completed') {
+        this.setState({ isModalActivityIndicator: !this.state.isModalActivityIndicator });
+        this.props.getProducts();
+      } 
+      if(value === 'cerrar') {
+        this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
+      } 
   }
 
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1
-    });
-    if (!result.cancelled) {
-      this.setState({ image: result.uri, imageText: false });
-    }
-  };
 
-  handleChange(event = {}) {
-    if (event == "" || event == null) {
-      this.setState({ textProduct: '', isTextProduct: true });
-    } else {
-      this.setState({ textProduct: event, isTextProduct: false });
-    }
-  }
-
-  validarCampos() {
-    if (this.state.image === null) {
-      this.setState({ imageText: true });
-      return
-    }
-    if (this.state.textProduct === '') {
-      this.setState({ isTextProduct: true });
-      return
-    }
-    this.setState({ idImagen: Math.random().toString(36).substring(7) }).then(() => {
-      this.uploadImage().then(() => {
-        this.guardarProducto()
-      }).catch(() => {
-      })
-    })
-
-  }
-
-  uploadImage = async () => {
-    const response = await fetch(this.state.image);
-    const blob = await response.blob();
-    var ref = firebase.storage().ref().child("images/ImageEstablecimiento/" + this.state.name + "/Products/" + this.state.idImagen);
-    return ref.put(blob)
-  }
-
-  guardarProducto() {
-    this.setState({ loading: false });
-    const db = firebase.database()
-    var idMainImage = this.guidGenerator()
-    db.ref("Products/").push({
-      id: this.state.idImagen,
-      name: this.state.textProduct,
-      image: '',
-      score: ''
-    }).then(() => {
-      this.setState({ loading: true });
-      console.log("Inserted")
-    }).catch((error) => {
-      console.log("error")
-    })
-  }
 
   render() {
-    const navigation = this.props.navigation;
-    let { image } = this.state;
-    let { imageText } = this.state;
-    let { isTextProduct } = this.state;
     return (
       <View>
         <ScrollView
@@ -144,7 +93,12 @@ export default class Productos extends Component {
 
         <Modal style={styles.container} isVisible={this.state.isModalAddProducto}>
           <View style={styles.content}>
-            <ModalProducto name={this.state.name} cerrarModal={this.toggleModalAddProducto} ></ModalProducto>
+            <ModalProducto idEstablecimiento = {this.state.idEstablecimiento} name={this.state.name} cerrarModal={this.toggleModalAddProducto} ></ModalProducto>
+          </View>
+        </Modal>
+        <Modal style={styles.container} isVisible={this.state.isModalActivityIndicator}>
+          <View style={styles.content}>
+          <ActivityIndicator size="large" color="#0000ff" />
           </View>
         </Modal>
       </View>
