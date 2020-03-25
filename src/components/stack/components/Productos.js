@@ -3,6 +3,7 @@ import { Image, View, ScrollView, Text, StyleSheet, ActivityIndicator, TextInput
 import { Button, Icon, Container, Content } from 'native-base';
 import Modal from "react-native-modal";
 import ModalProducto from './ModalProducto';
+import ModalDetalleProducto from './ModalDetalleProducto';
 export default class Productos extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +12,7 @@ export default class Productos extends Component {
       isModalVisible: false,
       isModalVisibleSpinner: false,
       isModalAddProducto: false,
+      isModalDetalleProducto:false,
       image: null,
       imageText: false,
       textProduct: '',
@@ -18,16 +20,19 @@ export default class Productos extends Component {
       loading: true,
       name: this.props.name,
       idImagen: '',
-      isModalActivityIndicator:false,
-      idEstablecimiento: this.props.idEstablecimiento
+      isModalActivityIndicator: false,
+      idEstablecimiento: this.props.idEstablecimiento,
+      productoSeleccionado: null,
     }
     this.selectModal = this.selectModal.bind(this);
     this.showModalAddProducto = this.showModalAddProducto.bind(this);
     this.toggleModalAddProducto = this.toggleModalAddProducto.bind(this);
+    this.showModalDetalleProducto = this.showModalDetalleProducto.bind(this);
+    this.toggleModalDetalleProducto = this.toggleModalDetalleProducto.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.products.update != undefined){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.products.update != undefined) {
       this.setState({
         products: nextProps.products
       }, () => {
@@ -36,29 +41,48 @@ export default class Productos extends Component {
     }
   }
 
-  selectModal(value) {
+  selectModal(value , product) {
     if (value === 'addProducto') {
       this.showModalAddProducto()
     } else {
-
+      this.setState({
+        productoSeleccionado: product
+      }, () => {
+        this.showModalDetalleProducto();
+      });
     }
   }
 
   showModalAddProducto() {
     this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
   }
+  showModalDetalleProducto() {
+    this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
+  }
 
   toggleModalAddProducto(value) {
-      if(value === 'loading') {
-        this.setState({ isModalActivityIndicator: !this.state.isModalActivityIndicator });
-      } 
-      if(value === 'completed') {
-        this.setState({ isModalActivityIndicator: !this.state.isModalActivityIndicator });
-        this.props.getProducts();
-      } 
-      if(value === 'cerrar') {
-        this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
-      } 
+    if (value === 'loading') {
+      this.setState({ isModalActivityIndicator: !this.state.isModalActivityIndicator });
+    }
+    if (value === 'completed') {
+      this.setState({ isModalActivityIndicator: !this.state.isModalActivityIndicator });
+      this.props.getProducts();
+    }
+    if (value === 'cerrar') {
+      this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
+    }
+  }
+  toggleModalDetalleProducto(value) {
+    if (value === 'loading') {
+      this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
+    }
+    if (value === 'completed') {
+      this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
+      this.props.getProducts();
+    }
+    if (value === 'cerrar') {
+      this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
+    }
   }
 
 
@@ -78,7 +102,7 @@ export default class Productos extends Component {
                     style={{ width: 200, height: 195, resizeMode: 'cover' }}
                   />
                 </View>
-                <Icon style={{ color: '#FFF' }} name='image' onPress={() => this.selectModal('producto')} style={{ fontSize: 200, left: 10, opacity: 0.000005, }} />
+                <Icon style={{ color: '#FFF' }} name='image' onPress={() => this.selectModal('producto', product)} style={{ fontSize: 200, left: 10, opacity: 0.000005, }} />
                 <View style={{ bottom: 50, color: '#8bad00', fontSize: 10 }}>
                   <Text style={{ color: 'black', fontSize: 20 }}>{product.name}</Text>
                 </View>
@@ -93,12 +117,17 @@ export default class Productos extends Component {
 
         <Modal style={styles.container} isVisible={this.state.isModalAddProducto}>
           <View style={styles.content}>
-            <ModalProducto idEstablecimiento = {this.state.idEstablecimiento} name={this.state.name} cerrarModal={this.toggleModalAddProducto} ></ModalProducto>
+            <ModalProducto idEstablecimiento={this.state.idEstablecimiento} name={this.state.name} cerrarModal={this.toggleModalAddProducto} ></ModalProducto>
+          </View>
+        </Modal>
+        <Modal style={styles.container} isVisible={this.state.isModalDetalleProducto}>
+          <View style={styles.content}>
+            <ModalDetalleProducto productoSeleccionado={this.state.productoSeleccionado} cerrarModal={this.toggleModalDetalleProducto}  ></ModalDetalleProducto>
           </View>
         </Modal>
         <Modal style={styles.container} isVisible={this.state.isModalActivityIndicator}>
           <View style={styles.content}>
-          <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color="#0000ff" />
           </View>
         </Modal>
       </View>
