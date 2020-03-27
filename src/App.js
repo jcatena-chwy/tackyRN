@@ -1,7 +1,7 @@
 //This is an example code for NavigationDrawer//
 import React, { Component } from 'react';
 //import react in our code.
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -14,6 +14,8 @@ import Place from './components/stack/Place'
 import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
+import NewPlace from './components/newPlace/NewPlace'
+import ContentComponent from './components/ContentComponent'
 
 class NavigationDrawerStructure extends Component {
   toggleDrawer = () => {
@@ -54,7 +56,7 @@ const MainNavigator = createStackNavigator({
   }}, 
 }, {headerLayoutPreset: 'center'});
 
-const SecondNavigator = createStackNavigator({
+const SecondNavigator = createStackNavigator({ 
   CookBook: { screen: CookBook,
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
@@ -75,11 +77,24 @@ const SecondNavigator = createStackNavigator({
     title: "Tacky",
   } },
 }, {headerLayoutPreset: 'center'});
+
+const ThirdNavigator = createStackNavigator({ 
+  NewPlace: { screen: NewPlace,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTintColor: 'black',
+    }),
+  },});
  
 
 // https://expo.github.io/vector-icons/
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
+  
   Mapa: {
     //Title
     screen: MainNavigator,
@@ -95,7 +110,21 @@ const DrawerNavigatorExample = createDrawerNavigator({
       drawerLabel: 'Recetario',
       drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
     },
-  }
-});
+  },
+  NewPlace: {
+    screen: ThirdNavigator,
+    navigationOptions: {
+      drawerLabel: 'Agregar Lugar',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    },
+  },
+},
+{
+  //For the Custom sidebar menu we have to provide our CustomSidebarMenu
+  contentComponent: ContentComponent,
+  //Sidebar width
+  drawerWidth: Dimensions.get('window').width - 130,
+}
+);
  
 export default createAppContainer(DrawerNavigatorExample);

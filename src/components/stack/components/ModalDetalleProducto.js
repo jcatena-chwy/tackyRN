@@ -283,7 +283,8 @@ export default class ModalDetalleProducto extends Component {
                         <List>
                             <ListItem avatar>
                                 <Left>
-                                    <Thumbnail source={{ uri: "https://img.fifa.com/image/upload/t_l4/v1568781948/gzuddxhx4evpfd5q5ean.jpg" }} />
+                                <Image style={{width: 50, height: 50}} source={require('../../../assets/logoApp.png')} />
+                                    {/* <Thumbnail source={{ uri: "https://img.fifa.com/image/upload/t_l4/v1568781948/gzuddxhx4evpfd5q5ean.jpg" }} /> */}
                                 </Left>
                                 <Body>
                                     <TextInput

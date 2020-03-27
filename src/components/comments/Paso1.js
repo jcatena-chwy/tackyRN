@@ -99,19 +99,19 @@ export default class Paso1 extends Component {
           <List>
             <ListItem avatar>
               <Left>
-                <Thumbnail source={{ uri: "https://img.fifa.com/image/upload/t_l4/v1568781948/gzuddxhx4evpfd5q5ean.jpg" }} />
+                <Image style={{width: 50, height: 50}} source={require('../../assets/logoApp.png')} />
               </Left>
               <Body>
                 <TextInput
                   style={styles.textArea}
                   underlineColorAndroid="transparent"
                   placeholder="Escribir..."
-                  placeholderTextColor="grey"
+                  placeholderTextColor="grey" 
                   numberOfLines={10}
                   multiline={true}
                   onChangeText={this.handleChange}
                   value={this.state.contenidoTexto}
-                />
+                /> 
                 {this.state.textComentario && <Text onChangeText={this.handleChange2} style={styles.textStyleAlert}> Por favor ingrese un texto </Text>}
               </Body>
               <Right>
