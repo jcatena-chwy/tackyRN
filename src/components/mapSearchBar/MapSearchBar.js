@@ -21,12 +21,11 @@ export default class MapSearchBar extends Component{
 
     componentWillReceiveProps(someProp) {
         this.setState( { lugares : someProp.places, lugaresBack : someProp.places})
-        console.log(someProp.places[0])
     }
 
     filterResults = text => {    
         if(text != ""){
-            var filteredList = this.state.lugares.filter(function (place) {
+            var filteredList = this.state.lugaresBack.filter(function (place) {
                 return place.name.toUpperCase().includes(text.toUpperCase())
             });
             this.setState({
