@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import MapView from 'react-native-maps';
 import styles from "./MapComponentStyles";
 import restaurantes from '../request/restaurantes.json'
 import firebase from '../../config';
 import Modal from "react-native-modal";
+import MapSearchBar  from '../mapSearchBar/MapSearchBar';
 import Footer from '../footer/Footer'
 import {Spinner } from 'native-base';
 
@@ -19,6 +20,7 @@ const SPACE = 0.01;
  
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
+
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 YellowBox.ignoreWarnings(['FIREBASE WARNING']);
@@ -44,12 +46,13 @@ export default class Map extends React.Component {
     this.getProducts = this.getProducts.bind(this);
     this.getScore = this.getScore.bind(this);
     this.getImagenesProductos = this.getImagenesProductos.bind(this);
+    this.changeMapLocationFocus = this.changeMapLocationFocus.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.uploadImageProductos = this.uploadImageProductos.bind(this);
   }
 
   componentWillMount() {
-    this.cargarLista(); 
+    this.cargarLista();
   }
 
   cargarLista(){
@@ -251,6 +254,11 @@ export default class Map extends React.Component {
         }) 
   }
 
+  changeMapLocationFocus = (lat, long) => {
+    this.setState({ latitude : lat, longitude : long });
+    debugger
+  }
+
   render() { 
     const navigation = this.props.navigation;
     return (
@@ -284,7 +292,7 @@ export default class Map extends React.Component {
           ></MapView.Marker>
         )}
         </MapView>
-        
+        <MapSearchBar places={ this.state.establecimientos } changeMapLocationFocus={this.changeMapLocationFocus}/>
         <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
                     <View style={styles.contentSpinner}> 
                         <Spinner color='red' />
