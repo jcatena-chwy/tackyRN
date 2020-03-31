@@ -16,27 +16,39 @@ export default class MapSearchBar extends Component{
 
     constructor(props){
         super(props);
-        this.state = { lugares : this.props.places, lugaresBack : this.props.places }
+        this.state = { lugares : this.props.places, lugaresBack : this.props.places, showLocationItem:false, textInputValue:"" }
+        this.hiddeLocationItem= this.hiddeLocationItem.bind(this);
+        this.filterResults= this.filterResults.bind(this);
     }
 
     componentWillReceiveProps(someProp) {
         this.setState( { lugares : someProp.places, lugaresBack : someProp.places})
     }
-
-    filterResults = text => {    
-        if(text != ""){
+    filterResults(event = {}) {    
+        if(event != ""){
             var filteredList = this.state.lugaresBack.filter(function (place) {
-                return place.name.toUpperCase().includes(text.toUpperCase())
+                return place.name.toUpperCase().includes(event.toUpperCase())
             });
             this.setState({
-                lugares : filteredList
+                lugares : filteredList,
+                showLocationItem: true,
+                textInputValue: event
             });
         } else {
             this.setState({
-                lugares : this.state.lugaresBack
+                lugares : this.state.lugaresBack,
+                showLocationItem: false,
+                textInputValue: event
             });
-        }  
+        }   
     };
+
+    hiddeLocationItem(name){
+        this.setState({
+            showLocationItem: false,
+            textInputValue: name
+        });
+    }
 
     render(){
         return(
@@ -53,21 +65,24 @@ export default class MapSearchBar extends Component{
                             <View style={styles.centerCol}>
                                 <TextInput  style={{fontSize : 21, color : '#545454'}} 
                                             placeholder="¿A dónde quieres ir?"
-                                            onChangeText={(text) => this.filterResults(text)}
+                                            value={this.state.textInputValue}
+                                            onChangeText={this.filterResults}
                                             />
                             </View>
                             <View style={styles.rightCol}></View>
                         </View>
                     </View>
+                    { this.state.showLocationItem && 
                     <View style={{width: (WIDTH-40), height: 50, paddingTop : 20}}>
                         <View style={styles.resultList}>
                             <FlatList
                                 data={this.state.lugares}
-                                renderItem={({ item }) => <LocationItem place={item} changeMapLocationFocus={this.props.changeMapLocationFocus}/>}
+                                renderItem={({ item }) => <LocationItem hiddeLocationItem={this.hiddeLocationItem}  place={item} changeMapLocationFocus={this.props.changeMapLocationFocus}/>}
                                 keyExtractor={item => item.id}
                             />
                         </View>
                     </View>
+                    }
                 </View>
             </View>
         );

@@ -16,6 +16,7 @@ class LocationItem extends PureComponent {
         
         Alert.alert(JSON.stringify(res))*/
         this.props.changeMapLocationFocus(item.latitude, item.longitude)
+        this.props.hiddeLocationItem(item.name)
     }
 
     render(){
