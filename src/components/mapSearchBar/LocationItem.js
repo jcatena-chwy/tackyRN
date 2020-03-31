@@ -8,6 +8,7 @@ class LocationItem extends PureComponent {
     constructor(props){
         super(props);
         this.state = { locItem : this.props.place }
+        this._handlePress = this._handlePress.bind(this);
     }
     
     _handlePress = (item) => {
@@ -19,7 +20,7 @@ class LocationItem extends PureComponent {
 
     render(){
         return(
-            <TouchableOpacity style={styles.item} onPress={this._handlePress(this.state.locItem)}>
+            <TouchableOpacity style={styles.item} onPress={() => this._handlePress(this.state.locItem)}>
                 { this.state.locItem.type == 'Restaurant' ? 
                     <Icon style={styles.icon} type='MaterialCommunityIcons' name='silverware-fork'/> : 
                     <Icon style={styles.icon} type='MaterialCommunityIcons' name='store'/>}

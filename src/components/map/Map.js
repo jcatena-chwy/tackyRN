@@ -256,7 +256,6 @@ export default class Map extends React.Component {
 
   changeMapLocationFocus = (lat, long) => {
     this.setState({ latitude : lat, longitude : long });
-    debugger
   }
 
   render() { 
