@@ -49,10 +49,53 @@ export default class Map extends React.Component {
     this.changeMapLocationFocus = this.changeMapLocationFocus.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.uploadImageProductos = this.uploadImageProductos.bind(this);
+    this.guardarScore = this.guardarScore.bind(this);
+    this.guardarEstablecimiento = this.guardarEstablecimiento.bind(this);
   }
 
   componentWillMount() {
     this.cargarLista();
+    //this.guardarScore();
+    //this.guardarEstablecimiento();
+  } 
+
+  guardarScore() {
+    const db = firebase.database()
+    db.ref("Scores").push({
+      averageScore:0,
+      cleaningScore:0,
+      foodScore:0,
+      id:Math.random().toString(36).substring(7),
+      priceScore: 0,
+      serviceScore:0,
+    }).then(() =>{
+      console.log("Inserted")
+    }).catch((error) =>{
+      console.log("error")
+    })
+  }
+
+  
+
+  guardarEstablecimiento() {
+    const db = firebase.database()
+     db.ref("Establecimientos").push({
+           address:'Pres. José Evaristo Uriburu 69',
+           comments: '',
+           id:Math.random().toString(36).substring(7),
+           image:'dieteticaUriburu.PNG',
+           latitude:-34.602277,  
+           longitude: -58.398645,
+           name:'Dietética Uriburu',
+           phone:22222,
+           products:"43345",
+           score:"lubn2",
+           type:'Restaurante',
+     }).then(() =>{
+       console.log("Inserted")
+     }).catch((error) =>{
+       console.log("error")
+     })
   }
 
   cargarLista(){
@@ -120,12 +163,12 @@ export default class Map extends React.Component {
           
         })
         .catch(error => {
-          console.log(error)
+          console.log(error) 
         }) 
   }
 
   getComments(establecimiento) {
-    var jsonComments = {
+    var jsonComments = { 
       cantidad:0 
     }
     const db2 = firebase.database().ref('Comments')
@@ -133,7 +176,7 @@ export default class Map extends React.Component {
     .equalTo(establecimiento.id)
     .once('value')
     .then((snapshot) => { 
-      var value = snapshot.val();
+      var value = snapshot.val(); 
       cantComentarios = 0;
       if (value) {
         snapshot.forEach((child) => {
