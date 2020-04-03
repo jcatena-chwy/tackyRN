@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
 import NewPlace from './components/newPlace/NewPlace'
+import Login from './components/auth/Login'
 import ContentComponent from './components/ContentComponent'
 
 class NavigationDrawerStructure extends Component {
@@ -33,7 +34,7 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  //  Login: { screen: Login},
+  // Login: { screen: Login},
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
