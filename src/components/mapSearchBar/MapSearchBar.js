@@ -20,8 +20,14 @@ export default class MapSearchBar extends Component{
         super(props);
         const citiesFromJSON = require('../mapSearchBar/ArgCities.json').localidades;
 
-        this.state = { lugares : this.props.places, lugaresBack : this.props.places, showLocationItem : false, textInputValue : "", searchByCities : true,
-                       localidades :  citiesFromJSON, localidadesBack :  citiesFromJSON}
+        this.state = { 
+            lugares : this.props.places,
+            lugaresBack : this.props.places, 
+            showLocationItem : false, 
+            textInputValue : "", 
+            searchByCities : true,
+            localidades :  citiesFromJSON,
+            localidadesBack :  citiesFromJSON}
         
         this.hideLocationItem = this.hideLocationItem.bind(this);
         this.filterResults = this.filterResults.bind(this);
@@ -34,7 +40,7 @@ export default class MapSearchBar extends Component{
     filterResults(event = {}) {
         if(this.state.searchByCities){
             if(event != ""){
-                var filteredList = this.state.localidades.filter(function (place) {
+                var filteredList = this.state.localidadesBack.filter(function (place) {
                     return place.nombre.toUpperCase().includes(event.toUpperCase())
                 });
                 this.setState({
