@@ -17,6 +17,7 @@ import { StyleSheet, Picker } from 'react-native';
 import firebase from '../../config';
 import Modal from "react-native-modal";
 import { TextInput } from 'react-native-gesture-handler';
+import { Checkbox } from 'galio-framework'
 export default class NewPlace extends Component {
     constructor(props) {
         super(props);
@@ -77,6 +78,7 @@ export default class NewPlace extends Component {
             activo: false
         }).then(() => {
             this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner, isModalConfirmed: !this.state.isModalConfirmed });
+            this.props.navigation.navigate('Mapa')
         }).catch((error) => {
             console.log("error")
         })
@@ -113,8 +115,8 @@ export default class NewPlace extends Component {
                 <Form>
                     <Item >
                         <Label style={{ color: 'black' }}>Nombre: </Label>
-                        <TextInput
-                            style={{ borderBottomColor: 'black' }}
+                        <Input
+                            style={{ borderBottomColor: 'red' }}
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={this.handleChangeName}
@@ -123,7 +125,7 @@ export default class NewPlace extends Component {
                     {this.state.isName && <Text style={styles.textStyleAlert}>Complete el Nombre </Text>}
                     <Item >
                         <Label style={{ color: 'black' }}>Localidad: </Label>
-                        <TextInput
+                        <Input
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={this.handleChangeLocalidad}
@@ -132,7 +134,7 @@ export default class NewPlace extends Component {
                     {this.state.isLocalidad && <Text style={styles.textStyleAlert}>Complete la Localidad </Text>}
                     <Item >
                         <Label style={{ color: 'black' }}>Dirección: </Label>
-                        <TextInput
+                        <Input
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={this.handleChangeDireccion}
@@ -141,18 +143,13 @@ export default class NewPlace extends Component {
                     {this.state.isDireccion && <Text style={styles.textStyleAlert}>Complete la Direccion</Text>}
                     <Item >
                         <Label style={{ color: 'black' }}>Tipo: </Label>
-                        <RNPickerSelect
-                            style={{ color: 'black' }}
-                            onValueChange={(value) => this.setState({ selectedValue: value })}
-                            items={[
-                                { label: 'Restaurante', value: 'Restaurante' },
-                                { label: 'Almacen', value: 'Almacen' },
-                            ]}
-                        />
+                        <Checkbox onChange={() => this.setState({ selectedValue: 'Restaurante'  })} color="warning"  label="Restaurante" labelStyle={{fontSize : 14}}/>
+                        <Checkbox onChange={() => this.setState({ selectedValue: 'Almacen'  })} color="warning"  label="Almacen" labelStyle={{fontSize : 14}}/>
+                          
                     </Item> 
                     <Item >
                         <Label style={{ color: 'black' }}>Link Google Map: </Label>
-                        <TextInput
+                        <Input
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={googleMaps => this.setState({ googleMaps })}
