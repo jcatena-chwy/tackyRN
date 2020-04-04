@@ -17,6 +17,7 @@ import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
 import NewPlace from './components/newPlace/NewPlace'
 import Login from './components/auth/Login'
+import SignUp from './components/auth/SignUp'
 import ContentComponent from './components/ContentComponent'
 
 class NavigationDrawerStructure extends Component {
@@ -35,7 +36,7 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  // Login: { screen: Login},
+  Login: { screen: Login}, SignUp: { screen: SignUp},
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
@@ -100,20 +101,20 @@ const ThirdNavigator = createStackNavigator({
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
   
-  CookBook: {
-    //Title
-    screen: SecondNavigator,
-    navigationOptions: {
-      drawerLabel: 'Recetario',
-      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
-    },
-  },
   Mapa: {
     //Title
     screen: MainNavigator,
     navigationOptions: {
       drawerLabel: 'Mapa',
       drawerIcon: () => <Ionicons name="md-home"></Ionicons>
+    },
+  },
+  CookBook: {
+    //Title
+    screen: SecondNavigator,
+    navigationOptions: {
+      drawerLabel: 'Recetario',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
     },
   },
   NewPlace: {
