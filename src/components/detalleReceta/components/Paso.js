@@ -200,7 +200,6 @@ export default class Paso extends React.Component {
    
     }
     updatePosImage(fila,columna){
-      debugger
       if(this.props.tituloReceta == "" || this.props.tituloReceta == null){
         this.setState({ isTituloReceta: true, isModalVisibleSpinner: !this.state.isModalVisibleSpinner});
         return

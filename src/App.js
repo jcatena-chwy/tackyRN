@@ -100,20 +100,20 @@ const ThirdNavigator = createStackNavigator({
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
   
-  Mapa: {
-    //Title
-    screen: MainNavigator,
-    navigationOptions: {
-      drawerLabel: 'Mapa',
-      drawerIcon: () => <Ionicons name="md-home"></Ionicons>
-    },
-  },
   CookBook: {
     //Title
     screen: SecondNavigator,
     navigationOptions: {
       drawerLabel: 'Recetario',
       drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    },
+  },
+  Mapa: {
+    //Title
+    screen: MainNavigator,
+    navigationOptions: {
+      drawerLabel: 'Mapa',
+      drawerIcon: () => <Ionicons name="md-home"></Ionicons>
     },
   },
   NewPlace: {
