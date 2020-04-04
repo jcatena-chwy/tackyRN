@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
 import { Button, Icon, Container, Content, List, ListItem, Right, Left, Body, Thumbnail } from 'native-base';
-import { Rating, AirbnbRating } from 'react-native-ratings';
 import firebase from '../../../config';
 import Modal from "react-native-modal";
-import Paso1 from "./Paso1";
-export default class ModalDetalleProducto extends Component {
+import { Rating, AirbnbRating } from 'react-native-ratings';
+export default class Paso1 extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            productoSeleccionado: this.props.productoSeleccionado,
+            product: this.props.navigation.state.params.product,
             isModalComentarios: false,
             isModalAddComentarios: false,
             isTextComentario: false,
@@ -56,7 +55,7 @@ export default class ModalDetalleProducto extends Component {
         }
         const db2 = firebase.database().ref('Products')
         db2.orderByChild('name')
-            .equalTo(this.state.productoSeleccionado.name)
+            .equalTo(this.state.product.name)
             .once('value')
             .then((snapshot) => {
                 var value = snapshot.val();
@@ -66,11 +65,11 @@ export default class ModalDetalleProducto extends Component {
                         jsonComments.score = child.val().score;
                         jsonComments.key = child.key
                     });
-                    var producto = this.state.productoSeleccionado;
+                    var producto = this.state.product;
                     producto.score = jsonComments.score;
                     producto.key = jsonComments.key;
                     this.setState({
-                        productoSeleccionado: producto
+                        product: producto
                     }, () => {
                         this.cargarComentarios()
                     });
@@ -81,7 +80,7 @@ export default class ModalDetalleProducto extends Component {
         var comments = []
         const db2 = firebase.database().ref('Comments')
         db2.orderByChild('idProducto')
-            .equalTo(this.state.productoSeleccionado.id)
+            .equalTo(this.state.product.id)
             .once('value')
             .then((snapshot) => {
                 var value = snapshot.val();
@@ -115,7 +114,7 @@ export default class ModalDetalleProducto extends Component {
                 }, () => {
                     console.log("showModalAddComentarios")
                 });
-            }, 1000)
+            }, 1000) 
         });
 
     }
@@ -123,11 +122,14 @@ export default class ModalDetalleProducto extends Component {
         this.setState({
             isModalComentarios: !this.state.isModalComentarios
         }, () => {
-            this.toggleModalAddProducto()
         });
     }
     toggleModalAddProducto() {
-        this.props.cerrarModal('cerrar');
+        this.setState({
+            isModalComentarios: !this.state.isModalComentarios,
+            isModalAddComentarios: !this.state.isModalAddComentarios
+        }, () => { 
+        });
     }
 
     handleChange(event = {}) {
@@ -201,15 +203,15 @@ export default class ModalDetalleProducto extends Component {
     }
 
     actualizarScore() {
-        const db = firebase.database().ref('Products/' + this.state.productoSeleccionado.key)
-        var averageScore = this.actualizarPromedio(this.state.productoSeleccionado.score);
+        const db = firebase.database().ref('Products/' + this.state.product.key)
+        var averageScore = this.actualizarPromedio(this.state.product.score);
         db.update({
             score: averageScore,
         }).then(() => {
-            var producto = this.state.productoSeleccionado;
+            var producto = this.state.product;
             producto.score = averageScore
             this.setState({
-                productoSeleccionado: producto
+                product: producto
             }, () => {
                 this.guardarComentario()
             });
@@ -228,14 +230,14 @@ export default class ModalDetalleProducto extends Component {
             id: Math.random().toString(36).substring(7),
             idEstablecimiento: '',
             idImagen: '',
-            idProducto: this.state.productoSeleccionado.id,
+            idProducto: this.state.product.id,
             userName: "",
             urlImage: ""
         }).then(() => {
             setTimeout(() => {
-                console.log("guardoComentario")
-                this.toggleModalAddProducto()
-            }, 1000)
+                    console.log("guardoComentario")
+                    this.toggleModalAddProducto()
+            }, 1000) 
         }).catch((error) => {
             console.log("error")
         })
@@ -244,17 +246,20 @@ export default class ModalDetalleProducto extends Component {
     render() {
         return (
             <View style={styles.content}>
-                <Image source={{ uri: this.state.productoSeleccionado.image }} style={{ width: 200, height: 200, marginTop: 10 }} />
+                <Image source={{ uri: this.state.product.image }}
+                    style={{ width: 200, height: 195, resizeMode: 'cover' }}
+                />
                 <Rating
                     ratingCount={5}
                     fractions={2}
-                    startingValue={this.state.productoSeleccionado.score}
+                    startingValue={this.state.product.score}
                     imageSize={40}
+                    onFinishRating={this.ratingCompleted}
                     style={{ paddingVertical: 10 }}
                     readonly={true}
                     showReadOnlyText={true}
                 />
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', top: 10 }}>
+               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', top: 10 }}>
                     <Button onPress={this.showModalComentarios} transparent textStyle={{ color: '#87838B' }}>
                         <Icon name="ios-add" onPress={this.showModalComentarios} />
                     </Button>
@@ -263,7 +268,7 @@ export default class ModalDetalleProducto extends Component {
                 <Button danger onPress={this.toggleModalAddProducto}>
                     <Text onPress={this.toggleModalAddProducto} style={styles.TextStyle} >Cerrar</Text>
                 </Button>
-                <Modal isVisible={this.state.isModalComentarios}> 
+                <Modal isVisible={this.state.isModalComentarios}>
                     <View style={styles.content3}>
                         {this.state.comments.map((comment, index) =>
                             <List key={index}>
@@ -296,6 +301,58 @@ export default class ModalDetalleProducto extends Component {
                         </View>
                     </View>
                 </Modal>
+                <Modal isVisible={this.state.isModalAddComentarios}>
+                    <View style={styles.content3}>
+                        <List>
+                            <ListItem avatar>
+                                <Left>
+                                    <Image style={{ width: 50, height: 50 }} source={require('../../../assets/logoApp.png')} />
+                                    {/* <Thumbnail source={{ uri: "https://img.fifa.com/image/upload/t_l4/v1568781948/gzuddxhx4evpfd5q5ean.jpg" }} /> */}
+                                </Left>
+                                <Body>
+                                    <TextInput
+                                        style={styles.textArea}
+                                        underlineColorAndroid="transparent"
+                                        placeholder="Escribir..."
+                                        placeholderTextColor="grey"
+                                        numberOfLines={10}
+                                        multiline={true}
+                                        onChangeText={this.handleChange}
+                                        value={this.state.contenidoTexto}
+                                    />
+                                    {this.state.isTextComentario && <Text style={styles.textStyleAlert}> Por favor ingrese un texto </Text>}
+                                </Body>
+                                <Right>
+                                    <Text note>3:43 pm</Text>
+                                </Right>
+                            </ListItem>
+                        </List>
+                        {this.state.rows.map((r) =>
+                            <Content key={r.id}>
+                                <Text style={{ fontSize: 20 }}>{r.pregunta}</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    {r.start.map((s) =>
+                                        <Icon key={s.id} active name={s.name} style={{ fontSize: 40, color: s.color }} onPress={() => this.pickStart(r.id, s.id)} />
+                                    )}
+                                </View>
+                                {this.state.isPickStart && <Text style={styles.textStyleAlert}> Por favor califique el producto</Text>}
+                            </Content>
+                        )}
+                        <View style={styles.container2}>
+                            <View style={styles.buttonContainer}>
+                                <Button danger onPress={this.toggleModalAddProducto}>
+                                    <Text onPress={this.toggleModalAddProducto} style={styles.TextStyle} >Cerrar</Text>
+                                </Button>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <Button style={{ float: 'right', marginLeft: 25, marginRight: 5 }} success onPress={this.validarCampos}>
+                                    <Text style={styles.TextStyle} onPress={this.validarCampos} >Siguiente</Text>
+                                </Button>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+               
             </View>
         );
     }

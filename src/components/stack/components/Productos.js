@@ -48,7 +48,7 @@ export default class Productos extends Component {
       this.setState({
         productoSeleccionado: product
       }, () => {
-        this.showModalDetalleProducto();
+        this.showModalDetalleProducto(product);
       });
     }
   }
@@ -56,8 +56,9 @@ export default class Productos extends Component {
   showModalAddProducto() {
     this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
   }
-  showModalDetalleProducto() {
-    this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
+  showModalDetalleProducto(product) {
+    this.props.navigation.navigate('Paso1',{product} )
+    // this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
   }
 
   toggleModalAddProducto(value) {

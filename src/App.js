@@ -11,6 +11,7 @@ import Screen3 from './components/cookBook/CookBookDetail'
 import Comments from './components/comments/Comments'
 import Paso2 from './components/comments/Paso2'
 import Place from './components/stack/Place'
+import Paso1 from './components/stack/components/Paso1'
 import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
@@ -53,6 +54,9 @@ const MainNavigator = createStackNavigator({
     title: "Tacky",
   }}, 
   Paso2: { screen: Paso2, navigationOptions: {
+    title: "Tacky",
+  }}, 
+  Paso1: { screen: Paso1, navigationOptions: {
     title: "Tacky",
   }}, 
 }, {headerLayoutPreset: 'center'});

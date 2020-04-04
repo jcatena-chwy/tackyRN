@@ -152,7 +152,7 @@ export default class Place extends Component {
           <Card style={{ height: 60 }} title="CUSTOM RATING" >
             <Comentarios comentarios={this.state.place.cantidadComentarios} idComentarios={this.state.place.id} name={this.state.place.name} score={this.state.place.score.id} navigation={this.state.navigation}></Comentarios>
           </Card>
-          <Productos idEstablecimiento={this.state.place.id} name={this.state.place.name} products={this.state.place.products} getProducts={this.getProducts}></Productos>
+          <Productos navigation={this.state.navigation} idEstablecimiento={this.state.place.id} name={this.state.place.name} products={this.state.place.products} getProducts={this.getProducts}></Productos>
         </ScrollView>
 
         <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
