@@ -196,10 +196,6 @@ export default class Detalle extends Component {
             >
                 {this.state.medallas.map((medalla, index) =>
                   <Item key={index} style={{ height: 80 }}  >
-                    {/* <Image
-                                    source={{ uri: medalla.imagen }}
-                                    style={{ width: 80, height: 50, right:5 }}
-                                /> */}
                     <Image style={{ width: 50, height: 60 }} source={medalla.imagen} />
                     <Text>{medalla.descripcion}</Text>
                   </Item>

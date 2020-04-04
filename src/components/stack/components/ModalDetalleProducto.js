@@ -103,11 +103,20 @@ export default class ModalDetalleProducto extends Component {
         this.setState({ isModalComentarios: !this.state.isModalComentarios });
     }
     showModalAddComentarios() {
+        console.log("showModalAddComentarios")
         this.setState({
             isModalComentarios: !this.state.isModalComentarios,
-            isModalAddComentarios: !this.state.isModalAddComentarios,
         }, () => {
+            console.log("showModalAddComentarios")
+            setTimeout(() => {
+                this.setState({
+                    isModalAddComentarios: !this.state.isModalAddComentarios,
+                }, () => {
+                    console.log("showModalAddComentarios")
+                });
+            }, 1000) 
         });
+
     }
     toggleModalComentarios() {
         this.setState({
@@ -222,7 +231,10 @@ export default class ModalDetalleProducto extends Component {
             userName: "",
             urlImage: ""
         }).then(() => {
-            this.toggleModalAddProducto()
+            setTimeout(() => {
+                    console.log("guardoComentario")
+                    this.toggleModalAddProducto()
+            }, 1000) 
         }).catch((error) => {
             console.log("error")
         })
@@ -243,7 +255,7 @@ export default class ModalDetalleProducto extends Component {
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', top: 10 }}>
                     <Button onPress={this.showModalComentarios} transparent textStyle={{ color: '#87838B' }}>
-                        <Icon name="ios-add" />
+                        <Icon name="ios-add" onPress={this.showModalComentarios} />
                     </Button>
                     <Text onPress={this.showModalComentarios} style={{ fontSize: 20 }}>{this.state.cantidad} Comentarios</Text>
                 </View>
@@ -271,10 +283,15 @@ export default class ModalDetalleProducto extends Component {
                                 </Button>
                             </View>
                             <View style={styles.buttonContainer}>
+                                <Button onPress={() => this.showModalAddComentarios()} style={{ float: 'right', marginLeft: 25, marginRight: 5 }} success >
+                                    <Text onPress={() => this.showModalAddComentarios()} style={styles.TextStyle}  >Agregar un Comentario</Text>
+                                </Button>
+                            </View>
+                            {/* <View style={styles.buttonContainer}>
                                 <Button onPress={this.showModalAddComentarios} style={{ float: 'right', marginLeft: 25, marginRight: 5 }} success >
                                     <Text onPress={this.showModalAddComentarios} style={styles.TextStyle}  >Agregar un Comentario</Text>
                                 </Button>
-                            </View>
+                            </View> */}
                         </View>
                     </View>
                 </Modal>
@@ -283,7 +300,7 @@ export default class ModalDetalleProducto extends Component {
                         <List>
                             <ListItem avatar>
                                 <Left>
-                                <Image style={{width: 50, height: 50}} source={require('../../../assets/logoApp.png')} />
+                                    <Image style={{ width: 50, height: 50 }} source={require('../../../assets/logoApp.png')} />
                                     {/* <Thumbnail source={{ uri: "https://img.fifa.com/image/upload/t_l4/v1568781948/gzuddxhx4evpfd5q5ean.jpg" }} /> */}
                                 </Left>
                                 <Body>

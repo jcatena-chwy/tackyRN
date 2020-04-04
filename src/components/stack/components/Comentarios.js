@@ -23,7 +23,7 @@ export default class Comentarios extends Component {
     return (
       <Container>
           <View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center', top:10}}>
-                <Button  onPress={() => navigation.navigate('Comments')} transparent textStyle={{color: '#87838B'}}>
+                <Button  onPress={() => this.props.navigation.navigate('Comments', {idComments, name, score})} transparent textStyle={{color: '#87838B'}}>
                   <Icon name="ios-add" />
                 </Button>
           <Text onPress={() => this.props.navigation.navigate('Comments', {idComments, name, score})} style={{ fontSize: 20 }}>{this.props.comentarios} Comentarios</Text>

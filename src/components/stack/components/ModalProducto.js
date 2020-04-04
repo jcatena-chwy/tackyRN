@@ -32,12 +32,14 @@ export default class ModalProducto extends Component {
     }
 
     componentWillUnmount() {
-        this.props.cerrarModal('loading');
-        this.uploadImage().then(() => {
-            this.guardarProducto();
-        }).catch(() => {
-
-        })
+        if(this.state.idImagen != '') {
+            this.props.cerrarModal('loading');
+            this.uploadImage().then(() => {
+                this.guardarProducto();
+            }).catch(() => {
+    
+            })
+        }
     }
 
     selectModal(value) {

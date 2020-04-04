@@ -1,6 +1,9 @@
 import * as React from 'react';
+import {
+  Text
+} from 'react-native';
 import { Image, View, Platform, StyleSheet } from 'react-native';
-import { Button, Text} from 'native-base';
+import { Button} from 'native-base';
 
 
 import {Icon, Spinner } from 'native-base';

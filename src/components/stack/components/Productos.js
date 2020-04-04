@@ -69,6 +69,7 @@ export default class Productos extends Component {
       this.props.getProducts();
     }
     if (value === 'cerrar') {
+      console.log("ejecuto el cerrar")
       this.setState({ isModalAddProducto: !this.state.isModalAddProducto });
     }
   }
@@ -81,6 +82,7 @@ export default class Productos extends Component {
       this.props.getProducts();
     }
     if (value === 'cerrar') {
+      console.log("ejecuto el cerrar")
       this.setState({ isModalDetalleProducto: !this.state.isModalDetalleProducto });
     }
   }
@@ -104,7 +106,7 @@ export default class Productos extends Component {
                 </View>
                 <Icon style={{ color: '#FFF' }} name='image' onPress={() => this.selectModal('producto', product)} style={{ fontSize: 200, left: 10, opacity: 0.000005, }} />
                 <View style={{ bottom: 50, color: '#8bad00', fontSize: 10 }}>
-                  <Text style={{ color: 'black', fontSize: 20 }}>{product.name}</Text>
+                  <Text onPress={() => this.selectModal('producto', product)} style={{ color: 'black', fontSize: 20 }}>{product.name}</Text>
                 </View>
               </View>
             )}

@@ -12,7 +12,7 @@ import {
     View
 } from 'native-base';
 import { Spinner } from 'native-base';
-
+import RNPickerSelect from 'react-native-picker-select';
 import { StyleSheet, Picker } from 'react-native';
 import firebase from '../../config';
 import Modal from "react-native-modal";
@@ -41,20 +41,20 @@ export default class NewPlace extends Component {
     }
 
     validarCampos() {
-         if (this.state.name === '') {
-             this.setState({ isName: true })
-             return
-         }
-         if (this.state.localidad === '') {
-             this.setState({ isLocalidad: true })
-             return
-         }
-         if (this.state.direccion === '') {
-             this.setState({ isDireccion: true })
-             return
-         }
-         this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
-         this.guardarSolicitud()
+        if (this.state.name === '') {
+            this.setState({ isName: true })
+            return
+        }
+        if (this.state.localidad === '') {
+            this.setState({ isLocalidad: true })
+            return
+        }
+        if (this.state.direccion === '') {
+            this.setState({ isDireccion: true })
+            return
+        }
+        this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
+        this.guardarSolicitud()
     }
     toggleModal() {
         this.setState({
@@ -103,7 +103,7 @@ export default class NewPlace extends Component {
             this.setState({ isDireccion: false, direccion: event });
         }
     }
-
+ 
     render() {
         const navigation = this.props.navigation;
         const [selectedValue, setSelectedValue] = "Restaurant";
@@ -112,9 +112,9 @@ export default class NewPlace extends Component {
                 <Text style={{ fontSize: 20, marginTop: 10, marginBottom: 10, left: 5 }}>Agregar Nuevo Establecimiento</Text>
                 <Form>
                     <Item >
-                        <Label style ={{color:'black'}}>Nombre: </Label>
+                        <Label style={{ color: 'black' }}>Nombre: </Label>
                         <TextInput
-                            style ={{borderBottomColor:'black'}}
+                            style={{ borderBottomColor: 'black' }}
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={this.handleChangeName}
@@ -122,7 +122,7 @@ export default class NewPlace extends Component {
                     </Item>
                     {this.state.isName && <Text style={styles.textStyleAlert}>Complete el Nombre </Text>}
                     <Item >
-                        <Label style ={{color:'black'}}>Localidad: </Label>
+                        <Label style={{ color: 'black' }}>Localidad: </Label>
                         <TextInput
                             autoCapitalize="none"
                             autoCorrect={false}
@@ -131,7 +131,7 @@ export default class NewPlace extends Component {
                     </Item>
                     {this.state.isLocalidad && <Text style={styles.textStyleAlert}>Complete la Localidad </Text>}
                     <Item >
-                        <Label style ={{color:'black'}}>Dirección: </Label>
+                        <Label style={{ color: 'black' }}>Dirección: </Label>
                         <TextInput
                             autoCapitalize="none"
                             autoCorrect={false}
@@ -140,18 +140,18 @@ export default class NewPlace extends Component {
                     </Item>
                     {this.state.isDireccion && <Text style={styles.textStyleAlert}>Complete la Direccion</Text>}
                     <Item >
-                        <Label style ={{color:'black'}}>Tipo: </Label>
-                        <Picker
-                            selectedValue={this.state.selectedValue}
-                            style={{ height: 50, width: 150 }}
-                            onValueChange={(itemValue, itemIndex) => this.setState({ selectedValue: itemValue })}
-                        >
-                            <Picker.Item label="Restaurant" value="restaurant" />
-                            <Picker.Item label="Almacen" value="almacen" />
-                        </Picker>
-                    </Item>
+                        <Label style={{ color: 'black' }}>Tipo: </Label>
+                        <RNPickerSelect
+                            style={{ color: 'black' }}
+                            onValueChange={(value) => this.setState({ selectedValue: value })}
+                            items={[
+                                { label: 'Restaurante', value: 'Restaurante' },
+                                { label: 'Almacen', value: 'Almacen' },
+                            ]}
+                        />
+                    </Item> 
                     <Item >
-                        <Label style ={{color:'black'}}>Link Google Map: </Label>
+                        <Label style={{ color: 'black' }}>Link Google Map: </Label>
                         <TextInput
                             autoCapitalize="none"
                             autoCorrect={false}
