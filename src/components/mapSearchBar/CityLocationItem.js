@@ -3,34 +3,34 @@ import { Text, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, View } from "native-base";
 
 
-class LocationItem extends PureComponent {
+class CityLocationItem extends PureComponent {
 
     constructor(props){
         super(props);
-        this.state = { locItem : this.props.place }
+        this.state = { cityLocItem : this.props.place }
         this._handlePress = this._handlePress.bind(this);
     }
     
     _handlePress = (item) => {
-        /*const res = await this.props.fetchDetails(this.props.place_id)
-        
-        Alert.alert(JSON.stringify(res))*/
-        this.props.changeMapLocationFocus(item.latitude, item.longitude)
-        this.props.hideLocationItem(item.name)
+        this.props.changeMapLocationFocus(item.lat, item.lon)
+        this.props.hideLocationItem(item.nombre)
     }
+
+    /*_capitalize = (s) => {
+        if (typeof s !== 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
+    }*/
 
     render(){
         return(
-            <TouchableOpacity style={styles.item} onPress={() => this._handlePress(this.state.locItem)}>
-                { this.state.locItem.type == 'Restaurant' ? 
-                    <Icon style={styles.icon} type='MaterialCommunityIcons' name='silverware-fork'/> : 
-                    <Icon style={styles.icon} type='MaterialCommunityIcons' name='store'/>}
+            <TouchableOpacity style={styles.item} onPress={() => this._handlePress(this.state.cityLocItem.centroide)}>
+                <Icon style={styles.icon} type='MaterialCommunityIcons' name='map-marker-radius'/>
                 <View>
                     <Text>
-                        {this.state.locItem.name}
+                        {this.state.cityLocItem.nombre}
                     </Text>
                     <Text style={styles.itemAddress}>
-                        {this.state.locItem.address}
+                        {this.state.cityLocItem.provincia.nombre}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LocationItem;
+export default CityLocationItem;
