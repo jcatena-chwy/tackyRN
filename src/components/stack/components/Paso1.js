@@ -126,7 +126,6 @@ export default class Paso1 extends Component {
     }
     toggleModalAddProducto() {
         this.setState({
-            isModalComentarios: !this.state.isModalComentarios,
             isModalAddComentarios: !this.state.isModalAddComentarios
         }, () => { 
         });
