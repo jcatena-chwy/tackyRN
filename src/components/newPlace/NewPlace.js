@@ -63,7 +63,7 @@ export default class NewPlace extends Component {
         }, () => {
             this.props.navigation.navigate('Mapa')
         });
-    }
+    } 
 
     guardarSolicitud() {
         const db = firebase.database()
