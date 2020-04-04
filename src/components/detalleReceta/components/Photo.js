@@ -65,25 +65,6 @@ export default class ImagePickerExample extends React.Component {
     }
   }
 
-  // uploadImage = async (uri, imageName) => {
-  //   const response = await fetch(uri);
-  //   const blob = await response.blob();
-
-  //   //Ejemplo para guardar una imagen
-  //   var ref = firebase.storage().ref().child("images/ImageRecetas/" + imageName);
-  //   return ref.put(blob)
-
-  //   //Ejemplo para recuperar una imagen
-  //   var ref = firebase.storage().ref("images/ImageRecetas/imagePrueba5").getDownloadURL()
-  //       .then(resolve => {
-  //         console.log(resolve)
-  //       })
-  //       .catch(error => {
-  //         console.log(error)
-  //       })
-  //   //
-  // }
-
   isImageMain(uri){
     let name = Math.random().toString(36).substring(7);
     this.uploadImage(uri,name).then((responseData) => {

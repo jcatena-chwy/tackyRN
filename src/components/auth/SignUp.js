@@ -18,40 +18,24 @@ import Modal from "react-native-modal";
 import {Spinner } from 'native-base';
 
 
-export default class FormLogin extends Component {
+export default class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: 'pepe@gmail.com',
             password: 'hola123',
+            confirmedPassword: 'hola123',
             isModalVisibleSpinner: false
         };
         this.SignUp = this.SignUp.bind(this);
     }
 
-    LogIn(email, password) {
-        this.setState({
-            isModalVisibleSpinner: !this.state.isModalVisibleSpinner
-        }, () => {  
-        });
-        try {
-            
-            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then(() => {
-                    this.setState({
-                        isModalVisibleSpinner: !this.state.isModalVisibleSpinner
-                    }, () => {  
-                        console.log('Success')
-                        this.props.navigation.navigate('Map')
-                    });
-                   
-                })
-        } catch (error) {
-            console.log(error.toString(error));
-        }
-    };
 
     SignUp(email, password) {
+        if(this.state.password != this.state.confirmedPassword) {
+            alert('Las contraseñas no coinciden')
+            return
+        }
         this.setState({
             isModalVisibleSpinner: !this.state.isModalVisibleSpinner
         }, () => {  
@@ -105,11 +89,18 @@ export default class FormLogin extends Component {
                             onChangeText={password => this.setState({ password })}
                         />
                     </Item>
-                    <Button full rounded success style={{ marginTop: 20 }} onPress={() => this.LogIn(this.state.email, this.state.password)}>
-                        <Text>Login</Text>
-                    </Button>
-                    <Button full rounded success style={{ marginTop: 20 }} onPress={() =>  this.props.navigation.navigate('SignUp') }>
-                        <Text>Signup</Text>
+                    <Item floatingLabel>
+                        <Icon name='eye' />
+                        <Label>Confirmed Password</Label>
+                        <Input
+                            secureTextEntry={true}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onChangeText={confirmedPassword => this.setState({ confirmedPassword })}
+                        />
+                    </Item>
+                    <Button full rounded success style={{ marginTop: 20 }} onPress={() => this.SignUp(this.state.email, this.state.password)}>
+                        <Text>Sign Up</Text>
                     </Button>
                 </Form>
                 <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
