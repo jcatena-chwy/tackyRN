@@ -40,9 +40,8 @@ export default class DetalleReceta extends Component {
   }
 
   goBackToCookBook(value) {
-    // var receta = {}
-    // this.props.navigation.navigate('CookBook', { receta })
-    this.setState({ isModalVisibleConfirmed: !this.state.isModalVisibleConfirmed });
+    var receta = {}
+    this.props.navigation.navigate('CookBook', { receta })
   }
 
   callModal(texto, value) {

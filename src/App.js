@@ -38,7 +38,7 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  // Login: { screen: Login}, SignUp: { screen: SignUp},
+  Login: { screen: Login}, SignUp: { screen: SignUp},
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
@@ -108,21 +108,20 @@ const ThirdNavigator = createStackNavigator({
 // https://expo.github.io/vector-icons/
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
-  
-  CookBook: {
-    //Title
-    screen: SecondNavigator,
-    navigationOptions: {
-      drawerLabel: 'Recetario',
-      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
-    },
-  },
   Mapa: {
     //Title
     screen: MainNavigator,
     navigationOptions: {
       drawerLabel: 'Mapa',
       drawerIcon: () => <Ionicons name="md-home"></Ionicons>
+    },
+  },
+  CookBook: {
+    //Title
+    screen: SecondNavigator,
+    navigationOptions: {
+      drawerLabel: 'Recetario',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
     },
   },
   NewPlace: {
