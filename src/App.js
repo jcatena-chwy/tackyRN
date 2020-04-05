@@ -15,6 +15,8 @@ import Paso1 from './components/stack/components/Paso1'
 import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
+import Cargando from './components/detalleReceta/components/Cargando'
+import Header from './components/detalleReceta/components/Header'
 import NewPlace from './components/newPlace/NewPlace'
 import Login from './components/auth/Login'
 import SignUp from './components/auth/SignUp'
@@ -36,7 +38,7 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  Login: { screen: Login}, SignUp: { screen: SignUp},
+  // Login: { screen: Login}, SignUp: { screen: SignUp},
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
@@ -63,6 +65,12 @@ const MainNavigator = createStackNavigator({
 }, {headerLayoutPreset: 'center'});
 
 const SecondNavigator = createStackNavigator({ 
+  DetalleReceta: { screen: DetalleReceta,
+    navigationOptions: {
+      title: "Tacky",
+      headerLeft: null
+    } 
+  }, 
   CookBook: { screen: CookBook,
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
@@ -73,12 +81,12 @@ const SecondNavigator = createStackNavigator({
       headerTintColor: 'black',
     }),
   },
-  DetalleReceta: { screen: DetalleReceta,
-    navigationOptions: {
-      title: "Tacky",
-      headerLeft: null
-    } 
-  }, 
+  Cargando: { screen: Cargando, navigationOptions: { 
+    headerLeft: null
+  }},
+  Header: { screen: Header, navigationOptions: { 
+    headerLeft: null
+  } },
   CookBookDetail: { screen: CookBookDetail, navigationOptions: {
     title: "Tacky",
   } },
@@ -101,20 +109,20 @@ const ThirdNavigator = createStackNavigator({
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
   
-  Mapa: {
-    //Title
-    screen: MainNavigator,
-    navigationOptions: {
-      drawerLabel: 'Mapa',
-      drawerIcon: () => <Ionicons name="md-home"></Ionicons>
-    },
-  },
   CookBook: {
     //Title
     screen: SecondNavigator,
     navigationOptions: {
       drawerLabel: 'Recetario',
       drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    },
+  },
+  Mapa: {
+    //Title
+    screen: MainNavigator,
+    navigationOptions: {
+      drawerLabel: 'Mapa',
+      drawerIcon: () => <Ionicons name="md-home"></Ionicons>
     },
   },
   NewPlace: {

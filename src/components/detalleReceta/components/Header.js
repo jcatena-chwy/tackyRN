@@ -14,7 +14,7 @@ export default class Ingrediente extends Component {
     this.guardarReceta = this.guardarReceta.bind(this)
     this.guidGenerator = this.guidGenerator.bind(this)
     this.goBack = this.goBack.bind(this)
-  } 
+  }  
   validarReceta(){
       if(!this.props.imagenGaleria) {
         this.props.sendData("Por favor, elija una imagen de la galeria", true)
@@ -32,9 +32,11 @@ export default class Ingrediente extends Component {
          this.props.sendData("Por favor, escriba al menos una descripcion en el paso o cargue una imagen, en un paso", true)
          return
        }
-     this.guardarReceta()
+       this.props.goBackToDetalleReceta();
   }
+ 
   guardarReceta(){
+    debugger
     this.setState({isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
     const db = firebase.database()
     var idMainImage = this.guidGenerator()

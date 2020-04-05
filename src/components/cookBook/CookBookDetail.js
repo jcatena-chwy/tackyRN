@@ -207,7 +207,7 @@ export default class CookBookDetail extends Component {
                   underlayColor='#ccc'
                 // onPress = { () => alert('Yaay!') }
                 >
-                  <Text style={{ color: 'white' }}>{step.orden}</Text>
+                  <Text style={{ color: 'white' }}>{index + 1}</Text>
                 </TouchableHighlight>
 
                 {/* <TextInput value={step.description} style={{ fontSize: 17}} /> */}
