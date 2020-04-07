@@ -21,7 +21,7 @@ export default class ContentContainer extends Component {
                 screenToNavigate: 'NewPlace',
             },
         ];
-    }
+    } 
     render() {
         return (
             <View style={styles.sideMenuContainer}>
