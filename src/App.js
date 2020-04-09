@@ -1,7 +1,7 @@
 //This is an example code for NavigationDrawer//
 import React, { Component } from 'react';
 //import react in our code.
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -30,7 +30,7 @@ class NavigationDrawerStructure extends Component {
     return (
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
-          <Ionicons name="ios-menu" size={32} style={{  marginLeft: 10 }} />
+          <Ionicons name="ios-menu" size={32} style={{  marginLeft: 10, color: 'white' }} />
         </TouchableOpacity>
       </View>
     );
@@ -38,14 +38,37 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  Login: { screen: Login}, SignUp: { screen: SignUp},
+  Login: { 
+     screen: Login,
+     navigationOptions: ({ navigation }) => ({
+       headerStyle: {
+         backgroundColor: '#e43753',
+         height: 0,
+         borderWidth:0.1,
+         borderColor:'transparent'
+       }
+     })
+   }, SignUp: { screen: SignUp,
+     navigationOptions: ({ navigation }) => ({
+       headerBackTitle: '',
+       headerStyle: {
+         backgroundColor: '#e43753',
+         height: 30,
+         borderWidth:0.1,
+         borderColor:'transparent'
+       }
+     })},
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
+      headerTitle: (
+        <Image style={{width:73, height:73 , left:100}} source={require('./assets/titleImage.png')}/>
+      ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: 'white',
+        backgroundColor: '#e97463',
+        height:73
       },
       headerTintColor: 'black',
     }),
@@ -65,22 +88,26 @@ const MainNavigator = createStackNavigator({
 }, {headerLayoutPreset: 'center'});
 
 const SecondNavigator = createStackNavigator({ 
+  CookBook: { screen: CookBook,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerTitle: (
+        <Image style={{width:73, height:73 , left:100}} source={require('./assets/titleImage.png')}/>
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height:73
+      },
+      headerTintColor: 'black',
+    }),
+  },
   DetalleReceta: { screen: DetalleReceta,
     navigationOptions: {
       title: "Tacky",
       headerLeft: null
     } 
   }, 
-  CookBook: { screen: CookBook,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: 'white',
-      },
-      headerTintColor: 'black',
-    }),
-  },
   Cargando: { screen: Cargando, navigationOptions: { 
     headerLeft: null
   }},
@@ -96,9 +123,13 @@ const ThirdNavigator = createStackNavigator({
   NewPlace: { screen: NewPlace,
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
+      headerTitle: (
+        <Image style={{width:73, height:73 , left:100}} source={require('./assets/titleImage.png')}/>
+      ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: 'white',
+        backgroundColor: '#e97463',
+        height:73
       },
       headerTintColor: 'black',
     }),
@@ -117,7 +148,6 @@ const DrawerNavigatorExample = createDrawerNavigator({
     },
   },
   CookBook: {
-    //Title
     screen: SecondNavigator,
     navigationOptions: {
       drawerLabel: 'Recetario',
@@ -135,6 +165,7 @@ const DrawerNavigatorExample = createDrawerNavigator({
 {
   //For the Custom sidebar menu we have to provide our CustomSidebarMenu
   contentComponent: ContentComponent,
+  backgroundColor:'red',
   //Sidebar width
   drawerWidth: Dimensions.get('window').width - 130,
 }

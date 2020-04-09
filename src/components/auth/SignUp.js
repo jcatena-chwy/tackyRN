@@ -11,11 +11,17 @@ import {
     Item,
     View
 } from 'native-base';
-import { Text } from 'react-native';
-import { StyleSheet, Alert } from 'react-native';
+import { Text, ImageBackground, Dimensions } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import firebase from '../../config';
 import Modal from "react-native-modal";
-import {Spinner } from 'native-base';
+import { Spinner } from 'native-base';
+import bgImage from '../../assets/fondoDePantalla.jpg'
+import logo from '../../assets/logoApp.png'
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
+
+const { width: WIDTH } = Dimensions.get('window')
 
 
 export default class SignUp extends Component {
@@ -69,74 +75,117 @@ export default class SignUp extends Component {
     render() {
         return (
             <Container style={styles.container}>
-                <Form>
-                    <Item floatingLabel>
-                        <Icon name='eye' />
-                        <Label>Email</Label>
-                        <Input
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onChangeText={email => this.setState({ email })}
-                        />
-                    </Item>
-                    <Item floatingLabel>
-                        <Icon name='eye' />
-                        <Label>Password</Label>
-                        <Input
-                            secureTextEntry={true}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onChangeText={password => this.setState({ password })}
-                        />
-                    </Item>
-                    <Item floatingLabel>
-                        <Icon name='eye' />
-                        <Label>Confirmed Password</Label>
-                        <Input
-                            secureTextEntry={true}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onChangeText={confirmedPassword => this.setState({ confirmedPassword })}
-                        />
-                    </Item>
-                    <Button full rounded success style={{ marginTop: 20 }} onPress={() => this.SignUp(this.state.email, this.state.password)}>
-                        <Text>Sign Up</Text>
-                    </Button>
-                </Form>
-                <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
-                    <View style={styles.contentSpinner}>
-                        <Spinner color='red' />
+                <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+                    <View style={styles.logoContainer}>
+                        <Image source={logo} style={styles.logo}></Image>
+                        <Text style={styles.logoText}>Tacky</Text>
                     </View>
-                </Modal>
+
+                    <View style={styles.inputContainer}>
+                        <Icon name="ios-contact" size={28} color={'red'} style={styles.inputIcon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="E-mail"
+                            placeholderTextColor={'rgba(255,255,255,0.7)'}
+                            underlineColorAndroid='transparent'
+                            onChangeText={email => this.setState({ email })}
+                        >
+
+                        </TextInput>
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Icon name="ios-lock" size={28} color={'red'} style={styles.inputIcon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Contraseña"
+                            secureTextEntry={true}
+                            placeholderTextColor={'rgba(255,255,255,0.7)'}
+                            underlineColorAndroid='transparent'
+                            onChangeText={password => this.setState({ password })}
+                        >
+
+                        </TextInput>
+                    </View>
+                    
+                    <View style={styles.inputContainer}>
+                        <Icon name="ios-lock" size={28} color={'red'} style={styles.inputIcon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Confirmar Contraseña"
+                            secureTextEntry={true}
+                            placeholderTextColor={'rgba(255,255,255,0.7)'}
+                            underlineColorAndroid='transparent'
+                            onChangeText={confirmedPassword => this.setState({ confirmedPassword })}
+                        >
+
+                        </TextInput>
+                    </View>
+
+                    
+                    <TouchableOpacity onPress={() => this.SignUp(this.state.email, this.state.password)} style={styles.btnLogin}>
+                        <Text style={styles.text}>Registrarse</Text>
+                    </TouchableOpacity>
+                </ImageBackground>
             </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    backgroundContainer: {
         flex: 1,
         justifyContent: 'center',
-        padding: 10,
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF'
     },
-    icon: {
-        fontSize: 20
-    },containerSpinner: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		shadowRadius:10,
-		width: 350, 
-		height:280
-	  },
-	  contentSpinner: {
-		backgroundColor: 'white',
-		padding: 22,
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderRadius: 4,
-		width:200,
-		height:200,
-		borderColor: 'rgba(0, 0, 0, 0.1)',
-	  }
+    logoContainer: {
+        alignItems: 'center',
+        marginBottom: 50
+    },
+    logo: {
+        width: 120,
+        height: 120
+    },
+    logoText: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: '800',
+        marginTop: 10,
+        opacity: 0.5
+    },
+    input: {
+        width: WIDTH - 55,
+        height: 35,
+        borderRadius: 25,
+        fontSize: 16,
+        backgroundColor: 'rgba(0,0,0,0.35)',
+        color: 'rgba(255,255,255,0.7)',
+        marginHorizontal: 25,
+        textAlign: 'center'
+    },
+    inputIcon: {
+        position: 'absolute',
+        left: 37
+    },
+    inputContainer: {
+        marginTop:10
+
+    },
+    btnLogin: {
+        width: WIDTH - 55,
+        height: 35,
+        borderRadius: 25,
+        fontSize: 16,
+        backgroundColor:'transparent',
+        justifyContent:'center',
+        marginTop:20,
+        borderColor: 'white', 
+        borderWidth: 1 
+    },
+    text: {
+        color: 'rgba(255,255,255,0.7)',
+        fontSize: 16,
+        textAlign:'center'
+    }
 })

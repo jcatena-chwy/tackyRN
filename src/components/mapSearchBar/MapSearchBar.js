@@ -93,13 +93,13 @@ export default class MapSearchBar extends Component{
                     <View style={{width: (WIDTH-40), height: 10}}>
 
                     </View>
-                    <View style={{width: (WIDTH-40), height: 50, backgroundColor: 'skyblue'}}>
+                    <View style={{width: (WIDTH-40), height: 50, borderRadius:25,}}>
                         <View style={styles.container}>
                             <View style={styles.leftCol}>
                                 <Text style={{fontSize : 8}}>{'\u25A0'}</Text>
                             </View>
                             <View style={styles.centerCol}>
-                                <TextInput  style={{fontSize : 21, color : '#545454'}} 
+                                <TextInput  style={{fontSize : 15, fontWeight: '800', color : '#545454'}} 
                                             placeholder="¿A dónde quieres ir?"
                                             value={this.state.textInputValue}
                                             onChangeText={this.filterResults}
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
         backgroundColor : 'white',
         alignItems : 'center',
         shadowColor : '#000000',
+        borderRadius:25,
         elevation : 7,
         shadowRadius : 5,
         shadowOpacity : 0.5
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
     },
     rightCol : {
         flex : 2,
+        right: 6,
         borderColor : '#ededed'
     },
     resultList : {

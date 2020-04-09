@@ -21,11 +21,12 @@ export default class ContentContainer extends Component {
                 screenToNavigate: 'NewPlace',
             },
         ];
-    } 
+    }
     render() {
         return (
             <View style={styles.sideMenuContainer}>
-                <Image style={{width: 50, height: 50}} source={require('../assets/logoApp.png')} />
+                <Text style={styles.logoText}>Tacky</Text>
+                {/* <Image style={{ width: 120, height: 120, bottom:50 }} source={require('../assets/logoApp.png')} /> */}
                 <View style={{ width: '100%' }}>
                     {this.items.map((item, key) => (
                         <View
@@ -35,15 +36,16 @@ export default class ContentContainer extends Component {
                                 alignItems: 'center',
                                 paddingTop: 10,
                                 paddingBottom: 10,
-                                backgroundColor: global.currentScreenIndex === key ? '#e0dbdb' : '#ffffff',
+                                backgroundColor: '#d27064',
+                                marginBottom: 5,
                             }}>
                             <View style={{ marginRight: 10, marginLeft: 20 }}>
-                            <Ionicons name={item.navOptionThumb} size={32} style={{  marginLeft: 10 }} />
+                                <Ionicons name={item.navOptionThumb} size={32} style={{ marginLeft: 10, color:'white' }} />
                             </View>
                             <Text
                                 style={{
                                     fontSize: 15,
-                                    color: global.currentScreenIndex === key ? 'red' : 'black',
+                                    color: 'white',
                                 }}
                                 onPress={() => {
                                     global.currentScreenIndex = key;
@@ -61,12 +63,23 @@ export default class ContentContainer extends Component {
 }
 
 const styles = StyleSheet.create({
+    logoText: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: '800',
+        marginTop: 10,
+        opacity: 0.5,
+        marginBottom: 50
+    },
     sideMenuContainer: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: '#d27064',
         alignItems: 'center',
         paddingTop: 20,
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center'
     },
     sideMenuProfileIcon: {
         resizeMode: 'center',
