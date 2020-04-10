@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { TextInput, Text, TouchableHighlight, View, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
+import { TextInput, Text, TouchableHighlight, View, StyleSheet, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity } from 'react-native';
 import { Card, CardItem } from 'native-base';
 import firebase from '../../config';
 import Modal from "react-native-modal";
 import { YellowBox } from 'react-native';
 const { width } = Dimensions.get("window");
 import _ from 'lodash';
-
+import bgImage from '../../assets/fondoDePantalla.jpg'
 YellowBox.ignoreWarnings(['Setting a timer']);
 YellowBox.ignoreWarnings(['Warning']);
 YellowBox.ignoreWarnings(['Remote']);
@@ -44,7 +44,8 @@ export default class CookBookDetail extends Component {
     console.log("La receta es: " + this.state.receta)
     for (var key in this.state.receta.ingredients) {
       var obj = this.state.receta.ingredients[key];
-      this.state.textInput = this.state.textInput + obj.description + "\n"
+      if (key != "cantidad")
+        this.state.textInput = this.state.textInput + obj.description + "\n"
     }
     var steps = []
     var stepImage = []
@@ -92,8 +93,8 @@ export default class CookBookDetail extends Component {
           }
         }
       }
-      if(imagenLess) {
-        this.setState({  isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
+      if (imagenLess) {
+        this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
       }
     }, 100)
   }
@@ -170,84 +171,105 @@ export default class CookBookDetail extends Component {
 
   render() {
     return (
-      <Container style={{ left: 10 }}>
-        <ScrollView>
-          <Image source={{ uri: this.state.receta.imageName }} style={{ width: '100%', height: 350 }} />
-          <Text style={{ fontSize: 30, fontWeight: 'bold', left: 6, textAlign: 'center', color: '#97bc00' }}>{this.state.receta.title}</Text>
+      <ImageBackground source={bgImage} source={bgImage} style={styles.containerMain}>
+        <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator = {false}
+        style ={{marginTop: 15}}
+        >
+          <View isVisible={this.state.contenido} style={styles.containerMain}>
+            <View showsHorizontalScrollIndicator={false} style={styles.containerSecundary}>
+              <ImageBackground source={bgImage} style={styles.containerThrid}>
+                <Image source={{ uri: this.state.receta.imageName }} style={styles.image} />
+              </ImageBackground>
+              <ImageBackground source={bgImage} style={styles.containerText}>
+                <Text style={styles.titleText}>{this.state.receta.title}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                  {this.state.receta != undefined && <Text style={{ color: 'white', fontSize: 10 }}>{this.state.receta.time + " "}</Text>}
+                  {this.state.receta.ingredients.cantidad != undefined && <Icon style={{ color: 'white', fontSize: 10 }} name="time" />}
+                  {this.state.receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 10 }}>{"   " + this.state.receta.ingredients.cantidad + " Ingredientes"}</Text>}
+                </View>
+              </ImageBackground>
+              <ImageBackground source={bgImage} style={styles.containerVer}>
+                <TouchableOpacity style={styles.btnVer}>
+                  <Text style={styles.titleText}>Ingredientes</Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+            <View style={styles.textAreaContainer} >
+              <TextInput
+                textAlignVertical="top"
+                style={styles.textArea}
+                underlineColorAndroid="transparent"
+                value={this.state.textInput}
+                placeholderTextColor="white"
+                numberOfLines={10}
+                multiline={true}
+                editable={false}
+              />
+            </View>
+            <Text style={{ fontSize: 20, bottom: 10, marginTop: 10, color: 'white' }}>Preparación</Text>
 
-          <Text style={{ fontSize: 20, left: 6, color: '#ccc9bc' }}>Ingredientes</Text>
-          <View style={styles.textAreaContainer} >
-            <TextInput
-              textAlignVertical="top"
-              style={styles.textArea}
-              underlineColorAndroid="transparent"
-              value={this.state.textInput}
-              placeholderTextColor="grey"
-              numberOfLines={10}
-              multiline={true}
-            />
-          </View>
-
-
-          {this.state.receta.time != "" && <View style={{ flexDirection: 'row', color: '#ccc9bc' }}><Text style={{ fontSize: 20, left: 6, color: '#ccc9bc' }}>Tiempo de Preparación: </Text><Text style={{ fontSize: 15, left: 6, top: 5 }}>{this.state.receta.time}</Text><Icon active name='time' style={{ fontSize: 15, left: 12, top: 3 }} /></View>}
-          <Text style={{ fontSize: 20, bottom: 10, marginTop: 10, color: '#ccc9bc' }}>Pasos</Text>
-
-          {this.state.stepsImage.map((step, index) =>
-            <Card key={index} style={{ width: 350, borderColor: "black" }}>
-              <CardItem style={{ height: 100 }} header >
-                <TouchableHighlight
+            {this.state.stepsImage.map((step, index) =>
+              <Card key={index} style={{ width: 350, borderRadius: 20, borderWidth: 1, overflow: 'hidden', borderColor: 'white' }}>
+                <ImageBackground source={bgImage} style={styles.backgroundContainer}
                   style={{
-                    borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-                    width: Dimensions.get('window').width * 0.09,
-                    height: Dimensions.get('window').width * 0.09,
-                    backgroundColor: 'red',
+                    height: 230, borderRadius: 20, borderWidth: 1,
+                    overflow: 'hidden', borderColor: 'white',
                     justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                  underlayColor='#ccc'
-                // onPress = { () => alert('Yaay!') }
-                >
-                  <Text style={{ color: 'white' }}>{index + 1}</Text>
-                </TouchableHighlight>
-
-                {/* <TextInput value={step.description} style={{ fontSize: 17}} /> */}
-                {step.Isdescription != "" && <View style={styles.textAreaContainerSteps} >
-                  <TextInput
-                    textAlignVertical="top"
-                    style={styles.textAreaSteps}
-                    underlineColorAndroid="transparent"
-                    value={step.description}
-                    placeholderTextColor="grey"
-                    numberOfLines={10}
-                    multiline={true}
-                  />
-                </View>}
-              </CardItem>
-
-              {step.Isdescription ? (
-                <CardItem style={{ alignItems: 'center', flex: 1, justifyContent: 'center', borderColor: '#ccc9bc' }} >
-                  <Content>
-                    <ScrollView
-                      contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}
+                    alignItems: 'center',
+                  }}> 
+                  <View style={{
+                    flexDirection: 'row', justifyContent: 'center',
+                    alignItems: 'center', top: 5
+                  }}>
+                    <TouchableHighlight
+                      style={{
+                        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+                        width: Dimensions.get('window').width * 0.09,
+                        height: Dimensions.get('window').width * 0.09,
+                        backgroundColor: '#e23f52',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      underlayColor='#ccc'
                     >
-                      {step.photos.map((photo) =>
-                        <Item key={photo.photo} >
-                          <TouchableHighlight onPress={() => this.visualizarFoto(photo)} >
-                            <Image
-                              source={{ uri: photo.image }}
-                              style={{ width: 80, height: 80, right: 5 }}
-                            />
-                          </TouchableHighlight>
-                        </Item>
-                      )}
-                    </ScrollView>
-                  </Content>
-                </CardItem>
-              ) : (
-                  <CardItem style={{ alignItems: 'center', flex: 1, justifyContent: 'center', borderColor: '#ccc9bc' }} >
-                    <Content style={{ bottom: 50 }}>
+                      <Text style={{ color: 'white' }}>{index + 1}</Text>
+                    </TouchableHighlight>
+                    <View style={styles.textAreaContainerSteps} >
+                      <TextInput
+                        style={styles.textAreaSteps}
+                        underlineColorAndroid="transparent"
+                        value={step.description}
+                        placeholderTextColor="grey"
+                        numberOfLines={10}
+                        editable={false}
+                        multiline={true}
+                      />
+                    </View>
+                  </View>
+                  {step.Isdescription ? (
+                    <CardItem style={{ backgroundColor: 'transparent' }} >
+                        <ScrollView
+                          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={false}
+                          showsVerticalScrollIndicator = {false}
+                        >
+                          {step.photos.map((photo) =>
+                            <Item key={photo.photo} >
+                              <TouchableHighlight onPress={() => this.visualizarFoto(photo)} >
+                                <Image
+                                  source={{ uri: photo.image }}
+                                  style={{ width: 80, height: 80, right: 5, bottom: 5, borderRadius: 5, overflow:'hidden' }}
+                                />
+                              </TouchableHighlight>
+                            </Item>
+                          )}
+                        </ScrollView>
+                    </CardItem>
+                  ) : (
+                    <CardItem style={{ backgroundColor: 'transparent' }} >
                       <ScrollView
                         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
                         horizontal={true}
@@ -258,89 +280,58 @@ export default class CookBookDetail extends Component {
                             <TouchableHighlight >
                               <Image
                                 source={{ uri: photo.image }}
-                                style={{ width: 80, height: 80, right: 5 }}
+                                style={{ width: 80, height: 80, right: 5, bottom: 5, borderRadius: 5, overflow:'hidden' }}
                               />
                             </TouchableHighlight>
                           </Item>
                         )}
                       </ScrollView>
-                    </Content>
                   </CardItem>
-                )}
-            </Card>
-          )}
+                    )}
+                </ImageBackground>
+              </Card>
+            )}
 
-
-
-
-          <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner} >
-            {!this.state.viewImage && <View style={styles.content}>
+          </View>
+        </ScrollView>
+        <Modal style={styles.containerModal} isVisible={this.state.isModalVisibleSpinner} >
+            {!this.state.viewImage && <View style={styles.contentModal}>
               <Spinner color='red' />
             </View>}
-            {/* {this.state.viewImage &&<View style={styles.content}> >
-                {this.state.viewImage && <Text style={{ fontSize: 20}}>ver foto</Text>}
-                {this.state.viewImage && <Button danger style={{ width:90, }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color:"white", left:4}}>Cerrar</Text></Button>}
-                    </View>} */}
-            {this.state.viewImage && <View style={styles.content}><Image source={{ uri: this.state.imagenSeleccionada }} style={{ width: 200, height: 200, marginTop: 10 }}></Image><Button danger style={{ width: 90, top: 5 }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color: "white", left: 4 }}>Cerrar</Text></Button></View>}
+            {this.state.viewImage && <View style={styles.contentModal}><Image source={{ uri: this.state.imagenSeleccionada }} style={{ width: 200, height: 200, marginTop: 10 }}></Image><Button danger style={{ width: 90, top: 5 }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color: "white", left: 4 }}>Cerrar</Text></Button></View>}
           </Modal>
-
-        </ScrollView>
-
-
-
-      </Container>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  containerModal: {
+    shadowRadius: 10,
+    width: 280,
+    height: 280,
+    left: 30 
+  },
+  contentModal: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width: 280,
+    height: 280,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  containerMain: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowRadius: 10,
-    width: 350,
-    height: 280
-  },
-  button: {
-    backgroundColor: 'lightblue',
-    width: 30,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  content: {
-    backgroundColor: 'white',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    width: 330,
-    height: 300,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  contentTitle: {
-    fontSize: 20,
-    marginBottom: 12,
   },
   textAreaContainer: {
     left: 6,
     borderColor: '#ccc9bc',
     borderWidth: 1,
+    height: 120,
     padding: 5,
     width: '90%',
     borderRadius: 7,
@@ -348,19 +339,108 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   textArea: {
+    color: 'white',
+    fontSize: 12,
+    marginTop: 5,
+    marginBottom: 5
+  },
+  containerSecundary: {
+    backgroundColor: '#ea8073',
+    marginBottom: 10,
+    marginRight: 10,
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    width: 250,
+    height: 280,
+  },
+  containerThrid: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginTop: 30,
+    width: 180,
+    height: 180,
+    overflow: "hidden",
+  },
+  containerText: {
+    backgroundColor: 'red',
+    width: 130,
+    height: 40,
+  },
+  containerVer: {
+    borderRadius: 20,
+    overflow: "hidden",
+    borderColor: 'white',
+    borderWidth: 3,
+    top: 15
+  },
+  image: {
+    width: 150,
     height: 150,
-    justifyContent: "flex-start"
+    borderRadius: 20,
+    alignItems: "center"
+  },
+  btnVer: {
+    width: 100,
+    overflow: "hidden",
+    borderRadius: 20,
+  },
+  containerSection1: {
+    backgroundColor: 'transparent',
+    borderColor: 'white',
+    borderRadius: 20,
+    borderWidth: 1,
+    width: 350,
+    height: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10
+  },
+  containerSection2: {
+    backgroundColor: '#a1998e',
+    borderColor: 'white',
+    borderRadius: 20,
+    borderWidth: 1,
+    width: 250,
+    height: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10
+  },
+  containerAddRecetaDetalle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerSearchReceta: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 350,
+  },
+  textAddReceta: {
+    marginLeft: 5,
+    color: 'white'
+  },
+  titleText: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
   },
   textAreaContainerSteps: {
-    left: 6,
-    borderColor: '#ccc9bc',
-    borderWidth: 1,
-    padding: 5,
-    width: '90%',
-    borderRadius: 7
+    marginLeft: 5,
+    width: '80%',
   },
   textAreaSteps: {
-    height: 80,
-    // justifyContent: "flex-start"
+    fontSize: 12,
+    color: 'white',
   }
-});
+}); 

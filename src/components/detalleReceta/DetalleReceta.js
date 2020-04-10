@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import {
-  TextInput, Text, View, StyleSheet
-} from 'react-native';
+import { StyleSheet, ImageBackground, Dimensions, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Container, Content, Form, Input, Label, Icon, Item, Left, Body, Button, Title, Right } from "native-base";
 import Photo from './components/Photo'
-import Paso from './components/Paso'
 import Ingrediente from './components/Ingrediente'
+const { width: WIDTH } = Dimensions.get('window')
+import bgImage from '../../assets/fondoDePantalla.jpg'
 import Header from './components/Header'
-import Modal from "react-native-modal";
 import firebase from '../../config';
+import Modal from "react-native-modal";
+import Paso from './components/Paso'
 import GuardarReceta from './components/GuardarReceta';
+import { ScrollView } from 'react-native-gesture-handler';
 export default class DetalleReceta extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ export default class DetalleReceta extends Component {
       time: "",
       navigation: this.props.navigation,
       imagenesPasos: []
-    }
+    };
     this.handleChange = this.handleChange.bind(this);
     this.callModal = this.callModal.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -38,7 +39,6 @@ export default class DetalleReceta extends Component {
     this.goBackToCookBook = this.goBackToCookBook.bind(this);
     this.toggleModalConfirmed = this.toggleModalConfirmed.bind(this);
   }
-
   goBackToCookBook(value) {
     var receta = {}
     this.props.navigation.navigate('CookBook', { receta })
@@ -87,60 +87,77 @@ export default class DetalleReceta extends Component {
 
     this.setState({ isModalVisibleConfirmed: !this.state.isModalVisibleConfirmed });
   };
+
+
   render() {
     const navigation = this.props.navigation;
     return (
-      <Container>
-        <Header imagenGaleria={this.state.imagenGaleria} nameMainImage={this.state.nameMainImage}
-          tituloReceta={this.state.tituloReceta} sendData={this.callModal}
-          isIngredientes={this.state.isIngredientes} listaIngredientes={this.state.listaIngredientes}
-          isPasos={this.state.isPasos} listaPasos={this.state.listaPasos} time={this.state.time}
-          goBackToDetalleReceta={this.goBackToCookBook}
-          navigation={this.state.navigation}
-        ></Header>
-        <Content>
-          <Item>
+      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.containerMain}>
+            <Header imagenGaleria={this.state.imagenGaleria} nameMainImage={this.state.nameMainImage}
+              tituloReceta={this.state.tituloReceta} sendData={this.callModal}
+              isIngredientes={this.state.isIngredientes} listaIngredientes={this.state.listaIngredientes}
+              isPasos={this.state.isPasos} listaPasos={this.state.listaPasos} time={this.state.time}
+              goBackToDetalleReceta={this.goBackToCookBook}
+              navigation={this.state.navigation}
+            ></Header>
             <Photo isImageToGalery={this.guardarImagenPrincipal} tituloReceta={this.state.tituloReceta} ></Photo>
-          </Item>
-          <Item >
-            <TextInput name="tituloReceta" onChangeText={this.handleChange} value={this.state.tituloReceta} style={{ marginTop: '8%', marginBottom: '10%', fontSize: 20 }} placeholder="Titulo de tu Receta" />
-          </Item>
-          <Item style={{ marginTop: '0%', marginBottom: '0%', fontSize: 20 }}>
+            <TouchableOpacity onPress={this.validarReceta} style={styles.btnLogin}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ marginTop: 4, marginLeft: 10, marginRight: 20, color: 'white', fontWeight: '400', fontSize: 15 }}>Titulo de la receta: </Text>
+                <TextInput style={{ color: '#bbb', fontSize: 12, marginTop: 1 }} name="tituloReceta" onChangeText={this.handleChange} value={this.state.tituloReceta} placeholderStyle={{ fontFamily: "italic", borderColor: 'red' }} placeholder="Chips de queso sin tacc" />
+              </View>
+            </TouchableOpacity>
+
             <Ingrediente isIngredientes={this.guardarIngredientes}></Ingrediente>
-          </Item>
-          <Item>
+
             <Paso isPasos={this.guardarPasos} tituloReceta={this.state.tituloReceta}></Paso>
-          </Item>
-          <Modal style={styles.container} isVisible={this.state.isModalVisible}>
-            <View style={styles.content}>
-              {/* <Text style={styles.contentTitle}>Hi 👋!</Text> */}
-              <Text style={styles.contentTitle}>{this.state.tituloModal} 👋!</Text>
-              <Button danger style={{ width: 80, height: 40 }} onPress={this.toggleModal}>
-                <Text style={{ fontSize: 18, color: "white", alignSelf: "center", left: 8 }} >Cerrar</Text>
-              </Button>
 
-            </View>
-          </Modal>
-          <Modal style={styles.container} isVisible={this.state.isModalVisibleConfirmed}>
-            <View style={styles.content}>
-              <GuardarReceta
-                imagenGaleria={this.state.imagenGaleria} nameMainImage={this.state.nameMainImage}
-                tituloReceta={this.state.tituloReceta} sendData={this.callModal} imagenesPasos={this.state.imagenesPasos}
-                isIngredientes={this.state.isIngredientes} listaIngredientes={this.state.listaIngredientes}
-                isPasos={this.state.isPasos} listaPasos={this.state.listaPasos} time={this.state.time}
-                goBackToDetalleReceta={this.goBackToCookBook}
-                navigation={this.state.navigation} toggleModalConfirmed={this.toggleModalConfirmed}>
-              </GuardarReceta>
-            </View>
-          </Modal>
-        </Content>
-      </Container>
+            <Modal style={styles.container} isVisible={this.state.isModalVisible}>
+              <View style={styles.content}>
+                {/* <Text style={styles.contentTitle}>Hi 👋!</Text> */}
+                <Text style={styles.contentTitle}>{this.state.tituloModal} 👋!</Text>
+                <Button danger style={{ width: 80, height: 40 }} onPress={this.toggleModal}>
+                  <Text style={{ fontSize: 18, color: "white", alignSelf: "center", left: 8 }} >Cerrar</Text>
+                </Button>
 
+              </View>
+            </Modal>
+            <Modal style={styles.container} isVisible={this.state.isModalVisibleConfirmed}>
+              <View style={styles.content}>
+                <GuardarReceta
+                  imagenGaleria={this.state.imagenGaleria} nameMainImage={this.state.nameMainImage}
+                  tituloReceta={this.state.tituloReceta} sendData={this.callModal} imagenesPasos={this.state.imagenesPasos}
+                  isIngredientes={this.state.isIngredientes} listaIngredientes={this.state.listaIngredientes}
+                  isPasos={this.state.isPasos} listaPasos={this.state.listaPasos} time={this.state.time}
+                  goBackToDetalleReceta={this.goBackToCookBook}
+                  navigation={this.state.navigation} toggleModalConfirmed={this.toggleModalConfirmed}>
+                </GuardarReceta>
+              </View>
+            </Modal>
+          </View>
+        </ScrollView>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  containerMain: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -148,15 +165,6 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     width: 350,
     height: 280
-  },
-  button: {
-    // backgroundColor: 'lightblue',
-    width: 30,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   modalContent: {
     backgroundColor: 'white',
@@ -180,8 +188,71 @@ const styles = StyleSheet.create({
     height: 200,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
-  contentTitle: {
-    fontSize: 20,
-    marginBottom: 12,
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 50
+  },
+  logo: {
+    width: 120,
+    height: 120
+  },
+  logoText: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: '800',
+    marginTop: 10,
+    opacity: 0.5
+  },
+  input: {
+    width: WIDTH - 55,
+    height: 35,
+    borderRadius: 25,
+    fontSize: 16,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    color: 'rgba(255,255,255,0.7)',
+    marginHorizontal: 25,
+    textAlign: 'center'
+  },
+  inputIcon: {
+    position: 'absolute',
+    left: 37
+  },
+  inputContainer: {
+    marginTop: 10
+
+  },
+  btnLogin: {
+    width: WIDTH - 35,
+    height: 35,
+    borderRadius: 25,
+    fontSize: 16,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    marginTop: 20,
+    borderColor: 'white',
+    borderWidth: 1
+  },
+  text: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 16,
+    textAlign: 'center'
+  },
+  containerSpinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowRadius: 10,
+    width: 350,
+    height: 280
+  },
+  contentSpinner: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width: 200,
+    height: 200,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   }
 });

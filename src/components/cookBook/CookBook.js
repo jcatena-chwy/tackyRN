@@ -118,6 +118,9 @@ export default class CookBook extends Component {
               receta: arrayRecetas,
               copiaRecetas: arrayRecetas,
               isModalVisibleSpinner: !this.state.isModalVisibleSpinner
+            }, () => {
+              // var receta = this.state.receta[0];
+              // this.props.navigation.navigate('CookBookDetail', { receta })
             })
           }
         });
@@ -152,28 +155,7 @@ export default class CookBook extends Component {
   }
   render() {
     const navigation = this.props.navigation;
-    const {
-      blurRadius,
-      children,
-      containerStyle,
-      contentPosition,
-      height,
-      overlayAlpha,
-      overlayColor,
-      rounded,
-      source,
-      title,
-      titleStyle,
-      ...props
-    } = this.props;
-    let justifyContent;
-    if (contentPosition == "top") {
-      justifyContent = "flex-start";
-    } else if (contentPosition == "bottom") {
-      justifyContent = "flex-end";
-    } else if (contentPosition == "center") {
-      justifyContent = "center";
-    }
+    
     return (
       <ImageBackground source={bgImage} source={bgImage} style={styles.containerMain}>
         <View isVisible={this.state.contenido} style={styles.containerMain}>

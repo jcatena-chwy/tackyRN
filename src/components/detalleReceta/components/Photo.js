@@ -31,8 +31,13 @@ export default class ImagePickerExample extends React.Component {
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {!image && <Icon active name='image' onPress={this._pickImage} style={{ fontSize: 80 }} />}
-        {!image && <Text style={{ fontSize: 20 }}>Publicar foto del Plato Terminado</Text>}
+        {!image && 
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}> 
+          <Icon active name='image' onPress={this._pickImage} style={{ fontSize: 120, color:'white' }} />
+          <Icon  name="ios-add-circle" onPress={this._pickImage} style={{ fontSize: 50, color:'black', bottom: 41, borderColor:'#e65540' }} />
+        </View>
+        }
+        {/* {!image && <Text style={{ fontSize: 20 }}>Publicar foto del Plato Terminado</Text>} */}
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200, marginTop: 10 }} />}
         <Modal style={styles.container} isVisible={this.state.isModalVisible}>
           <View style={styles.content}>

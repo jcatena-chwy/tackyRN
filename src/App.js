@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 //import react in our code.
 import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-import {createAppContainer} from 'react-navigation';
-import {createDrawerNavigator} from 'react-navigation-drawer';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createStackNavigator } from 'react-navigation-stack';
 import Mapa from './components/map/Map'
 import CookBook from './components/cookBook/CookBook'
 import Screen3 from './components/cookBook/CookBookDetail'
@@ -30,7 +30,7 @@ class NavigationDrawerStructure extends Component {
     return (
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
-          <Ionicons name="ios-menu" size={32} style={{  marginLeft: 10, color: 'white' }} />
+          <Ionicons name="ios-menu" size={32} style={{ marginLeft: 10, color: 'white' }} />
         </TouchableOpacity>
       </View>
     );
@@ -38,120 +38,158 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  Login: { 
-     screen: Login,
-     navigationOptions: ({ navigation }) => ({
-       headerStyle: {
-         backgroundColor: '#e43753',
-         height: 0,
-         borderWidth:0.1,
-         borderColor:'transparent'
-       }
-     })
-   }, SignUp: { screen: SignUp,
-     navigationOptions: ({ navigation }) => ({
-       headerBackTitle: '',
-       headerStyle: {
-         backgroundColor: '#e43753',
-         height: 30,
-         borderWidth:0.1,
-         borderColor:'transparent'
-       }
-     })},
+  Login: {
+    screen: Login,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: '#e43753',
+        height: 0,
+        borderWidth: 0.1,
+        borderColor: 'transparent'
+      }
+    })
+  }, SignUp: {
+    screen: SignUp,
+    navigationOptions: ({ navigation }) => ({
+      headerBackTitle: '',
+      headerStyle: {
+        backgroundColor: '#e43753',
+        height: 30,
+        borderWidth: 0.1,
+        borderColor: 'transparent'
+      }
+    })
+  },
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
       headerTitle: (
-        <Image style={{width:73, height:73 , left:100}} source={require('./assets/titleImage.png')}/>
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
       ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         backgroundColor: '#e97463',
-        height:73
+        height: 73
       },
       headerTintColor: 'black',
     }),
   },
-  Place: { screen: Place, navigationOptions: {
-    title: "Tacky",
-  } },
-  Comments: { screen: Comments, navigationOptions: {
-    title: "Tacky",
-  }}, 
-  Paso2: { screen: Paso2, navigationOptions: {
-    title: "Tacky",
-  }}, 
-  Paso1: { screen: Paso1, navigationOptions: {
-    title: "Tacky",
-  }}, 
-}, {headerLayoutPreset: 'center'});
-
-const SecondNavigator = createStackNavigator({ 
-  CookBook: { screen: CookBook,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
-      headerTitle: (
-        <Image style={{width:73, height:73 , left:100}} source={require('./assets/titleImage.png')}/>
-      ),
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: '#e97463',
-        height:73
-      },
-      headerTintColor: 'black',
-    }),
-  },
-  DetalleReceta: { screen: DetalleReceta,
-    navigationOptions: {
+  Place: {
+    screen: Place, navigationOptions: {
       title: "Tacky",
-      headerLeft: null
-    } 
-  }, 
-  Cargando: { screen: Cargando, navigationOptions: { 
-    headerLeft: null
-  }},
-  Header: { screen: Header, navigationOptions: { 
-    headerLeft: null
-  } },
-  CookBookDetail: { screen: CookBookDetail, navigationOptions: {
-    title: "Tacky",
-  } },
-}, {headerLayoutPreset: 'center'});
+    }
+  },
+  Comments: {
+    screen: Comments, navigationOptions: {
+      title: "Tacky",
+    }
+  },
+  Paso2: {
+    screen: Paso2, navigationOptions: {
+      title: "Tacky",
+    }
+  },
+  Paso1: {
+    screen: Paso1, navigationOptions: {
+      title: "Tacky",
+    }
+  },
+}, { headerLayoutPreset: 'center' });
 
-const ThirdNavigator = createStackNavigator({ 
-  NewPlace: { screen: NewPlace,
+const SecondNavigator = createStackNavigator({
+  CookBook: {
+    screen: CookBook,
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
       headerTitle: (
-        <Image style={{width:73, height:73 , left:100}} source={require('./assets/titleImage.png')}/>
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
       ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         backgroundColor: '#e97463',
-        height:73
+        height: 73
       },
       headerTintColor: 'black',
     }),
-  },});
- 
+  },
+  DetalleReceta: {
+    screen: DetalleReceta,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+      headerTintColor: 'black',
+    }),
+  },
+  Cargando: {
+    screen: Cargando, navigationOptions: {
+      headerLeft: null
+    }
+  },
+  Header: {
+    screen: Header, navigationOptions: {
+      headerLeft: null
+    }
+  },
+  CookBookDetail: {
+    screen: CookBookDetail,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+      headerTintColor: 'black',
+    }),
+  },
+}, { headerLayoutPreset: 'center' });
+
+const ThirdNavigator = createStackNavigator({
+  NewPlace: {
+    screen: NewPlace,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+      headerTintColor: 'black',
+    }),
+  },
+});
+
 
 // https://expo.github.io/vector-icons/
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
+  CookBook: {
+    screen: SecondNavigator,
+    navigationOptions: {
+      drawerLabel: 'Recetario',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    },
+  },
   Mapa: {
     //Title
     screen: MainNavigator,
     navigationOptions: {
       drawerLabel: 'Mapa',
       drawerIcon: () => <Ionicons name="md-home"></Ionicons>
-    },
-  },
-  CookBook: {
-    screen: SecondNavigator,
-    navigationOptions: {
-      drawerLabel: 'Recetario',
-      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
     },
   },
   NewPlace: {
@@ -162,13 +200,13 @@ const DrawerNavigatorExample = createDrawerNavigator({
     },
   },
 },
-{
-  //For the Custom sidebar menu we have to provide our CustomSidebarMenu
-  contentComponent: ContentComponent,
-  backgroundColor:'red',
-  //Sidebar width
-  drawerWidth: Dimensions.get('window').width - 130,
-}
+  {
+    //For the Custom sidebar menu we have to provide our CustomSidebarMenu
+    contentComponent: ContentComponent,
+    backgroundColor: 'red',
+    //Sidebar width
+    drawerWidth: Dimensions.get('window').width - 130,
+  }
 );
- 
+
 export default createAppContainer(DrawerNavigatorExample);

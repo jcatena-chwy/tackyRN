@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, ScrollView, Image, TouchableHighlight, StyleSheet, Text, Dimensions } from 'react-native';
+import { TextInput, TouchableOpacity, View, ScrollView, Image, TouchableHighlight, StyleSheet, Text, Dimensions, ImageBackground } from 'react-native';
 import { Button, Spinner, Icon, Badge, Item, List, ListItem, Left, Body, Container, Header, Content, Right, Card, CardItem } from 'native-base';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet'
-import { TextInput } from 'react-native-gesture-handler';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { IMAGENAME } from '../../../assets/camera.png';
@@ -10,7 +9,8 @@ import firebase from '../../../config';
 import Modal from 'react-native-modal';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
-
+import bgImage from '../../../assets/fondoDePantalla.jpg'
+const { width: WIDTH } = Dimensions.get('window')
 YellowBox.ignoreWarnings(['Setting a timer']);
 const options = [
   'Cancel',
@@ -371,141 +371,166 @@ export default class Paso extends React.Component {
       this.props.isPasos(false, newArray, this.state.time);
     }
   }
-  
+
 
   render() {
     return (
-      <View>
-        <Content style={{ top: 10, bottom: 20 }} padder>
-          <Text style={{ fontSize: 20, bottom: 10 }}>Pasos</Text>
-          <TextInput onChangeText={(text) => this.handleChangeTime(text)} style={{ textAlign: 'right', fontSize: 15, bottom: 10 }} placeholder='Tiempo'></TextInput>
-          {this.state.steps.map((r) =>
-            <Card key={r.orden} style={{ width: 350 }}>
-              <CardItem style={{ height: 120 }} header >
-                {/* <Badge style={{ backgroundColor: r.colorBadge, fontSize:5 }} >
-                  <Text style={{ width:15, left:2, color:'white', fontSize:13 }}>{r.paso}</Text>
-              </Badge> */}
+      <ImageBackground source={bgImage} style={styles.backgroundContainer} >
+        <TouchableOpacity onPress={this.validarReceta} style={styles.btnLogin}>
+          <Text style={{ fontSize: 20, color: 'white' }}>Preparación</Text>
+        </TouchableOpacity>
+        <TextInput onChangeText={(text) => this.handleChangeTime(text)} style={{ textAlign: 'right', fontSize: 15 }} placeholder='Tiempo'></TextInput>
+        {this.state.steps.map((r) =>
+          <Card key={r.orden} style={{ width: 350, borderRadius: 20, borderWidth: 1, overflow: 'hidden', borderColor: 'white' }}>
+            <ImageBackground source={bgImage} style={styles.backgroundContainer} style={{ height: 200, borderRadius: 20, borderWidth: 1, overflow: 'hidden', borderColor: 'white' }} >
+              <View style={{
+                flexDirection: 'row', justifyContent: 'center',
+                alignItems: 'center',
+              }}>
                 <TouchableHighlight
                   style={{
                     borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
                     width: Dimensions.get('window').width * 0.09,
                     height: Dimensions.get('window').width * 0.09,
-                    backgroundColor: r.colorBadge,
+                    backgroundColor: '#e23f52',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginRight: 20
                   }}
                   underlayColor='#ccc'
-                // onPress = { () => alert('Yaay!') }
                 >
                   <Text style={{ color: 'white' }}>{r.orden}</Text>
                 </TouchableHighlight>
                 <View style={styles.textAreaContainerSteps} >
                   <TextInput
                     placeholder="Describe como lo hiciste..."
-                    textAlignVertical="top"
+                    placeholderTextColor='white'
                     onChangeText={(text) => this.handleChange(text, r.orden)}
                     style={styles.textAreaSteps}
-                    underlineColorAndroid="transparent"
-                    placeholderTextColor="grey"
                     numberOfLines={10}
                     multiline={true}
                   />
                 </View>
-                {/* <TextInput placeholder="Describe como lo hiciste..." ref={input => { this.textInput = input }} onChangeText={(text) => this.handleChange(text, r.orden)} style={{ fontSize: 17, left: 10}}/> */}
-
-                <Right  >
-                  <Button onPress={() => this.deleteRow(r)} transparent textStyle={{ color: '#87838B' }}>
-                    <Icon name="close" style={{ fontSize: 30 }} />
-                  </Button>
-                </Right>
-              </CardItem>
-
-              <CardItem style={{
-                alignItems: 'center', flex: 1,
-                justifyContent: 'center'
-              }} >
-                <Content>
-                  <ScrollView
-                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {r.photos.map((paso) =>
-                      <Item key={paso.photo} >
-                        <TouchableHighlight onPress={() => this.updatePosImage(r.orden, paso.photo)}>
-                          <Image
-                            source={paso.image
-                              ? { uri: paso.image }
-                              : require('../../../assets/camera.png')}
-                            style={{ width: 80, height: 80, right: 5 }}
-                          />
-                        </TouchableHighlight>
-                        <Button onPress={() => this.updatePosImage(r.orden, paso.photo)} transparent style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                          <Icon active name='camera' style={{ fontSize: 200, opacity: 0 }} />
-                        </Button>
-
-                        <ActionSheet
-                          ref={o => (this.ActionSheet = o)}
-                          //Title of the Bottom Sheet
-                          title={'¿Que desea hacer?'}
-                          //Options Array to show in bottom sheet
-                          options={['Ver', 'Cambiar Foto', 'Eliminar', 'Cancelar']}
-                          //Define cancel button index in the option array
-                          //this will take the cancel option in bottom and will highlight it
-                          cancelButtonIndex={3}
-                          //If you want to highlight any specific option you can use below prop
-                          destructiveButtonIndex={1}
-                          onPress={index => {
-                            //Clicking on the option will give you the index of the option clicked
-                            this.analizarOpcion(index)
-                          }}
+                <Button onPress={() => this.deleteRow(r)} transparent textStyle={{
+                  color: '#87838B',
+                }}>
+                  <Icon onPress={() => this.deleteRow(r)} name="close" style={{ fontSize: 15, color: 'white', marginBottom: 40 }} />
+                </Button>
+              </View>
+              <ScrollView
+                contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                {r.photos.map((paso) =>
+                  <Item key={paso.photo}  >
+                    <TouchableHighlight onPress={() => this.updatePosImage(r.orden, paso.photo)}>
+                      {paso.image ? (
+                        <Image
+                          source={{ uri: paso.image }}
+                          style={{ width: 60, height: 60, right: 5 }}
                         />
-                        {/* <ActionSheet
-                          ref={o => this.ActionSheet = o}
-                          title={'¿Que desea hacer?'}
-                          options={['Ver', 'Tomar Foto', 'Eliminar']}
-                          cancelButtonIndex={2}
-                          destructiveButtonIndex={1}
-                          onPress={(index) => { this.showAlert(index) }}
-                        /> */}
-                      </Item>
-                    )}
-                  </ScrollView>
-                </Content>
-              </CardItem>
-            </Card>
-          )}
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Button onPress={() => this.addRow()} transparent textStyle={{ color: '#87838B' }}>
-              <Icon name="add" />
-            </Button>
-            <Text style={{ fontSize: 20 }}>Añadir paso</Text>
-          </View>
-          <Modal style={styles.container} isVisible={this.state.isModalVisible}>
-            <View style={styles.content}>
-              <Image source={{ uri: this.state.image }} style={{ width: 300, height: 300 }} />
-              <Button style={{ width: 80, height: 40, backgroundColor: "white" }} onPress={this.toggleModal}>
-                <Text style={{ fontSize: 18, color: "#1a0dab" }} >Cerrar</Text>
-              </Button>
-            </View>
-          </Modal>
-          <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner}>
-            <View style={styles.contentSpinner}>
-              {!this.state.isTituloReceta && <Spinner color='red' />}
-              {/* {this.state.tituloReceta && <Text>Por favor, complete el titulo de la receta</Text>} */}
-              {this.state.isTituloReceta && <Text style={{ fontSize: 20 }}>Por favor, complete el titulo de la receta  👋!</Text>}
-              {this.state.isTituloReceta && <Button danger style={{ width: 80, }} onPress={this.toggleModalSpinner}><Text style={{ fontSize: 20, color: "white", left: 5 }}>Cerrar</Text></Button>}
+                      ) : (
+                          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <Icon active name='image' style={{ fontSize: 80, color: 'white' }} />
+                            <Icon name="ios-add-circle" style={{ fontSize: 30, color: 'black', bottom: 30, borderColor: '#e65540' }} />
+                          </View>
+                        )}
+                    </TouchableHighlight>
+                    <Button onPress={() => this.updatePosImage(r.orden, paso.photo)} transparent style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                      <Icon active name='camera' style={{ fontSize: 200, opacity: 0 }} />
+                    </Button>
 
+                    <ActionSheet
+                      ref={o => (this.ActionSheet = o)}
+                      //Title of the Bottom Sheet
+                      title={'¿Que desea hacer?'}
+                      //Options Array to show in bottom sheet
+                      options={['Ver', 'Cambiar Foto', 'Eliminar', 'Cancelar']}
+                      //Define cancel button index in the option array
+                      //this will take the cancel option in bottom and will highlight it
+                      cancelButtonIndex={3}
+                      //If you want to highlight any specific option you can use below prop
+                      destructiveButtonIndex={1}
+                      onPress={index => {
+                        //Clicking on the option will give you the index of the option clicked
+                        this.analizarOpcion(index)
+                      }}
+                    />
+                  </Item>
+                )}
+              </ScrollView>
+            </ImageBackground>
+
+          </Card>
+        )}
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          {/* <Button onPress={() => this.addRow()} transparent textStyle={{ color: '#87838B' }}>
+            <Icon name="add" />
+          </Button>
+          <Text style={{ fontSize: 20 }}>Añadir paso</Text> */}
+          <TouchableOpacity onPress={this.addRow} style={styles.btnAdd}>
+            <View style={{
+              flexDirection: 'row', justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Icon name="add" style={{ color: 'white', fontSize: 15, marginRight: 5 }} />
+              <Text style={{ fontWeight: '400', fontSize: 15, color: 'white' }}>Añadir paso</Text>
             </View>
-          </Modal>
-        </Content>
-      </View>
+          </TouchableOpacity>
+        </View>
+        <Modal style={styles.container} isVisible={this.state.isModalVisible}>
+          <View style={styles.content}>
+            <Image source={{ uri: this.state.image }} style={{ width: 300, height: 300 }} />
+            <Button style={{ width: 80, height: 40, backgroundColor: "white" }} onPress={this.toggleModal}>
+              <Text style={{ fontSize: 18, color: "#1a0dab" }} >Cerrar</Text>
+            </Button>
+          </View>
+        </Modal>
+        <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner}>
+          <View style={styles.contentSpinner}>
+            {!this.state.isTituloReceta && <Spinner color='red' />}
+            {/* {this.state.tituloReceta && <Text>Por favor, complete el titulo de la receta</Text>} */}
+            {this.state.isTituloReceta && <Text style={{ fontSize: 20 }}>Por favor, complete el titulo de la receta  👋!</Text>}
+            {this.state.isTituloReceta && <Button danger style={{ width: 80, }} onPress={this.toggleModalSpinner}><Text style={{ fontSize: 20, color: "white", left: 5 }}>Cerrar</Text></Button>}
+
+          </View>
+        </Modal>
+      </ImageBackground>
     );
   }
 }
 
 
 const styles = StyleSheet.create({
+  btnLogin: {
+    width: WIDTH - 95,
+    height: 45,
+    fontSize: 16,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  btnAdd: {
+    width: WIDTH - 200,
+    height: 35,
+    borderRadius: 25,
+    fontSize: 16,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    marginTop: 20,
+    borderColor: 'white',
+    borderWidth: 1, 
+    marginBottom: 10
+  },
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -560,15 +585,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   textAreaContainerSteps: {
-    left: 6,
-    borderColor: '#ccc9bc',
-    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 5,
     width: '70%',
     borderRadius: 7
   },
   textAreaSteps: {
     height: 80,
-    // justifyContent: "flex-start"
+    fontSize: 15,
+    color: 'white'
   }
 });
