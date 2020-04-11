@@ -22,11 +22,13 @@ export default class ContentContainer extends Component {
             },
         ];
     }
+    goToSreen(item, key) {
+        this.props.navigation.navigate(item.screenToNavigate )
+    }
     render() {
         return (
             <View style={styles.sideMenuContainer}>
                 <Text style={styles.logoText}>Tacky</Text>
-                {/* <Image style={{ width: 120, height: 120, bottom:50 }} source={require('../assets/logoApp.png')} /> */}
                 <View style={{ width: '100%' }}>
                     {this.items.map((item, key) => (
                         <View
@@ -48,8 +50,7 @@ export default class ContentContainer extends Component {
                                     color: 'white',
                                 }}
                                 onPress={() => {
-                                    global.currentScreenIndex = key;
-                                    this.props.navigation.navigate(item.screenToNavigate);
+                                   this.goToSreen(item, key)
                                 }}>
                                 {item.navOptionName}
                             </Text>

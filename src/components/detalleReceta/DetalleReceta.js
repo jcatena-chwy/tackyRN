@@ -102,7 +102,7 @@ export default class DetalleReceta extends Component {
               tituloReceta={this.state.tituloReceta} sendData={this.callModal}
               isIngredientes={this.state.isIngredientes} listaIngredientes={this.state.listaIngredientes}
               isPasos={this.state.isPasos} listaPasos={this.state.listaPasos} time={this.state.time}
-              goBackToDetalleReceta={this.goBackToCookBook}
+              goBackToDetalleReceta={this.toggleModalConfirmed}
               navigation={this.state.navigation}
             ></Header>
             <Photo isImageToGalery={this.guardarImagenPrincipal} tituloReceta={this.state.tituloReceta} ></Photo>

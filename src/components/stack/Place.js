@@ -1,31 +1,47 @@
 import React, { Component } from 'react';
-import { Image, View, ScrollView, Text, StyleSheet } from 'react-native';
-import { Container, Card, Button, Icon, Spinner } from 'native-base';
-import { createStackNavigator } from 'react-navigation';
-import restaurantes from '../request/restaurantes.json'
-import ImageOverlay from "react-native-image-overlay";
+import { Image, View, ScrollView, Text, StyleSheet, ImageBackground } from 'react-native';
+import { Card, Spinner } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import Detalle from './components/Detalle.js';
 import Comentarios from './components/Comentarios.js';
 import Productos from './components/Productos.js';
 import Modal from "react-native-modal";
 import firebase from '../../config';
-const WATER_IMAGE = require('../../assets/camera.png')
+import bgImage from '../../assets/fondoDePantalla.jpg'
+import { Ionicons } from '@expo/vector-icons';
 export default class Place extends Component {
   constructor(props) {
     super(props);
     this.state = {
       place: this.props.navigation.state.params.establecimiento,
       navigation: this.props.navigation,
+      rows: [
+        {
+          "id": 1,
+          start: [
+            { "id": 1, color: 'black', name: 'md-star-outline', isclickStart: false },
+            { "id": 2, color: 'black', name: 'md-star-outline', isclickStart: false },
+            { "id": 3, color: 'black', name: 'md-star-outline', isclickStart: false },
+            { "id": 4, color: 'black', name: 'md-star-outline', isclickStart: false },
+            { "id": 5, color: 'black', name: 'md-star-outline', isclickStart: false },
+          ]
+        }
+      ],
       widthStyle: 360,
+      contenido: false,
       isModalVisibleSpinner: false,
+      isModalDetalle: false,
+      isModalProducto: false,
       cantCall: 0
     }
     this.getProducts = this.getProducts.bind(this);
     this.getImagenesProductos = this.getImagenesProductos.bind(this);
     this.uploadImageProductos = this.uploadImageProductos.bind(this);
+    this.toggleModalDetalle = this.toggleModalDetalle.bind(this);
+    this.toggleModalProducto = this.toggleModalProducto.bind(this);
   }
   componentWillMount() {
+    require('../../assets/fondoDePantalla.jpg');
     setTimeout(() => {
       this.setState({
         isModalVisibleSpinner: !this.state.isModalVisibleSpinner
@@ -35,7 +51,7 @@ export default class Place extends Component {
             isModalVisibleSpinner: !this.state.isModalVisibleSpinner
           }, () => {
           });
-        }, 2000)
+        }, 1000)
       });
     }, 1000)
   }
@@ -121,52 +137,99 @@ export default class Place extends Component {
       })
   }
 
+  toggleModalDetalle() {
+    this.setState({
+      isModalDetalle: !this.state.isModalDetalle
+    }, () => {
+    });
+  }
+  toggleModalProducto() {
+    this.setState({
+      isModalProducto: !this.state.isModalProducto
+    }, () => {
+    });
+  }
 
   render() {
     const navigation = this.props.navigation.state.params.navigation;
+    var idComments = this.state.place.id
+    var name = this.state.place.name
+    var score = this.state.place.score.id
     return (
-      <Container>
-        <ScrollView>
-          <ImageOverlay widthStyle={this.props.widthStyle} source={{ uri: this.state.place.imageUri }} width="10%"
-            contentPosition="bottom" titleStyle={{ color: 'yellow' }}>
-            <View>
-              <Text style={{ fontSize: 30, fontWeight: 'bold', left: 6, textAlign: 'center', color: '#97bc00' }}>{this.state.place.name}</Text>
+      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 22, fontWeight: '800', textAlign: 'center', color: 'white' }}>{this.state.place.name}</Text>
+            <View showsHorizontalScrollIndicator={false} style={styles.containerSecundary}>
+              <ImageBackground source={bgImage} style={styles.containerThrid}>
+                <Image source={{ uri: this.state.place.imageUri }} style={styles.image} />
+              </ImageBackground>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 18, top: 5, right: 5, color: 'white' }}>{this.state.place.score.averageScore}</Text>
+                <Rating
+                  ratingCount={5}
+                  fractions={2}
+                  startingValue={this.state.place.score.averageScore}
+                  imageSize={20}
+                  ratingBackgroundColor={'#ea8073'}
+                  onFinishRating={this.ratingCompleted}
+                  style={{ top: 5, right: 5 }}
+                  readonly={true}
+                  showReadOnlyText={true}
+                />
+                <Text style={{ fontSize: 14, top: 5, right: 5, color: 'white' }} >{"(" + this.state.place.cantidadComentarios + ")"}</Text>
+              </View>
             </View>
-          </ImageOverlay>
-          <Card title="CUSTOM RATING" >
-            <View style={{ flexDirection: 'row', color: '#ccc9bc', left: 100 }}><Text style={{ fontSize: 20, left: 6, color: '#f1c40e', top: 20 }}>Rating: </Text><Text style={{ fontSize: 45, left: 6, top: 5, color: '#f1c40e' }}>{this.state.place.score.averageScore}</Text><Text style={{ fontSize: 20, left: 10, top: 20, color: '#f1c40e' }}>/5</Text></View>
-            <Rating
-              ratingCount={5}
-              fractions={2}
-              startingValue={this.state.place.score.averageScore}
-              imageSize={40}
-              onFinishRating={this.ratingCompleted}
-              style={{ paddingVertical: 10 }}
-              readonly={true}
-              showReadOnlyText={true}
-            />
-          </Card>
-          <Card style={{ height: 140 }} title="CUSTOM RATING" >
-            <Detalle score={this.state.place.score} schedule={this.state.place.schedule} phone={this.state.place.phone}></Detalle>
-          </Card>
-          <Card style={{ height: 60 }} title="CUSTOM RATING" >
-            <Comentarios comentarios={this.state.place.cantidadComentarios} idComentarios={this.state.place.id} name={this.state.place.name} score={this.state.place.score.id} navigation={this.state.navigation}></Comentarios>
-          </Card>
-          <Productos navigation={this.state.navigation} idEstablecimiento={this.state.place.id} name={this.state.place.name} products={this.state.place.products} getProducts={this.getProducts}></Productos>
+            <Card style={{ width: 250, height: 100, borderRadius: 20, backgroundColor: '#e97463', borderWidth: 1, overflow: 'hidden', borderColor: 'white', marginBottom: 18, marginTop: 18 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
+                <Image onPress={() => this.toggleModalDetalle()} style={{ width: 80, height: 80 }} source={require('../../assets/medalla.png')}></Image>
+                <Text onPress={() => this.toggleModalDetalle()}>{"Medallas" + '\n' + "y mas información"}</Text>
+                <Ionicons style={{ fontSize: 28, marginBottom: 40, color: 'white' }} name="ios-information-circle-outline"></Ionicons>
+              </View>
+            </Card>
+            <Card style={{ width: 150, height: 30, borderRadius: 20, backgroundColor: '#e97463', borderWidth: 1, overflow: 'hidden', borderColor: 'white' }} >
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
+                <Text onPress={() => this.props.navigation.navigate('Comments', { idComments, name, score })} style={{ color: 'white' }}>{"+ " + this.state.place.cantidadComentarios}</Text>
+                <Text onPress={() => this.props.navigation.navigate('Comments', { idComments, name, score })} style={{ color: 'white' }}>{this.props.comentarios} Comentarios</Text>
+              </View>
+            </Card>
+            <Card style={{ width: 150, height: 30, borderRadius: 20, backgroundColor: '#e97463', borderWidth: 1, overflow: 'hidden', borderColor: 'white' }} >
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
+                <Text onPress={() => this.toggleModalProducto()} style={{ color: 'white' }}> + Productos</Text>
+              </View>
+            </Card>
+            <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
+              <View style={styles.contentSpinner}>
+                <Spinner color='red' />
+              </View>
+            </Modal>
+            <Modal style={styles.containerDetalle} isVisible={this.state.isModalDetalle}>
+              <Detalle score={this.state.place.score} schedule={this.state.place.schedule} phone={this.state.place.phone}></Detalle>
+              <Text onPress={() => this.toggleModalDetalle()} style={{ fontSize: 20, color: "black", left: 8, bottom: 50 }}>Cerrar</Text>
+            </Modal>
+            <Modal style={styles.containerProducto} isVisible={this.state.isModalProducto}>
+              <Productos navigation={this.state.navigation} idEstablecimiento={this.state.place.id} name={this.state.place.name} products={this.state.place.products} getProducts={this.getProducts}></Productos>
+              <Text onPress={() => this.toggleModalProducto()} style={{ fontSize: 20, color: "black", left: 8, bottom: 50 }}>Cerrar</Text>
+            </Modal>
+          </View>
         </ScrollView>
 
-        <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
-          <View style={styles.contentSpinner}>
-            <Spinner color='red' />
-          </View>
-        </Modal>
-      </Container>
+
+      </ImageBackground >
     );
   }
 }
 
 const styles = StyleSheet.create({
-
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  },
   containerSpinner: {
     flex: 1,
     justifyContent: 'center',
@@ -174,6 +237,30 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     width: 350,
     height: 280
+  },
+  containerDetalle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowRadius: 10,
+    width: 350,
+    height: 280,
+    backgroundColor: '#e97463',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 20
+  },
+  containerProducto: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowRadius: 10,
+    width: 350,
+    height: 280,
+    backgroundColor: '#e97463',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 20
   },
   contentSpinner: {
     backgroundColor: 'white',
@@ -184,5 +271,35 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderColor: 'rgba(0, 0, 0, 0.1)',
-  }
+  },
+
+  containerSecundary: {
+    backgroundColor: '#ea8073',
+    marginTop: 10,
+    marginBottom: 10,
+    marginRight: 10,
+    marginLeft: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    width: 250,
+    height: 250,
+  },
+  containerThrid: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginTop: 30,
+    width: 180,
+    height: 180,
+    overflow: "hidden",
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 20,
+    alignItems: "center"
+  },
 });

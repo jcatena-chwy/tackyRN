@@ -11,8 +11,7 @@ export default class Ingrediente extends Component {
     }
     tituloReceta = this.props.tituloReceta;
     this.validarReceta = this.validarReceta.bind(this)
-    this.guardarReceta = this.guardarReceta.bind(this)
-    this.guidGenerator = this.guidGenerator.bind(this)
+    
     this.goBack = this.goBack.bind(this)
   }
   validarReceta() {
@@ -35,57 +34,7 @@ export default class Ingrediente extends Component {
     this.props.goBackToDetalleReceta();
   }
 
-  guardarReceta() {
-    debugger
-    this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
-    const db = firebase.database()
-    var idMainImage = this.guidGenerator()
-    db.ref("Recipes/").push({
-      id: idMainImage,
-      mainImage: this.props.nameMainImage,
-      title: this.props.tituloReceta,
-      ingredients: this.props.listaIngredientes,
-      steps: this.props.listaPasos,
-      time: this.props.time
-    }).then(() => {
-      this.setState({ isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
-      this.props.goBackToDetalleReceta();
-      console.log("Inserted")
-    }).catch((error) => {
-      console.log("error")
-    })
-  }
-
-  uploadImage = async (uri, imageName) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    //Ejemplo para guardar una imagen
-    var ref = firebase.storage().ref().child("images/ImageRecipe/" + imageName);
-    return ref.put(blob)
-
-    //Ejemplo para recuperar una imagen
-    var ref = firebase.storage().ref("images/ImageRecetas/imagePrueba5").getDownloadURL()
-      .then(resolve => {
-        console.log(resolve)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    //
-  }
-
-  guidGenerator() {
-    var S4 = function () {
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    };
-    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-  }
-
-  handleLangChange = () => {
-    var lang = this.dropdown.value;
-    this.props.onSelectLanguage(lang);
-  }
+  
 
   goBack() {
     this.props.goBackToDetalleReceta();

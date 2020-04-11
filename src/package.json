@@ -44,6 +44,16 @@
     "react-navigation-stack": "^1.9.0",
     "react-navigation-tabs": "^2.5.5"
   },
+  "files": [
+    "./src/assets/fondeDePantalla.jpg",
+    "./src/assets/logoApp.png",
+    "./src/assets/titleImage.png",
+    "./src/assets/camera.png",
+    "./src/assets/medalla.png",
+    "./src/assets/medalla2 - copia.png",
+    "./src/assets/medalla2 - copia.jpg",
+    "./src/assets/medallero/*"
+  ], 
   "devDependencies": {
     "babel-preset-expo": "^7.0.0"
   },

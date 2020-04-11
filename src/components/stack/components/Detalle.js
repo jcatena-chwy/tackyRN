@@ -47,6 +47,10 @@ export default class Detalle extends Component {
     this.setInformacion = this.setInformacion.bind(this);
   }
 
+  componentWillMount() {
+    this.showModal()
+  }
+
 
   setImage(score) {
     let newArray = [...this.state.medallas];
@@ -58,7 +62,7 @@ export default class Detalle extends Component {
   }
 
   setImageFood(foodScore) {
-    if (foodScore <= 10) { 
+    if (foodScore <= 10) {
       return imagen = require('../../../assets/medallero/gris/ComidaGris.png')
     }
     if (foodScore > 10 && foodScore <= 30) {
@@ -70,7 +74,7 @@ export default class Detalle extends Component {
     if (foodScore > 60) {
       return imagen = require('../../../assets/medallero/oro/ComidaOro.png')
     }
-  } 
+  }
   setImageCleaning(cleaningScore) {
     if (cleaningScore <= 10) {
       return imagen = require('../../../assets/medallero/gris/LimpiezaGris.png')
@@ -87,7 +91,7 @@ export default class Detalle extends Component {
   }
   setImagePrice(priceScore) {
     if (priceScore <= 10) {
-      return imagen =require('../../../assets/medallero/gris/PrecioGris.png')
+      return imagen = require('../../../assets/medallero/gris/PrecioGris.png')
     }
     if (priceScore > 10 && priceScore <= 30) {
       return imagen = require('../../../assets/medallero/bronce/PrecioBronce.png')
@@ -163,50 +167,26 @@ export default class Detalle extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <Container>
-        <View style={{ flexDirection: 'row', color: '#ccc9bc', left: 50 }}>
-          <View>
-            <Image
-              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/tesis-celiacos.appspot.com/o/images%2FImageMedallas%2Fmedalla.png?alt=media&token=b52f7874-4582-45fd-9d3a-c0069836ae92' }}
-              style={{ width: 80, height: 80, right: 5 }}
-            />
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', top: 10 }}>
-            <Button onPress={() => this.showModal()} transparent textStyle={{ color: '#87838B' }}>
-              {/* <Icon name="info-circle" /> */}
-              <Ionicons style={{ fontSize: 28 }} name="ios-information-circle-outline"></Ionicons>
-            </Button>
-            <Text onPress={() => this.showModal()} style={{ fontSize: 18, top: 8, color: 'black', left: 5 }}>Medallas {"\n"}y más información</Text>
-          </View>
-        </View>
-
-        <Modal style={styles.container} isVisible={this.state.isModalVisible}>
-          <View style={styles.content}>
-
-            <Text style={styles.baseText}>
-              <Text style={styles.titleText}>
-                Medallas{'\n'}{'\n'}
-              </Text>
-            </Text>
-
-            <ScrollView
-              contentContainerStyle={{  justifyContent: 'center' }}
-              showsHorizontalScrollIndicator={false}
-              style={{ bottom: 40, height:80 }}
-            >
-                {this.state.medallas.map((medalla, index) =>
-                  <Item key={index} style={{ height: 80 }}  >
-                    <Image style={{ width: 50, height: 60 }} source={medalla.imagen} />
-                    <Text>{medalla.descripcion}</Text>
-                  </Item>
-                )}
-            <Accordion dataArray={this.state.dataArray} expanded={0}  />
-            </ScrollView>
-            {!this.state.spinner && <Button danger style={{ width: 90, }} onPress={this.toggleModal}><Text style={{ fontSize: 20, color: "white", left: 8 }}>Cerrar</Text></Button>}
-          </View>
-        </Modal>
-
-      </Container>
+      <View style={styles.content}>
+        <Text style={styles.baseText}>
+          <Text style={styles.titleText}>
+            Medallas{'\n'}{'\n'}
+          </Text>
+        </Text>
+        <ScrollView
+          contentContainerStyle={{ justifyContent: 'center' }}
+          showsHorizontalScrollIndicator={false}
+          style={{ bottom: 40, height: 80 }}
+        >
+          {this.state.medallas.map((medalla, index) =>
+            <Item key={index} style={{ height: 100 }}  >
+              <Image style={{ width: 70, height: 90 }} source={medalla.imagen} />
+              <Text style={{ color:'white' }}>{medalla.descripcion}</Text>
+            </Item>
+          )}
+          <Accordion dataArray={this.state.dataArray} expanded={0} />
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -242,7 +222,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   content: {
-    backgroundColor: 'white',
+    backgroundColor: '#e97463',
     padding: 22,
     borderRadius: 4,
     width: 330,

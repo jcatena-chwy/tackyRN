@@ -11,6 +11,7 @@ import Screen3 from './components/cookBook/CookBookDetail'
 import Comments from './components/comments/Comments'
 import Paso2 from './components/comments/Paso2'
 import Place from './components/stack/Place'
+import Detalle from './components/stack/components/Detalle'
 import Paso1 from './components/stack/components/Paso1'
 import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
@@ -38,28 +39,6 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  Login: {
-    screen: Login,
-    navigationOptions: ({ navigation }) => ({
-      headerStyle: {
-        backgroundColor: '#e43753',
-        height: 0,
-        borderWidth: 0.1,
-        borderColor: 'transparent'
-      }
-    })
-  }, SignUp: {
-    screen: SignUp,
-    navigationOptions: ({ navigation }) => ({
-      headerBackTitle: '',
-      headerStyle: {
-        backgroundColor: '#e43753',
-        height: 30,
-        borderWidth: 0.1,
-        borderColor: 'transparent'
-      }
-    })
-  },
   Map: {
     screen: Mapa,
     navigationOptions: ({ navigation }) => ({
@@ -76,12 +55,57 @@ const MainNavigator = createStackNavigator({
     }),
   },
   Place: {
-    screen: Place, navigationOptions: {
-      title: "Tacky",
-    }
+    screen: Place,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerBackTitle: '',
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+    })
+  },
+  Login: {
+    screen: Login,
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: '#e43753',
+        height: 0,
+        borderWidth: 0.1,
+        borderColor: 'transparent'
+      }
+    })
+  },
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: ({ navigation }) => ({
+      headerBackTitle: '',
+      headerStyle: {
+        backgroundColor: '#e43753',
+        height: 30,
+        borderWidth: 0.1,
+        borderColor: 'transparent'
+      }
+    })
   },
   Comments: {
-    screen: Comments, navigationOptions: {
+    screen: Comments, navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+      headerTintColor: 'black',
+    }),
+  },
+  Detalle: {
+    screen: Detalle, navigationOptions: {
       title: "Tacky",
     }
   },
@@ -116,17 +140,15 @@ const SecondNavigator = createStackNavigator({
   DetalleReceta: {
     screen: DetalleReceta,
     navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
       headerTitle: (
         <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
       ),
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerBackTitle: '',
       headerStyle: {
         backgroundColor: '#e97463',
         height: 73
       },
-      headerTintColor: 'black',
-    }),
+    })
   },
   Cargando: {
     screen: Cargando, navigationOptions: {
@@ -141,17 +163,15 @@ const SecondNavigator = createStackNavigator({
   CookBookDetail: {
     screen: CookBookDetail,
     navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
       headerTitle: (
         <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
       ),
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerBackTitle: '',
       headerStyle: {
         backgroundColor: '#e97463',
         height: 73
       },
-      headerTintColor: 'black',
-    }),
+    })
   },
 }, { headerLayoutPreset: 'center' });
 
@@ -177,19 +197,19 @@ const ThirdNavigator = createStackNavigator({
 // https://expo.github.io/vector-icons/
 const DrawerNavigatorExample = createDrawerNavigator({
   //Drawer Optons and indexing
-  CookBook: {
-    screen: SecondNavigator,
-    navigationOptions: {
-      drawerLabel: 'Recetario',
-      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
-    },
-  },
   Mapa: {
     //Title
     screen: MainNavigator,
     navigationOptions: {
       drawerLabel: 'Mapa',
       drawerIcon: () => <Ionicons name="md-home"></Ionicons>
+    },
+  },
+  CookBook: {
+    screen: SecondNavigator,
+    navigationOptions: {
+      drawerLabel: 'Recetario',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
     },
   },
   NewPlace: {
