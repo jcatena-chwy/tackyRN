@@ -56,14 +56,23 @@ export default class Place extends Component {
     }, 1000)
   }
   componentWillReceiveProps(nextProps) {
-    var copyState = this.state.place
-    copyState.score.averageScore = nextProps.navigation.state.params.json.averageScore
-    copyState.cantidadComentarios = copyState.cantidadComentarios + 1
+    var copyState = this.state.place;
     this.setState({
-      place: copyState
+      cantCall: 0
     }, () => {
     });
-  }
+    if( nextProps.navigation.state.params.json != undefined) {
+      copyState.score.averageScore = nextProps.navigation.state.params.json.averageScore;
+      copyState.cantidadComentarios = copyState.cantidadComentarios + 1;
+      this.setState({
+        place: copyState
+      }, () => {
+      });
+    }
+    if( nextProps.navigation.state.params.updateProductos != undefined) {
+        this.getProducts();
+    }
+  } 
 
   getProducts() {
     this.setState({
@@ -144,11 +153,12 @@ export default class Place extends Component {
     });
   }
   toggleModalProducto() {
-    this.setState({
-      isModalProducto: !this.state.isModalProducto
-    }, () => {
-    });
-  }
+    var navigation = this.state.navigation
+    var idEstablecimiento = this.state.place.id
+    var name = this.state.place.name
+    var products = this.state.place.products
+    this.props.navigation.navigate('Productos', { navigation, idEstablecimiento, name, products })
+  } 
 
   render() {
     const navigation = this.props.navigation.state.params.navigation;

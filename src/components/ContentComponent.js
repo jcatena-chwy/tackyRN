@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+const { width: WIDTH } = Dimensions.get('window')
 export default class ContentContainer extends Component {
     constructor() {
         super();
@@ -57,8 +58,14 @@ export default class ContentContainer extends Component {
                         </View>
                     ))}
                 </View>
+                
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', top: 10 }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')} style={styles.btnLogin}>
+                        <Text style={styles.text}>Salir</Text>
+                    </TouchableOpacity>
+                </View>
 
-            </View>
+            </View> 
         );
     }
 }
@@ -71,6 +78,24 @@ const styles = StyleSheet.create({
         marginTop: 10,
         opacity: 0.5,
         marginBottom: 50
+    },
+    btnLogin: {
+        width: 55,
+        height: 35,
+        borderRadius: 25,
+        fontSize: 16,
+        backgroundColor: 'transparent',
+        flexDirection: 'row', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        borderColor: 'white',
+        borderWidth: 1
+    },
+    text: {
+        color: 'rgba(255,255,255,0.7)',
+        fontSize: 16,
+        textAlign: 'center'
     },
     sideMenuContainer: {
         width: '100%',

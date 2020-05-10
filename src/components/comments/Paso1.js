@@ -115,7 +115,6 @@ export default class Paso1 extends Component {
                 {this.state.textComentario && <Text onChangeText={this.handleChange2} style={styles.textStyleAlert}> Por favor ingrese un texto </Text>}
               </Body>
               <Right>
-                <Text note>3:43 pm</Text>
               </Right>
             </ListItem>
           </List>

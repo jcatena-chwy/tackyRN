@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, StyleSheet, View, Image } from 'react-native';
-import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Button, Spinner } from 'native-base';
+import { Text, TouchableOpacity, ImageBackground, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Button, Spinner, Icon } from 'native-base';
 import comments from '../request/comments.json'
 import Modal from "react-native-modal";
 import Paso1 from "./Paso1"
 import Paso2 from './Paso2.js';
 import firebase from '../../config';
+import bgImage from '../../assets/fondoDePantalla.jpg'
 export default class Comments extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +28,8 @@ export default class Comments extends Component {
       cantCall: 0,
       posicion: 0,
       textComentario: false,
-      averageScore: null
+      averageScore: null,
+      contenido: false
     }
     this.toggleModal = this.toggleModal.bind(this);
     this.setPaso1 = this.setPaso1.bind(this);
@@ -61,7 +63,8 @@ export default class Comments extends Component {
           });
         }
         this.setState({
-          comments: comments
+          comments: comments,
+          contenido: true
         }, () => {
           this.cargarFotos(this.state.comments)
         });
@@ -155,7 +158,7 @@ export default class Comments extends Component {
   }
 
   setearValorPaso1() {
-    this.setState({ paso1: true })
+    this.setState({ paso1: true})
   }
 
   setPaso1(val) {
@@ -172,25 +175,62 @@ export default class Comments extends Component {
     }
     this.setState({ isModalVisible: !this.state.isModalVisible, infoPaso1: json });
   }
-  toggleModalandReloadList(averageScore, value) {
-    this.setState({
-      isModalVisible: !this.state.isModalVisible,
-      isModalVisibleSpinner: !this.state.isModalVisibleSpinner,
-      averageScore: averageScore,
-      paso1: true, contieneTexto: false, textComentario: false, posicion: 0,
-      visual: false
-    }, () => {
-      var json = {}
-      json.averageScore = averageScore
-      if (value != undefined) {
+  toggleModalandReloadList(averageScore, value, fotoCargada) {
+    debugger;
+    if(value) {
+      if(fotoCargada) {
         this.setState({
-          isModalVisibleSpinner: !this.state.isModalVisibleSpinner,
+          averageScore: averageScore,
+          paso1: true, contieneTexto: false, textComentario: false, posicion: 0,
+          visual: false
         }, () => {
-          this.props.navigation.navigate('Place', { json })
+          var json = {}
+          json.averageScore = averageScore
+          if (value != undefined && json.averageScore != null ) {
+            this.setState({
+              isModalVisibleSpinner: !this.state.isModalVisibleSpinner,
+            }, () => {
+              this.props.navigation.navigate('Place', { json })
+            });
+          }
+        });
+      } else {
+        debugger
+        this.setState({
+          isModalVisible: !this.state.isModalVisible,
+        }, () => {
+          setTimeout(() => {
+            this.setState({
+              isModalVisibleSpinner: !this.state.isModalVisibleSpinner,
+            }, () => {
+
+            });
+          }, 1000)
         });
       }
-    });
-  }
+    } else {
+      this.setState({
+        isModalVisible: !this.state.isModalVisible,
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            isModalVisibleSpinner: !this.state.isModalVisibleSpinner,
+          }, () => {
+            var json = {}
+            json.averageScore = averageScore
+            if (value != undefined && json.averageScore != null ) {
+              this.setState({
+                isModalVisibleSpinner: !this.state.isModalVisibleSpinner,
+              }, () => {
+                this.props.navigation.navigate('Place', { json })
+              });
+            }
+          });
+        }, 1000)
+      });
+    }
+    
+  } 
   validarCampos() {
     if (this.state.image) {
       this.setState({ paso1: true, image: false });
@@ -201,41 +241,57 @@ export default class Comments extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <Container>
-        {this.state.visual ? (
-        <Content>
-          {this.state.comments.map((comment, index) =>
-            <List key={index}>
-              <ListItem avatar>
-                <Left>
-                  {/* <Thumbnail source={{ uri: comment.image }} /> */}
-                </Left>
-                {comment.urlImage === "" ? (
-                  <Body>
-                    <Text note>{comment.description}</Text>
-                  </Body>
-                ) : (
-                    <Body>
-                      <Image source={{ uri: comment.urlImage }} style={{ width: 200, height: 180 }} />
-                      <Text note>{comment.description}</Text>
-                    </Body>
-                  )}
-                <Right>
-                  <Text note>{comment.date}</Text>
-                </Right>
-              </ListItem>
-            </List>
-          )}
-          <TouchableOpacity
-            style={styles.SubmitButtonStyle}
-            activeOpacity={.5}
-            onPress={this.toggleModal}
-          >
-            <Text style={styles.TextStyle}> Agregar un comentario </Text>
-
-          </TouchableOpacity>
+      <ImageBackground source={bgImage} style={styles.containerMain}>
+      {this.state.contenido ?
+        <View  style={styles.containerMain2}>
+          <View>
+            {this.state.comments.length === 0 ?
+            <View style={styles.containerMain2} >
+              <Text style={{color: 'white', fontSize: 14}}>No existen comentarios vinculados al establecimiento</Text>
+              <View style={styles.bottomView}>
+                  <View style={styles.containerAddRecetaDetalle}>
+                    <Icon style={{ color: 'white' }} onPress={this.toggleModal} active name="ios-add" />
+                    <Text style={{ color:'white'}} onPress={this.toggleModal} >Agregar un comentario  </Text>
+                  </View>
+              </View>
+            </View>
+            : (
+              <View style={styles.containerMain2} >
+                <ScrollView
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                >
+                  {this.state.comments.map((comment, index) =>
+                    <List key={index}>
+                      <ListItem avatar>
+                        <Left>
+                        </Left>
+                        {comment.urlImage === "" ? (
+                          <Body>
+                            <Text style={{ color: 'white' }} note>{comment.description}</Text>
+                          </Body>
+                        ) : (
+                            <Body>
+                              <Image source={{ uri: comment.urlImage }} style={{ width: 200, height: 180 }} />
+                              <Text style={{ color: 'white' }} note>{comment.description}</Text>
+                            </Body>
+                          )}
+                        <Right>
+                        </Right>
+                      </ListItem>
+                    </List>
+                  )} 
+                </ScrollView>
+                <View style={styles.containerSection2}>
+                  <View style={styles.containerAddRecetaDetalle}>
+                    <Icon style={{ color: 'white' }} onPress={this.toggleModal} active name="ios-add" />
+                    <Text style={{ color:'white', marginLeft: 3, marginRight: 3}} onPress={this.toggleModal} >Agregar un comentario  </Text>
+                  </View>
+                </View>
+              </View>
+             )}
+             </View>
           <Modal style={styles.container} isVisible={this.state.isModalVisible}>
-
             <View style={styles.content}>
               {this.state.paso1 ? (
                 <Content>
@@ -253,7 +309,6 @@ export default class Comments extends Component {
                     cerrarModal={this.toggleModalandReloadList}
                   ></Paso2>
                 )}
-
             </View>
           </Modal>
           <Modal style={styles.container} isVisible={this.state.isModalVisibleSpinner}>
@@ -261,47 +316,40 @@ export default class Comments extends Component {
               <Spinner color='red' />
             </View>
           </Modal>
-        </Content>
-        ) : (
-        <Content>
-          <View style ={{justifyContent: 'center',
-    alignItems: 'center', marginTop:90}}>
-          <Text style={{fontSize:20}}>Cargando</Text>
-          <Spinner color='red' />
-          </View>
-        </Content>
-        )}
-      </Container>
+        </View>
+       : (
+         <Text></Text>
+       )}
+      </ImageBackground>
     );
   }
 }
 const styles = StyleSheet.create({
-
-  MainContainer: {
+  containerMain: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF', 
-  },
-
-  SubmitButtonStyle: {
-
-    marginTop: 10,
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginLeft: 30,
-    marginRight: 30,
-    backgroundColor: '#00BCD4',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff'
-  },
-
-  TextStyle: {
-    color: '#fff',
-    textAlign: 'center',
-    flex: 1,
     alignItems: 'center',
+  },
+  containerMain2: {
+    flex: 1,
+  },
+  containerSection2: {
+    backgroundColor: '#a1998e',
+    borderColor: 'white',
+    borderRadius: 20,
+    borderWidth: 1,
+    width: 250,
+    height: 30,
+    flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10
+  },
+  containerAddRecetaDetalle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
     flex: 1,
@@ -311,27 +359,6 @@ const styles = StyleSheet.create({
     width: 350,
     height: 280
   },
-  button: {
-    backgroundColor: 'lightblue',
-    width: 30,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
   content: {
     backgroundColor: 'white',
     // padding: 22,
@@ -339,25 +366,6 @@ const styles = StyleSheet.create({
     width: 330,
     height: 400,
     borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  contentTitle: {
-    fontSize: 20,
-    marginBottom: 12,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container2: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10
-  },
-  buttonContainer: {
-    flex: 1,
   },
   contentSpinner: {
     backgroundColor: 'white',
@@ -369,5 +377,19 @@ const styles = StyleSheet.create({
     height: 200,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
-
+  bottomView: {
+    backgroundColor: '#a1998e',
+    borderColor: 'white',
+    borderRadius: 20,
+    borderWidth: 1,
+    width: 250,
+    height: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute', //Here is the trick
+    bottom: 0, //Here is the trick
+    marginLeft: 20,
+    marginBottom: 5,
+  },
 });

@@ -52,6 +52,7 @@ export default class Paso2 extends Component {
           idImagen: '',
           textComentario:false,
           averageScore: null,
+          subirFoto: false
     }
     this.props.infoPaso1
     this.pickStart = this.pickStart.bind(this)
@@ -113,8 +114,8 @@ export default class Paso2 extends Component {
     return true;
   }
   setearValorPaso1(){
-    this.setState({ textComentario:false });
-    this.props.regresarPaso1(this.state.averageScore);
+    this.setState({ textComentario:false, subirFoto: false });
+    this.props.regresarPaso1();
   }
 
   obtenerPuntaje(){
@@ -160,7 +161,7 @@ export default class Paso2 extends Component {
       this.setState({
         puntaje: puntaje
       }, () => {
-        this.actualizarPuntaje(this.state.puntaje)
+        this.actualizarPuntaje(this.state.puntaje);
       });
     });
   }
@@ -194,7 +195,11 @@ export default class Paso2 extends Component {
       this.setState({
         averageScore:averageScore
       }, () => {
-        this.toggleModal()
+        if(this.state.infoPaso1.image != '') {
+          this.toggleModal(this.state.averageScore, true);
+        } else {
+          this.toggleModal(this.state.averageScore, false);
+        }
       });
        
      }).catch((error) =>{
@@ -203,14 +208,12 @@ export default class Paso2 extends Component {
   } 
 
   componentWillUnmount() {
-    if(this.state.infoPaso1.image != "" ) {
+    if(this.state.infoPaso1.image != "" && this.state.subirFoto) {
            this.uploadImage().then(() => {
-            this.props.cerrarModal(this.state.averageScore, true)
+            this.props.cerrarModal(this.state.averageScore, true, true)
            }).catch(() => {
-            this.props.cerrarModal(this.state.averageScore, true)
+            this.props.cerrarModal(this.state.averageScore, true, true)
            })
-         } else {
-      this.props.cerrarModal(this.state.averageScore, true)
     }
   }
 
@@ -223,7 +226,10 @@ export default class Paso2 extends Component {
 
 
   guardarComentario(){ 
-     if(this.validarRespuestas()){
+    this.setState({
+      subirFoto: true
+    }, () => {
+      if(this.validarRespuestas()){
         this.setState({ loading:false });
         const db = firebase.database()
         var formattedDate = new Date();
@@ -237,20 +243,22 @@ export default class Paso2 extends Component {
               idEstablecimiento:this.props.infoPaso1.idEstablecimiento,
               idProducto:"",
               userName:"",
-              urlImage:""
+              urlImage:"",
         }).then(() =>{
           this.setState({ idImagen:idImagen });
-          this.obtenerPuntaje()
+          this.obtenerPuntaje();
         }).catch((error) =>{
           console.log("error")
         })
      }else {
       this.setState({ textComentario:true });
      }
+    });
+     
   }
 
-  toggleModal (){
-    this.props.cerrarModal(this.state.averageScore)
+  toggleModal (averageScore, contieneFoto){
+    this.props.cerrarModal(averageScore, contieneFoto, null);
   }
 
   

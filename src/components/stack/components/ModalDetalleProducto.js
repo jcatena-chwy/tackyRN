@@ -288,11 +288,6 @@ export default class ModalDetalleProducto extends Component {
                                     <Text onPress={() => this.showModalAddComentarios()} style={styles.TextStyle}  >Agregar un Comentario</Text>
                                 </Button>
                             </View>
-                            {/* <View style={styles.buttonContainer}>
-                                <Button onPress={this.showModalAddComentarios} style={{ float: 'right', marginLeft: 25, marginRight: 5 }} success >
-                                    <Text onPress={this.showModalAddComentarios} style={styles.TextStyle}  >Agregar un Comentario</Text>
-                                </Button>
-                            </View> */}
                         </View>
                     </View>
                 </Modal>

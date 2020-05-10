@@ -10,9 +10,12 @@ import CookBook from './components/cookBook/CookBook'
 import Screen3 from './components/cookBook/CookBookDetail'
 import Comments from './components/comments/Comments'
 import Paso2 from './components/comments/Paso2'
+import CargandoPaso from './components/comments/CargandoPaso'
 import Place from './components/stack/Place'
 import Detalle from './components/stack/components/Detalle'
 import Paso1 from './components/stack/components/Paso1'
+import ProductoComentario from './components/stack/components/ProductoComentario'
+import Productos from './components/stack/components/Productos'
 import { Ionicons } from '@expo/vector-icons';
 import CookBookDetail from './components/cookBook/CookBookDetail'
 import DetalleReceta from './components/detalleReceta/DetalleReceta'
@@ -22,6 +25,7 @@ import NewPlace from './components/newPlace/NewPlace'
 import Login from './components/auth/Login'
 import SignUp from './components/auth/SignUp'
 import ContentComponent from './components/ContentComponent'
+import Loading from './components/Loading'
 
 class NavigationDrawerStructure extends Component {
   toggleDrawer = () => {
@@ -75,7 +79,8 @@ const MainNavigator = createStackNavigator({
         height: 0,
         borderWidth: 0.1,
         borderColor: 'transparent'
-      }
+      },
+      headerLeft:null
     })
   },
   SignUp: {
@@ -91,22 +96,46 @@ const MainNavigator = createStackNavigator({
     })
   },
   Comments: {
-    screen: Comments, navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
+    screen: Comments,
+    navigationOptions: ({ navigation }) => ({
       headerTitle: (
         <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
       ),
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerBackTitle: '',
       headerStyle: {
         backgroundColor: '#e97463',
         height: 73
       },
-      headerTintColor: 'black',
-    }),
+    })
+  },
+  ProductoComentario: {
+    screen: ProductoComentario,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerBackTitle: '',
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+    })
   },
   Detalle: {
     screen: Detalle, navigationOptions: {
       title: "Tacky",
+    }
+  },
+  Loading: {
+    screen: Loading, navigationOptions: {
+      title: "Tacky",
+      headerLeft: null
+    }
+  },
+  CargandoPaso: {
+    screen: CargandoPaso, navigationOptions: {
+      title: "Tacky",
+      headerLeft: null
     }
   },
   Paso2: {
@@ -117,8 +146,22 @@ const MainNavigator = createStackNavigator({
   Paso1: {
     screen: Paso1, navigationOptions: {
       title: "Tacky",
-    }
+    } 
   },
+  Productos: {
+    screen: Productos,
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerBackTitle: '',
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+    })
+  },
+  
 }, { headerLayoutPreset: 'center' });
 
 const SecondNavigator = createStackNavigator({
@@ -223,6 +266,7 @@ const DrawerNavigatorExample = createDrawerNavigator({
   {
     //For the Custom sidebar menu we have to provide our CustomSidebarMenu
     contentComponent: ContentComponent,
+    headerLeft:null,
     backgroundColor: 'red',
     //Sidebar width
     drawerWidth: Dimensions.get('window').width - 130,
