@@ -292,7 +292,7 @@ export default class Comments extends Component {
              )}
              </View>
           <Modal style={styles.container} isVisible={this.state.isModalVisible}>
-            <View style={styles.content}>
+            <View style={styles.content2}>
               {this.state.paso1 ? (
                 <Content>
                   <Paso1 image={this.state.image} sendDataText={this.analizarTexto}
@@ -357,9 +357,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowRadius: 10,
     width: 350,
-    height: 280
+    height: 280,
   },
   content: {
+    backgroundColor: 'white',
+    // padding: 22,
+    borderRadius: 4,
+    width: 330,
+    height: 400,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  content2: {
     backgroundColor: 'white',
     // padding: 22,
     borderRadius: 4,

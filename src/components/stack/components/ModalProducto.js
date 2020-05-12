@@ -125,14 +125,14 @@ export default class ModalProducto extends Component {
         let { isTextProduct } = this.state;
         return (
             <View style={styles.content}>
-                {!image && <Icon active name='image' onPress={() => this._pickImage()} style={{ fontSize: 80 }} />}
+                {!image && <Icon active name='image' onPress={() => this._pickImage()} style={{ fontSize: 80, color:'white', left:50 }} />}
                 {imageText && <Text style={{ color: 'red', fontSize: 15 }} >Publicar foto del Plato Terminado</Text>}
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
                 <TextInput
                     style={styles.textArea}
                     underlineColorAndroid="transparent"
                     placeholder="Escribir..."
-                    placeholderTextColor="grey"
+                    placeholderTextColor="white"
                     numberOfLines={3}
                     onChangeText={this.handleChange}
                     multiline={true}
@@ -140,12 +140,12 @@ export default class ModalProducto extends Component {
                 {isTextProduct && <Text style={{ color: 'red', fontSize: 12 }} >Escriba un titulo</Text>}
                 <View style={styles.container2}>
                     <View style={styles.buttonContainer}>
-                        <Button danger onPress={this.toggleModalAddProducto}>
+                        <Button style={{width:120, marginLeft:10}} danger onPress={this.toggleModalAddProducto}>
                             <Text onPress={this.toggleModalAddProducto} style={styles.TextStyle} >Cerrar</Text>
                         </Button>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <Button success onPress={this.validarCampos}>
+                        <Button style={{width:120}} success onPress={this.validarCampos}>
                             <Text onPress={this.validarCampos} style={styles.TextStyle} >Guardar</Text>
                         </Button>
                     </View>
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         margin: 0,
     },
     content: {
-        backgroundColor: 'white',
+        backgroundColor: '#e97463', 
         // padding: 22,
         borderRadius: 4,
         width: 330,
@@ -234,10 +234,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 10
+        marginBottom: 60
     },
     buttonContainer: {
         flex: 1,
+        width:50
     },
     contentSpinner: {
         backgroundColor: 'white',
@@ -262,6 +263,7 @@ const styles = StyleSheet.create({
     TextStyle: {
         color: '#fff',
         textAlign: 'center',
+        marginLeft:5,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

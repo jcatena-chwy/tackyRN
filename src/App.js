@@ -49,7 +49,10 @@ const MainNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
       headerTitle: (
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{ color:'white', fontSize:20,  fontWeight: '800' }}>Mapa</Text>
         <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+        </View>
       ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
@@ -100,7 +103,10 @@ const MainNavigator = createStackNavigator({
     screen: Comments,
     navigationOptions: ({ navigation }) => ({
       headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{ color:'white', fontSize:20,  fontWeight: '800' }}>Comentarios</Text>
+        <Image style={{ width: 73, height: 73, left: 80 }} source={require('./assets/titleImage.png')} />
+        </View> 
       ),
       headerBackTitle: '',
       headerStyle: {
@@ -153,7 +159,10 @@ const MainNavigator = createStackNavigator({
     screen: Productos,
     navigationOptions: ({ navigation }) => ({
       headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{ color:'white', fontSize:20,  fontWeight: '800' }}>Productos</Text>
+        <Image style={{ width: 73, height: 73, left: 80 }} source={require('./assets/titleImage.png')} />
+        </View> 
       ),
       headerBackTitle: '',
       headerStyle: {
@@ -171,7 +180,10 @@ const SecondNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
       headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{ color:'white', fontSize:20,  fontWeight: '800' }}>Recetario</Text>
+          <Image style={{ width: 73, height: 73, left: 80 }} source={require('./assets/titleImage.png')} />
+        </View> 
       ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
@@ -225,7 +237,10 @@ const ThirdNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
       headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{ color:'white', fontSize:20,  fontWeight: '800' }}>Solicitud</Text>
+        <Image style={{ width: 73, height: 73, left: 80 }} source={require('./assets/titleImage.png')} />
+        </View> 
       ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
@@ -243,7 +258,10 @@ const FourthNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Tacky',
       headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{ color:'white', fontSize:20, left:40,  fontWeight: '800' }}>Ayuda</Text>
+        <Image style={{ width: 73, height: 73, left: 115 }} source={require('./assets/titleImage.png')} />
+        </View> 
       ),
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
