@@ -13,6 +13,7 @@ import Paso2 from './components/comments/Paso2'
 import CargandoPaso from './components/comments/CargandoPaso'
 import Place from './components/stack/Place'
 import Detalle from './components/stack/components/Detalle'
+import Help from './components/help/Help'
 import Paso1 from './components/stack/components/Paso1'
 import ProductoComentario from './components/stack/components/ProductoComentario'
 import Productos from './components/stack/components/Productos'
@@ -236,6 +237,24 @@ const ThirdNavigator = createStackNavigator({
   },
 });
 
+const FourthNavigator = createStackNavigator({
+  Help: {
+    screen: Help,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tacky',
+      headerTitle: (
+        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#e97463',
+        height: 73
+      },
+      headerTintColor: 'black',
+    }),
+  },
+});
+
 
 // https://expo.github.io/vector-icons/
 const DrawerNavigatorExample = createDrawerNavigator({
@@ -259,6 +278,13 @@ const DrawerNavigatorExample = createDrawerNavigator({
     screen: ThirdNavigator,
     navigationOptions: {
       drawerLabel: 'Agregar Lugar',
+      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    },
+  },
+  Help: {
+    screen: FourthNavigator,
+    navigationOptions: {
+      drawerLabel: 'Ayuda',
       drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
     },
   },

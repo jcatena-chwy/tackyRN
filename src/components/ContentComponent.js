@@ -21,6 +21,11 @@ export default class ContentContainer extends Component {
                 navOptionName: 'Agregar Lugar',
                 screenToNavigate: 'NewPlace',
             },
+            {
+                navOptionThumb: 'ios-paper-plane',
+                navOptionName: 'Ayuda',
+                screenToNavigate: 'Help',
+            },
         ];
     }
     goToSreen(item, key) {
