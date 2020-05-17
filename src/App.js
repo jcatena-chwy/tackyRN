@@ -28,18 +28,18 @@ import ContentComponent from './components/ContentComponent'
 import Loading from './components/Loading'
 
 class NavigationDrawerStructure extends Component {
-  toggleDrawer = () => {
-    this.props.navigationProps.toggleDrawer();
-  };
-  render() {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
-          <Ionicons name="ios-menu" size={32} style={{ marginLeft: 10, color: 'white' }} />
-        </TouchableOpacity>
-      </View>
-    );
-  }
+    toggleDrawer = () => {
+        this.props.navigationProps.toggleDrawer();
+    };
+    render() {
+        return (
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
+                    <Ionicons name="ios-menu" size={32} style={{ marginLeft: 10, color: 'white' }} />
+                </TouchableOpacity>
+            </View>
+        );
+    }
 }
 
 const MainNavigator = createStackNavigator({
@@ -165,103 +165,103 @@ const MainNavigator = createStackNavigator({
 }, { headerLayoutPreset: 'center' });
 
 const SecondNavigator = createStackNavigator({
-  CookBook: {
-    screen: CookBook,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
-      headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
-      ),
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: '#e97463',
-        height: 73
-      },
-      headerTintColor: 'black',
-    }),
-  },
-  DetalleReceta: {
-    screen: DetalleReceta,
-    navigationOptions: ({ navigation }) => ({
-      headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
-      ),
-      headerBackTitle: '',
-      headerStyle: {
-        backgroundColor: '#e97463',
-        height: 73
-      },
-    })
-  },
-  Cargando: {
-    screen: Cargando, navigationOptions: {
-      headerLeft: null
-    }
-  },
-  Header: {
-    screen: Header, navigationOptions: {
-      headerLeft: null
-    }
-  },
-  CookBookDetail: {
-    screen: CookBookDetail,
-    navigationOptions: ({ navigation }) => ({
-      headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
-      ),
-      headerBackTitle: '',
-      headerStyle: {
-        backgroundColor: '#e97463',
-        height: 73
-      },
-    })
-  },
+    CookBook: {
+        screen: CookBook,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Tacky',
+            headerTitle: (
+                <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+            ),
+            headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+            headerStyle: {
+                backgroundColor: '#e97463',
+                height: 73
+            },
+            headerTintColor: 'black',
+        }),
+    },
+    DetalleReceta: {
+        screen: DetalleReceta,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: (
+                <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+            ),
+            headerBackTitle: '',
+            headerStyle: {
+                backgroundColor: '#e97463',
+                height: 73
+            },
+        })
+    },
+    Cargando: {
+        screen: Cargando, navigationOptions: {
+            headerLeft: null
+        }
+    },
+    Header: {
+        screen: Header, navigationOptions: {
+            headerLeft: null
+        }
+    },
+    CookBookDetail: {
+        screen: CookBookDetail,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: (
+                <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+            ),
+            headerBackTitle: '',
+            headerStyle: {
+                backgroundColor: '#e97463',
+                height: 73
+            },
+        })
+    },
 }, { headerLayoutPreset: 'center' });
 
 const ThirdNavigator = createStackNavigator({
-  NewPlace: {
-    screen: NewPlace,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Tacky',
-      headerTitle: (
-        <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
-      ),
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: '#e97463',
-        height: 73
-      },
-      headerTintColor: 'black',
-    }),
-  },
+    NewPlace: {
+        screen: NewPlace,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Tacky',
+            headerTitle: (
+                <Image style={{ width: 73, height: 73, left: 100 }} source={require('./assets/titleImage.png')} />
+            ),
+            headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+            headerStyle: {
+                backgroundColor: '#e97463',
+                height: 73
+            },
+            headerTintColor: 'black',
+        }),
+    },
 });
 
 
 // https://expo.github.io/vector-icons/
 const DrawerNavigatorExample = createDrawerNavigator({
-  //Drawer Optons and indexing
-  Mapa: {
-    //Title
-    screen: MainNavigator,
-    navigationOptions: {
-      drawerLabel: 'Mapa',
-      drawerIcon: () => <Ionicons name="md-home"></Ionicons>
+    //Drawer Optons and indexing
+    Mapa: {
+        //Title
+        screen: MainNavigator,
+        navigationOptions: {
+            drawerLabel: 'Mapa',
+            drawerIcon: () => <Ionicons name="md-home"></Ionicons>
+        },
     },
-  },
-  CookBook: {
-    screen: SecondNavigator,
-    navigationOptions: {
-      drawerLabel: 'Recetario',
-      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    CookBook: {
+        screen: SecondNavigator,
+        navigationOptions: {
+            drawerLabel: 'Recetario',
+            drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+        },
     },
-  },
-  NewPlace: {
-    screen: ThirdNavigator,
-    navigationOptions: {
-      drawerLabel: 'Agregar Lugar',
-      drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+    NewPlace: {
+        screen: ThirdNavigator,
+        navigationOptions: {
+            drawerLabel: 'Agregar Lugar',
+            drawerIcon: () => <Ionicons name="ios-menu"></Ionicons>
+        },
     },
-  },
 },
   {
     //For the Custom sidebar menu we have to provide our CustomSidebarMenu
