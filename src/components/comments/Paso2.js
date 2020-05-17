@@ -265,12 +265,12 @@ export default class Paso2 extends Component {
   render() {
     let { image } = this.state;
     return (
-      <Container>
+      <Container style={{backgroundColor:'#e97463'}}>
         {this.state.loading ? (
         <Content>
         {this.state.rows.map((r) =>
         <Content key={r.id}>
-             <Text style={{ fontSize: 20}}>{r.pregunta}</Text>
+             <Text style={{ fontSize: 20, color:'white'}}>{r.pregunta}</Text>
              <View style={{flexDirection: 'row'}}>
                 {r.start.map((s) =>
                     <Icon key={s.id} active name={s.name} style={{ fontSize: 40, color: s.color }} onPress={() => this.pickStart(r.id, s.id)}  />

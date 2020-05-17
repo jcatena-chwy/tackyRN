@@ -94,7 +94,7 @@ export default class Paso1 extends Component {
   render() {
     let { image } = this.state;
     return (
-      <Container>
+      <Container style={{backgroundColor:'#e97463'}}>
         <Content>
           <List>
             <ListItem avatar>
@@ -106,7 +106,7 @@ export default class Paso1 extends Component {
                   style={styles.textArea}
                   underlineColorAndroid="transparent"
                   placeholder="Escribir..."
-                  placeholderTextColor="grey" 
+                  placeholderTextColor="white" 
                   numberOfLines={10}
                   multiline={true}
                   onChangeText={this.handleChange}
@@ -119,10 +119,10 @@ export default class Paso1 extends Component {
             </ListItem>
           </List>
           {!image && <Icon active name='image' onPress={this._pickImage} style={styles.navBarLeftButton} />}
-          {!image && <Text style={{ fontSize: 20 }}>Publicar una foto </Text>}
+          {!image && <Text style={{ fontSize: 20, color:'white' }}>Publicar una foto </Text>}
           {this.props.image && <Text style={styles.textStyleAlert}> Por favor ingrese una imagen </Text>}
           {image &&
-            <Image source={{ uri: image }} style={{ width: 200, height: 180, marginLeft: 30 }} />}
+            <Image source={{ uri: image }} style={{ width: 200, height: 180, marginLeft: 30, marginTop: 5 }} />}
           <View style={styles.container2}>
             <View style={styles.buttonContainer}>
               <Button style={{ float: 'right', marginLeft: 30 }} danger onPress={this.toggleModal}>
@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
   },
   navBarLeftButton: {
     paddingLeft: 100,
-    fontSize: 80
+    fontSize: 80,
+    color:'white'
   },
   textStyleAlert: {
     color: "red"
@@ -161,8 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
-    marginTop: 60
+    marginTop: 50
   },
   buttonContainer: {
     flex: 1,

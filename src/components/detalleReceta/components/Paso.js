@@ -414,7 +414,7 @@ export default class Paso extends React.Component {
                 <Button onPress={() => this.deleteRow(r)} transparent textStyle={{
                   color: '#87838B',
                 }}>
-                  <Icon onPress={() => this.deleteRow(r)} name="close" style={{ fontSize: 15, color: 'white', marginBottom: 40 }} />
+                  <Icon onPress={() => this.deleteRow(r)} name="close" style={{ fontSize: 25, color: 'white', marginBottom: 4 }} />
                 </Button>
               </View>
               <ScrollView

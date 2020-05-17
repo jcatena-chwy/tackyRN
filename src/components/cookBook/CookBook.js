@@ -218,19 +218,22 @@ export default class CookBook extends Component {
                                 </CardItem>
                             </Card>*/
 
-                            <Card
-                                key={receta.id}
-                                flex
-                                borderless
-                                style={{width : (WIDTH-40), backgroundColor : 'white', marginBottom : 15}}
-                                title={receta.title}
-                                caption={}
-                                //location="Los Angeles, CA"
-                                avatar="http://i.pravatar.cc/100?id=skater"
-                                //imageStyle={styles.cardImageRadius}
-                                //imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
-                                image={receta.imageName}
-                            />
+                            <TouchableOpacity key={receta.id} onPress={() => navigation.navigate('CookBookDetail', { receta })}>
+                                <Card
+                                    
+                                    flex
+                                    borderless
+                                    style={{ width: (WIDTH - 40), backgroundColor: 'white', marginBottom: 15 }}
+                                    title={receta.title}
+                                    caption={"Tiempo: " + receta.time + "  " + "Ingredientes: " + receta.ingredients.cantidad}
+                                    //location="Los Angeles, CA"
+                                    avatar="http://i.pravatar.cc/100?id=skater"
+                                    //imageStyle={styles.cardImageRadius}
+                                    //imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
+                                    image={receta.imageName}
+                                    onPress={() => navigation.navigate('CookBookDetail', { receta })}
+                                />
+                            </TouchableOpacity>
                         )}
                     </ScrollView>
                     <View style={styles.containerSection2}>
