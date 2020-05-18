@@ -22,7 +22,7 @@ export default class ContentContainer extends Component {
                 screenToNavigate: 'NewPlace',
             },
             {
-                navOptionThumb: 'ios-paper-plane',
+                navOptionThumb: 'ios-information-circle-outline',
                 navOptionName: 'Ayuda',
                 screenToNavigate: 'Help',
             },

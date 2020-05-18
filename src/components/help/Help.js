@@ -31,7 +31,7 @@ export default class Help extends Component {
                     <Text style={{color:'white', fontSize:20,  fontWeight: '800'}}>¿Qué es Tacky?</Text>
                     <Text style={{color:'white', fontSize:15}}>Tacky busca mejorar la calidad de personas que padecen celiaquía, dándoles la información para saber en qué restaurante  pueden sentarse a comer, o a qué almacén pueden ir a comprar con plena tranquilidad. A su vez, le da la posibilidad al usuario de calificar y comentar las experiencias en los establecimientos visitados, de buscar y seleccionar recetas sin TACC, como también la posibilidad de agregar una al recetario.</Text>
                     <Text style={{color:'white', fontSize:20,  fontWeight: '800',}}>¿Cómo funcionan las medallas en los establecimientos?</Text>
-                    <Image  style={{ width: 400, height: 800 }} source={require('../../assets/medallero.jpeg')} />
+                    <Image style={{ width : 300, height : 500 }} resizeMethod='scale' source={require('../../assets/medallero.png') } />
                     <Text style={{color:'white', fontSize:15}}>Cada vez que el establecimiento recibe un comentario y una pregunta de la encuesta es respondida con 4 o 5 estrellas, suma 1 punto para ganar la medalla de la categoría correspondiente a esa pregunta. En caso de recibir 3 estrellas o menos, resta 1 punto de dicha categoría.
                             Cada medalla puede presentarse de cuatro maneras diferentes dependiendo de la cantidad de puntos que el establecimiento sume en cada categoria.Si tiene 10 puntos o menos la medalla se mostrará en escalada de grises (bloqueada)
                     </Text>
