@@ -176,7 +176,7 @@ export default class CookBook extends Component {
                         showsVerticalScrollIndicator={false}
                     >
                         {this.state.recetas.map((receta) =>
-                            /*<View showsHorizontalScrollIndicator={false} key={receta.id} style={styles.containerSecundary}>
+                            <View showsHorizontalScrollIndicator={false} key={receta.id} style={styles.containerSecundary}>
                                 <ImageBackground source={bgImage} style={styles.containerThrid}>
                                     <Image source={{ uri: receta.imageName }} style={styles.image} />
                                 </ImageBackground>
@@ -193,7 +193,7 @@ export default class CookBook extends Component {
                                         <Text onPress={() => navigation.navigate('CookBookDetail', { receta })} style={styles.titleText}>Ver</Text>
                                     </TouchableOpacity>
                                 </ImageBackground>
-                            </View>*/
+                            </View>
 
                             /*<Card style={{ width: (WIDTH - 40), marginBottom: 15 }} key={receta.id}>
                                 <CardItem cardBody>
@@ -218,7 +218,7 @@ export default class CookBook extends Component {
                                 </CardItem>
                             </Card>*/
 
-                            <TouchableOpacity key={receta.id} onPress={() => navigation.navigate('CookBookDetail', { receta })}>
+                            /*<TouchableOpacity key={receta.id} onPress={() => navigation.navigate('CookBookDetail', { receta })}>
                                 <Card
                                     
                                     flex
@@ -233,7 +233,7 @@ export default class CookBook extends Component {
                                     image={receta.imageName}
                                     onPress={() => navigation.navigate('CookBookDetail', { receta })}
                                 />
-                            </TouchableOpacity>
+                            </TouchableOpacity>*/
                         )}
                     </ScrollView>
                     <View style={styles.containerSection2}>
