@@ -11,7 +11,7 @@ export default class Paso2 extends Component {
         puntaje:{},
         loading:true,
         rows: [
-            { "id":1, pregunta:"Que te parecio la comida?",recomend: false,
+            { "id":1, pregunta:"¿Qué te pareció la comida?",recomend: false,
                 start:[
                 { "id":1, color: 'black', name:'md-star-outline', isclickStart:false  },
                 { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
@@ -20,7 +20,7 @@ export default class Paso2 extends Component {
                 { "id":5, color: 'black' , name:'md-star-outline' , isclickStart:false },
                 ] 
             },
-            { "id":2, pregunta:"Que te parecio la atencion?" , recomend: false,
+            { "id":2, pregunta:"¿Qué te pareció la atención?" , recomend: false,
                 start:[
                 { "id":1, color: 'black', name:'md-star-outline', isclickStart:false   },
                 { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
@@ -29,7 +29,7 @@ export default class Paso2 extends Component {
                 { "id":5, color: 'black', name:'md-star-outline', isclickStart:false   },
                 ] 
             },
-            { "id":3, pregunta:"Que te parecio la limpieza?" , recomend: false,
+            { "id":3, pregunta:"¿Qué te pareció la limpieza?" , recomend: false,
                 start:[
                 { "id":1, color: 'black', name:'md-star-outline', isclickStart:false   },
                 { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
@@ -38,7 +38,7 @@ export default class Paso2 extends Component {
                 { "id":5, color: 'black', name:'md-star-outline', isclickStart:false   },
                 ]
             },
-            { "id":4, pregunta:"Que te parecio calidad/precio?" , recomend: false,
+            { "id":4, pregunta:"¿Qué te pareció la relación calidad/precio?" , recomend: false,
                 start:[
                 { "id":1, color: 'black', name:'md-star-outline', isclickStart:false   },
                 { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },

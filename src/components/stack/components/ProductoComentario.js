@@ -20,7 +20,7 @@ export default class ProductoComentario extends Component {
       isTextComentario: false,
       contenidoTexto: '',
       rows: [
-        { "id":1, pregunta:"Que te parecio la comida?",recomend: false,
+        { "id":1, pregunta:"¿Qué te pareció la comida?",recomend: false,
             start:[
             { "id":1, color: 'black', name:'md-star-outline', isclickStart:false  },
             { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
@@ -234,7 +234,7 @@ export default class ProductoComentario extends Component {
         pickStart: false,
         isPickStart: false,
         rows: [
-          { "id":1, pregunta:"Que te parecio la comida?",recomend: false,
+          { "id":1, pregunta:"¿Qué te pareció la comida?",recomend: false,
               start:[
               { "id":1, color: 'black', name:'md-star-outline', isclickStart:false  },
               { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
