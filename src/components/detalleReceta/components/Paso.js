@@ -131,9 +131,11 @@ export default class Paso extends React.Component {
 
     // only if user allows permission to camera AND camera roll
     if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
-      let pickerResult = await ImagePicker.launchCameraAsync({
+      let pickerResult = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 3],
+        quality: 1
       });
 
       if (!pickerResult.cancelled) {
