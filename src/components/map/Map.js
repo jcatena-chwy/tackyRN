@@ -340,6 +340,7 @@ export default class Map extends React.Component {
                             description={establecimiento.name}
                             onPress={() => this.getPlace(establecimiento)}
                         // onPress={() => navigation.navigate('Place',{establecimiento} )}
+                            pinColor={ establecimiento.type === "Restaurant" ? "red" : "#008080" }
                         >
                             {/* {establecimiento.type === "Restaurant" ? (
               <Icon type='MaterialCommunityIcons'  name='silverware-fork' /> 

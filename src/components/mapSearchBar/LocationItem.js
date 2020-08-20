@@ -23,8 +23,8 @@ class LocationItem extends PureComponent {
         return(
             <TouchableOpacity style={styles.item} onPress={() => this._handlePress(this.state.locItem)}>
                 { this.state.locItem.type == 'Restaurant' ? 
-                    <Icon style={styles.icon} type='MaterialCommunityIcons' name='silverware-fork'/> : 
-                    <Icon style={styles.icon} type='MaterialCommunityIcons' name='store'/>}
+                    <Icon style={styles.forkIcon} type='MaterialCommunityIcons' name='silverware-fork'/> : 
+                    <Icon style={styles.storeIcon} type='MaterialCommunityIcons' name='store'/>}
                 <View>
                     <Text>
                         {this.state.locItem.name}
@@ -47,9 +47,13 @@ const styles = StyleSheet.create({
         paddingTop : 3,
         paddingLeft : 3
     },
-    icon : {
+    forkIcon : {
         fontSize : 28,
-        color : 'gray'
+        color : 'red'
+    },    
+    storeIcon : {
+        fontSize : 28,
+        color : '#008080'
     },
     itemInfo : {
         flex : 1,
