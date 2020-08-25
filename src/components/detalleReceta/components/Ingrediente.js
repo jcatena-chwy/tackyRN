@@ -100,7 +100,7 @@ export default class Ingrediente extends Component {
             <TouchableOpacity onPress={() => this.deleteRow(r)} style={styles.btnLogin}>
               <View style={{ flexDirection: 'row', justifyContent: 'center',
         alignItems: 'center', }}>
-                <TextInput style={{ fontWeight: '400', fontSize: 15, color: 'white', marginRight: 5 }} onChangeText={(text) => this.handleChange(text, r.orden)} placeholder='Cantidad y nombre de ingredientes' />
+                <TextInput style={{ fontWeight: '400', fontSize: 15, color: 'white', marginRight: 5 }} onChangeText={(text) => this.handleChange(text, r.orden)} placeholder='Cantidad y nombre de ingredientes' placeholderTextColor='#e1e1e1'/>
                 <Icon style={{ color: 'white', fontSize: 15}} active name='close' />
               </View>
             </TouchableOpacity>

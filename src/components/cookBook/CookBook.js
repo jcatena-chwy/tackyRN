@@ -167,7 +167,7 @@ export default class CookBook extends Component {
                         <View style={styles.containerSearchReceta}>
                             <Input style={{
                                 fontSize: 14, textAlign: 'center',
-                            }} placeholder='Buscá productos por nombre' placeholderTextColor='#a2a2a2' onChange={text => this.filtrarLista(text)} />
+                            }} placeholder='Buscá productos por nombre' placeholderTextColor='#e1e1e1' onChange={text => this.filtrarLista(text)} />
                             <Icon style={{ color: 'white', marginRight: 30 }} name="search" />
                         </View>
                     </View>

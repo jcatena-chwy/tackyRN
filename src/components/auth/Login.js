@@ -17,7 +17,7 @@ import firebase from '../../config';
 import Modal from "react-native-modal";
 import { Spinner } from 'native-base';
 import bgImage from '../../assets/fondoDePantalla.jpg'
-import logo from '../../assets/logoApp.png'
+import logo from '../../assets/LOGO-INICIO.png'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -101,7 +101,6 @@ export default class FormLogin extends Component {
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}></Image>
-                    <Text style={styles.logoText}>Tacky</Text>
                 </View>
 
                 <View style={styles.inputContainer}>
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
         marginBottom: 50
     },
     logo: {
-        width: 120,
+        width: 300,
         height: 120
     },
     logoText: {

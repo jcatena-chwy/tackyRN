@@ -168,10 +168,8 @@ export default class Detalle extends Component {
         const navigation = this.props.navigation;
         return (
             <View style={styles.content}>
-                <Text style={styles.baseText}>
-                    <Text style={styles.titleText}>
-                        Medallas{'\n'}{'\n'}
-                    </Text>
+                <Text style={styles.titleText}>
+                    Medallas{'\n'}{'\n'}
                 </Text>
                 <ScrollView
                     contentContainerStyle={{ justifyContent: 'center' }}
@@ -179,13 +177,27 @@ export default class Detalle extends Component {
                     showsVerticalScrollIndicator={false}
                     style={{ bottom: 40, height: 80 }}
                 >
-                    {this.state.medallas.map((medalla, index) =>
-                        <Item key={index} style={{ height: 100 }}  >
-                            <Image style={{ width: 70, height: 90 }} source={medalla.imagen} />
-                            <Text style={{ color: 'white' }}>{medalla.descripcion}</Text>
-                        </Item>
-                    )}
-                    <Accordion dataArray={this.state.dataArray} expanded={0} />
+                    <View style={styles.badgeContainer}>
+                        {this.state.medallas.slice(0, 2).map((medalla, index) =>
+                            <Item key={index} style={{ borderBottomColor: '#e97463' }}>
+                                <View>
+                                    <Image style={{ width: 90, height: 110 }} source={medalla.imagen}/>
+                                    <Text style={{ color: 'white' }}>{medalla.descripcion}</Text>
+                                </View>
+                            </Item>
+                        )}
+                    </View>
+                    <View style={styles.badgeContainer}>
+                        {this.state.medallas.slice(2, 4).map((medalla, index) =>
+                            <Item key={index} style={{ borderBottomColor: '#e97463' }}>
+                                <View>
+                                    <Image style={{ width: 90, height: 110 }} source={medalla.imagen}/>
+                                    <Text style={{ color: 'white' }}>{medalla.descripcion}</Text>
+                                </View>
+                            </Item>
+                        )}
+                    </View>
+                    <Accordion style={{paddingTop: 15}} dataArray={this.state.dataArray}/>
                 </ScrollView>
             </View>
         );
@@ -240,5 +252,15 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 20,
         fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'white'
     },
+    badgeContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        height: 150,
+        paddingTop: 15
+    }
 });

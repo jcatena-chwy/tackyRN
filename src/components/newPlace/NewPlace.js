@@ -125,6 +125,7 @@ export default class NewPlace extends Component {
                             <Input
                                 style={{ borderBottomColor: 'red', fontSize: 12 }}
                                 placeholder="StoryBrooke Buenos Aires"
+                                placeholderTextColor='#e1e1e1'
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 onChangeText={this.handleChangeName}
@@ -142,6 +143,7 @@ export default class NewPlace extends Component {
                             <Input
                                 style={{ borderBottomColor: 'red', fontSize: 12 }}
                                 placeholder="LOMAS DE ZAMORA"
+                                placeholderTextColor='#e1e1e1'
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 onChangeText={this.handleChangeLocalidad}
@@ -159,6 +161,7 @@ export default class NewPlace extends Component {
                             <Input
                                 style={{ borderBottomColor: 'red', fontSize: 12 }}
                                 placeholder="SIXTO FERNANDEZ 500"
+                                placeholderTextColor='#e1e1e1'
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 onChangeText={this.handleChangeDireccion}
@@ -189,6 +192,7 @@ export default class NewPlace extends Component {
                                 style={{ borderBottomColor: 'red', fontSize: 12 }}
                                 autoCapitalize="none"
                                 placeholder="https://www.google.com.ar/maps/place/Storybrooke+Buenos+Aires/@-34.7661093,-58.4074877,17z"
+                                placeholderTextColor='#e1e1e1'
                                 autoCorrect={false}
                                 onChangeText={googleMaps => this.setState({ googleMaps })}
                             />
