@@ -24,7 +24,7 @@ export default class Help extends Component {
                         <Text style={styles.titleStyle}>¿Cómo funcionan las medallas en los establecimientos?</Text>
                         <Image style={{ width: 300, height: 500 }} resizeMethod='scale' source={require('../../assets/medallero.png')} />
                         <Text style={styles.paragraphStyle}>Cada vez que un establecimiento recibe un comentario y una pregunta de la encuesta es respondida con 4 o 5 estrellas, suma 1 punto para ganar la medalla de la categoría correspondiente a esa pregunta. En caso de recibir 3 estrellas o menos, resta 1 punto de dicha categoría.
-                            Cada medalla puede presentarse de cuatro maneras diferentes dependiendo de la cantidad de puntos que el establecimiento sume en cada categoria.{'\n'}</Text>
+                            Cada medalla puede presentarse de cuatro maneras diferentes dependiendo de la cantidad de puntos que el establecimiento sume en cada categoría.{'\n'}</Text>
                         <Text style={styles.listTextStyle}>* Si tiene 10 puntos o menos la medalla se mostrará en escala de grises (bloqueada).</Text>
                         <Text style={styles.listTextStyle}>* Si tiene entre 11 y 30 puntos la medalla se mostrará en color bronce.</Text>
                         <Text style={styles.listTextStyle}>* Si tiene entre 31 y 60 puntos la medalla se mostrará en color plata.</Text>

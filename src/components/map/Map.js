@@ -337,7 +337,7 @@ export default class Map extends React.Component {
                             }}
                             key={establecimiento.id}
                             title={establecimiento.name}
-                            description={establecimiento.name}
+                            description={establecimiento.address}
                             onPress={() => this.getPlace(establecimiento)}
                         // onPress={() => navigation.navigate('Place',{establecimiento} )}
                             pinColor={ establecimiento.type === "Restaurant" ? "red" : "#008080" }
