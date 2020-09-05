@@ -6,7 +6,6 @@ import {
     Dimensions,
     TextInput,
     FlatList,
-    Alert,
 } from 'react-native';
 import LocationItem from "./LocationItem";
 import CityLocationItem from "./CityLocationItem";

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Text, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, View } from "native-base";
 
 

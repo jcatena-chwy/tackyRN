@@ -324,8 +324,8 @@ export default class Map extends React.Component {
                     }}
                     //Muestra ubicacion del usuario
                     showsUserLocation={true}
-                //Centra el mapa cuando arranca de acuerdo a la ubicacion del usuario
-                // followsUserLocation={true}
+                    //Centra el mapa cuando arranca de acuerdo a la ubicacion del usuario
+                    followsUserLocation={true}
                 >
                     {this.state.establecimientos.map((establecimiento) =>
                         <MapView.Marker
@@ -338,15 +338,9 @@ export default class Map extends React.Component {
                             key={establecimiento.id}
                             title={establecimiento.name}
                             description={establecimiento.address}
-                            onPress={() => this.getPlace(establecimiento)}
-                        // onPress={() => navigation.navigate('Place',{establecimiento} )}
+                            onCalloutPress={() => this.getPlace(establecimiento)}
                             pinColor={ establecimiento.type === "Restaurant" ? "red" : "#008080" }
                         >
-                            {/* {establecimiento.type === "Restaurant" ? (
-              <Icon type='MaterialCommunityIcons'  name='silverware-fork' /> 
-              ) : (
-              <Icon style={styles.icon} type='MaterialCommunityIcons' name='store'/>
-              )} */}
                         </MapView.Marker>
                     )}
                 </MapView>
