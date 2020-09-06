@@ -1,338 +1,345 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StyleSheet, Image } from 'react-native';
-import { Container, Header, Content,Item, Icon, View, Button, Spinner } from 'native-base';
+import { Container, Header, Content, Item, Icon, View, Button, Spinner } from 'native-base';
 import firebase from '../../config';
 export default class Paso2 extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-        image: null,
-        isCompleted:true,
-        puntaje:{},
-        loading:true,
-        rows: [
-            { "id":1, pregunta:"¿Qué te pareció la comida?",recomend: false,
-                start:[
-                { "id":1, color: 'black', name:'md-star-outline', isclickStart:false  },
-                { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":3, color: 'black', name:'md-star-outline', isclickStart:false  },
-                { "id":4, color: 'black', name:'md-star-outline' , isclickStart:false  },
-                { "id":5, color: 'black' , name:'md-star-outline' , isclickStart:false },
-                ] 
-            },
-            { "id":2, pregunta:"¿Qué te pareció la atención?" , recomend: false,
-                start:[
-                { "id":1, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":3, color: 'black', name:'md-star-outline', isclickStart:false  },
-                { "id":4, color: 'black', name:'md-star-outline' , isclickStart:false  },
-                { "id":5, color: 'black', name:'md-star-outline', isclickStart:false   },
-                ] 
-            },
-            { "id":3, pregunta:"¿Qué te pareció la limpieza?" , recomend: false,
-                start:[
-                { "id":1, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":3, color: 'black', name:'md-star-outline', isclickStart:false  },
-                { "id":4, color: 'black' , name:'md-star-outline', isclickStart:false  },
-                { "id":5, color: 'black', name:'md-star-outline', isclickStart:false   },
-                ]
-            },
-            { "id":4, pregunta:"¿Qué te pareció la relación calidad/precio?" , recomend: false,
-                start:[
-                { "id":1, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":2, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":3, color: 'black', name:'md-star-outline', isclickStart:false  },
-                { "id":4, color: 'black', name:'md-star-outline', isclickStart:false   },
-                { "id":5,  color: 'black' , name:'md-star-outline' , isclickStart:false },
-                ]
-            },
-          ],
-          infoPaso1: this.props.infoPaso1,
-          idImagen: '',
-          textComentario:false,
-          averageScore: null,
-          subirFoto: false
-    }
-    this.props.infoPaso1
-    this.pickStart = this.pickStart.bind(this)
-    this.setearValorPaso1 = this.setearValorPaso1.bind(this)
-    this.guardarComentario = this.guardarComentario.bind(this)
-    this.validarRespuestas = this.validarRespuestas.bind(this)
-    this.obtenerPuntaje = this.obtenerPuntaje.bind(this)
-    this.actualizarPuntaje = this.actualizarPuntaje.bind(this)
-    this.uploadImage = this.uploadImage.bind(this)
-    this.toggleModal = this.toggleModal.bind(this)
-  }
-  pickStart (row,col)  {
-   let newArray = [...this.state.rows];
-   var startElegida = newArray[row-1].start[col-1].isclickStart
-   if(col > 3) {
-    newArray[row-1].recomend = true
-   }else {
-    newArray[row-1].recomend = false
-   }
-   for(i=0;i<newArray[row-1].start.length;i++){
-    if(startElegida){
-      if(i>=col){
-        newArray[row-1].start[i].color = "black"
-        newArray[row-1].start[i].name = "md-star-outline"
-        newArray[row-1].start[i].isclickStart = false 
-      }
-    } else {
-      if(i < col){
-        if(!startElegida){
-          newArray[row-1].start[i].color = "yellow"
-          newArray[row-1].start[i].name = "md-star"
-          newArray[row-1].start[i].isclickStart = true
-        }else {
-          newArray[row-1].start[i].color = "black"
-          newArray[row-1].start[i].name = "md-star-outline"
-          newArray[row-1].start[i].isclickStart = false 
+    constructor(props) {
+        super(props);
+        this.state = {
+            image: null,
+            isCompleted: true,
+            puntaje: {},
+            loading: true,
+            rows: [
+                {
+                    "id": 1, pregunta: "¿Qué te pareció la comida?", recomend: false,
+                    start: [
+                        { "id": 1, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 2, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 3, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 4, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 5, color: 'black', name: 'md-star-outline', isclickStart: false },
+                    ]
+                },
+                {
+                    "id": 2, pregunta: "¿Qué te pareció la atención?", recomend: false,
+                    start: [
+                        { "id": 1, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 2, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 3, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 4, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 5, color: 'black', name: 'md-star-outline', isclickStart: false },
+                    ]
+                },
+                {
+                    "id": 3, pregunta: "¿Qué te pareció la limpieza?", recomend: false,
+                    start: [
+                        { "id": 1, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 2, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 3, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 4, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 5, color: 'black', name: 'md-star-outline', isclickStart: false },
+                    ]
+                },
+                {
+                    "id": 4, pregunta: "¿Qué te pareció la relación calidad/precio?", recomend: false,
+                    start: [
+                        { "id": 1, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 2, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 3, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 4, color: 'black', name: 'md-star-outline', isclickStart: false },
+                        { "id": 5, color: 'black', name: 'md-star-outline', isclickStart: false },
+                    ]
+                },
+            ],
+            infoPaso1: this.props.infoPaso1,
+            idImagen: '',
+            textComentario: false,
+            averageScore: null,
+            subirFoto: false
         }
-      }else {
-        newArray[row-1].start[i].color = "black"
-        newArray[row-1].start[i].name = "md-star-outline"
-        newArray[row-1].start[i].isclickStart = false 
-      }
+        this.props.infoPaso1
+        this.pickStart = this.pickStart.bind(this)
+        this.setearValorPaso1 = this.setearValorPaso1.bind(this)
+        this.guardarComentario = this.guardarComentario.bind(this)
+        this.validarRespuestas = this.validarRespuestas.bind(this)
+        this.obtenerPuntaje = this.obtenerPuntaje.bind(this)
+        this.actualizarPuntaje = this.actualizarPuntaje.bind(this)
+        this.uploadImage = this.uploadImage.bind(this)
+        this.toggleModal = this.toggleModal.bind(this)
     }
-    
-   }
-   this.setState({ rows:newArray });
-  };
-
-  validarRespuestas(){
-    let newArray = [...this.state.rows];
-    for(i=0;i<4;i++){
-      if(newArray[i].start[0].isclickStart === false ){
-        return false;
-      }
-      if(newArray[i].start[0].isclickStart === false ){
-        return false;
-      }
-    }
-    return true;
-  }
-  setearValorPaso1(){
-    this.setState({ textComentario:false, subirFoto: false });
-    this.props.regresarPaso1();
-  }
-
-  obtenerPuntaje(){
-    var puntaje = {}
-    const db2 = firebase.database().ref('Scores')
-    db2.orderByChild('id')
-    .equalTo(this.props.infoPaso1.score)
-    .once('value')
-    .then((snapshot) => { 
-      var value = snapshot.val();
-      i = 0; 
-      var key ;
-      if (value) {
-        snapshot.forEach((child) => {
-          key = child.key
-          puntaje = child.val()
-          puntaje.key = child.key
-          i++
-        });
-      }
-      let newArray = [...this.state.rows];
-      if(newArray[0].recomend === true ){
-        puntaje.foodScore = puntaje.foodScore +1;         
-      }else {
-        puntaje.foodScore = puntaje.foodScore -1;
-      }
-      if(newArray[1].recomend === true ){
-        puntaje.serviceScore = puntaje.serviceScore +1;         
-      }else {
-        puntaje.serviceScore = puntaje.serviceScore -1;
-      }
-      if(newArray[2].recomend === true ){
-        puntaje.cleaningScore = puntaje.cleaningScore +1;         
-      }else {
-        puntaje.cleaningScore = puntaje.cleaningScore -1;
-      }
-      if(newArray[3].recomend === true ){
-        puntaje.priceScore = puntaje.priceScore +1;         
-      }else {
-        puntaje.priceScore = puntaje.priceScore -1;
-      }
-      
-      this.setState({
-        puntaje: puntaje
-      }, () => {
-        this.actualizarPuntaje(this.state.puntaje);
-      });
-    });
-  }
-  actualizarPromedio() {
-    var averageScore = 0
-    for(i =0 ; i<this.state.rows.length; i++){
-      var cont = 0;
-      for(f =0 ; f<this.state.rows[i].start.length; f++) {
-        var obj = this.state.rows[i].start[f]
-        if(obj.isclickStart) {
-          cont++;
-        }
-      }
-      averageScore = averageScore + cont;
-    }
-    return parseFloat((averageScore/4).toFixed(2))
-    return averageScore/4 
-  }
-  actualizarPuntaje(puntaje) {
-    const db = firebase.database().ref('Scores/' + puntaje.key)
-    var averageScore = this.actualizarPromedio();
-    averageScore = puntaje.averageScore + averageScore
-    averageScore =  parseFloat((averageScore/2).toFixed(2))
-    db.update({
-      foodScore:puntaje.foodScore,
-      serviceScore:puntaje.serviceScore,
-      cleaningScore:puntaje.cleaningScore,
-      priceScore:puntaje.priceScore,
-      averageScore:averageScore
-     }).then(() =>{
-      this.setState({
-        averageScore:averageScore
-      }, () => {
-        if(this.state.infoPaso1.image != '') {
-          this.toggleModal(this.state.averageScore, true);
+    pickStart(row, col) {
+        let newArray = [...this.state.rows];
+        var startElegida = newArray[row - 1].start[col - 1].isclickStart
+        if (col > 3) {
+            newArray[row - 1].recomend = true
         } else {
-          this.toggleModal(this.state.averageScore, false);
+            newArray[row - 1].recomend = false
         }
-      });
-       
-     }).catch((error) =>{
-       console.log("error")
-     })
-  } 
+        for (i = 0; i < newArray[row - 1].start.length; i++) {
+            if (startElegida) {
+                if (i >= col) {
+                    newArray[row - 1].start[i].color = "black"
+                    newArray[row - 1].start[i].name = "md-star-outline"
+                    newArray[row - 1].start[i].isclickStart = false
+                }
+            } else {
+                if (i < col) {
+                    if (!startElegida) {
+                        newArray[row - 1].start[i].color = "yellow"
+                        newArray[row - 1].start[i].name = "md-star"
+                        newArray[row - 1].start[i].isclickStart = true
+                    } else {
+                        newArray[row - 1].start[i].color = "black"
+                        newArray[row - 1].start[i].name = "md-star-outline"
+                        newArray[row - 1].start[i].isclickStart = false
+                    }
+                } else {
+                    newArray[row - 1].start[i].color = "black"
+                    newArray[row - 1].start[i].name = "md-star-outline"
+                    newArray[row - 1].start[i].isclickStart = false
+                }
+            }
 
-  componentWillUnmount() {
-    if(this.state.infoPaso1.image != "" && this.state.subirFoto) {
-           this.uploadImage().then(() => {
-            this.props.cerrarModal(this.state.averageScore, true, true)
-           }).catch(() => {
-            this.props.cerrarModal(this.state.averageScore, true, true)
-           })
+        }
+        this.setState({ rows: newArray });
+    };
+
+    validarRespuestas() {
+        let newArray = [...this.state.rows];
+        for (i = 0; i < 4; i++) {
+            if (newArray[i].start[0].isclickStart === false) {
+                return false;
+            }
+            if (newArray[i].start[0].isclickStart === false) {
+                return false;
+            }
+        }
+        return true;
     }
-  }
+    setearValorPaso1() {
+        this.setState({ textComentario: false, subirFoto: false });
+        this.props.regresarPaso1();
+    }
 
-  uploadImage = async () => {
-    const response = await fetch(this.state.infoPaso1.image);
-    const blob = await response.blob();
-    var ref = firebase.storage().ref().child("images/ImageEstablecimiento/" + this.state.infoPaso1.name + "/Comentarios/" + this.state.idImagen);
-    return ref.put(blob)
-  }
+    obtenerPuntaje() {
+        var puntaje = {}
+        const db2 = firebase.database().ref('Scores')
+        db2.orderByChild('id')
+            .equalTo(this.props.infoPaso1.score)
+            .once('value')
+            .then((snapshot) => {
+                var value = snapshot.val();
+                i = 0;
+                var key;
+                if (value) {
+                    snapshot.forEach((child) => {
+                        key = child.key
+                        puntaje = child.val()
+                        puntaje.key = child.key
+                        i++
+                    });
+                }
+                let newArray = [...this.state.rows];
+                if (newArray[0].recomend === true) {
+                    puntaje.foodScore = puntaje.foodScore + 1;
+                } else {
+                    puntaje.foodScore = puntaje.foodScore - 1;
+                }
+                if (newArray[1].recomend === true) {
+                    puntaje.serviceScore = puntaje.serviceScore + 1;
+                } else {
+                    puntaje.serviceScore = puntaje.serviceScore - 1;
+                }
+                if (newArray[2].recomend === true) {
+                    puntaje.cleaningScore = puntaje.cleaningScore + 1;
+                } else {
+                    puntaje.cleaningScore = puntaje.cleaningScore - 1;
+                }
+                if (newArray[3].recomend === true) {
+                    puntaje.priceScore = puntaje.priceScore + 1;
+                } else {
+                    puntaje.priceScore = puntaje.priceScore - 1;
+                }
 
+                this.setState({
+                    puntaje: puntaje
+                }, () => {
+                    this.actualizarPuntaje(this.state.puntaje);
+                });
+            });
+    }
+    actualizarPromedio() {
+        var averageScore = 0
+        for (i = 0; i < this.state.rows.length; i++) {
+            var cont = 0;
+            for (f = 0; f < this.state.rows[i].start.length; f++) {
+                var obj = this.state.rows[i].start[f]
+                if (obj.isclickStart) {
+                    cont++;
+                }
+            }
+            averageScore = averageScore + cont;
+        }
+        return parseFloat((averageScore / 4).toFixed(2))
+        return averageScore / 4
+    }
+    actualizarPuntaje(puntaje) {
+        const db = firebase.database().ref('Scores/' + puntaje.key)
+        var averageScore = this.actualizarPromedio();
+        averageScore = puntaje.averageScore + averageScore
+        averageScore = parseFloat((averageScore / 2).toFixed(2))
+        db.update({
+            foodScore: puntaje.foodScore,
+            serviceScore: puntaje.serviceScore,
+            cleaningScore: puntaje.cleaningScore,
+            priceScore: puntaje.priceScore,
+            averageScore: averageScore
+        }).then(() => {
+            this.setState({
+                averageScore: averageScore
+            }, () => {
+                if (this.state.infoPaso1.image != '') {
+                    this.toggleModal(this.state.averageScore, true);
+                } else {
+                    this.toggleModal(this.state.averageScore, false);
+                }
+            });
 
-  guardarComentario(){ 
-    this.setState({
-      subirFoto: true
-    }, () => {
-      if(this.validarRespuestas()){
-        this.setState({ loading:false });
-        const db = firebase.database()
-        var formattedDate = new Date();
-        var fecha = formattedDate.getDay().toString() + "-" + formattedDate.getMonth().toString() + "-" + formattedDate.getFullYear().toString();
-        var idImagen = this.state.infoPaso1.image ? Math.random().toString(36).substring(7) : ''
-        db.ref("Comments").push({
-              date: fecha,
-              description:this.props.infoPaso1.text,
-              id:Math.random().toString(36).substring(7),
-              idImagen:idImagen,
-              idEstablecimiento:this.props.infoPaso1.idEstablecimiento,
-              idProducto:"",
-              userName:"",
-              urlImage:"",
-        }).then(() =>{
-          this.setState({ idImagen:idImagen });
-          this.obtenerPuntaje();
-        }).catch((error) =>{
-          console.log("error")
+        }).catch((error) => {
+            console.log("error")
         })
-     }else {
-      this.setState({ textComentario:true });
-     }
-    });
-     
-  }
+    }
 
-  toggleModal (averageScore, contieneFoto){
-    this.props.cerrarModal(averageScore, contieneFoto, null);
-  }
+    componentWillUnmount() {
+        if (this.state.infoPaso1.image != "" && this.state.subirFoto) {
+            this.uploadImage().then(() => {
+                this.props.cerrarModal(this.state.averageScore, true, true)
+            }).catch(() => {
+                this.props.cerrarModal(this.state.averageScore, true, true)
+            })
+        }
+    }
 
-  
-  render() {
-    let { image } = this.state;
-    return (
-      <Container style={{backgroundColor:'#e97463'}}>
-        {this.state.loading ? (
-        <Content>
-        {this.state.rows.map((r) =>
-        <Content key={r.id}>
-             <Text style={{ fontSize: 20, color:'white'}}>{r.pregunta}</Text>
-             <View style={{flexDirection: 'row'}}>
-                {r.start.map((s) =>
-                    <Icon key={s.id} active name={s.name} style={{ fontSize: 40, color: s.color }} onPress={() => this.pickStart(r.id, s.id)}  />
-                )} 
-            </View>
-            
-        </Content>
-        )} 
-        {this.state.textComentario &&<Text onChangeText={this.handleChange2} style={styles.textStyleAlert}> Por favor responda todas las preguntas! </Text>}
-        <View style={styles.container2}>
-                <View style={styles.buttonContainer}>
-                  <Button style={{float: 'right', marginLeft:30}} danger onPress={this.setearValorPaso1}>
-                              <Text style={styles.TextStyle} >Regresar</Text>
-                  </Button>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Button style={{ float: 'right',marginLeft:25, marginRight:5}} success onPress={this.validarCampos}>
-                      <Text style={styles.TextStyle} onPress={this.guardarComentario} >Siguiente</Text>
-                    </Button>
-                </View>
-                </View>
-        </Content>
-        ) : (
-          <Content>
-            <Spinner color='red' />
-          </Content>
-        )}
-      </Container>
-    );
-  }
+    uploadImage = async () => {
+        const response = await fetch(this.state.infoPaso1.image);
+        const blob = await response.blob();
+        var ref = firebase.storage().ref().child("images/ImageEstablecimiento/" + this.state.infoPaso1.name + "/Comentarios/" + this.state.idImagen);
+        return ref.put(blob)
+    }
+
+
+    guardarComentario() {
+        this.setState({
+            subirFoto: true
+        }, () => {
+            if (this.validarRespuestas()) {
+                this.setState({ loading: false });
+                const db = firebase.database()
+                var formattedDate = new Date();
+                //var fecha = formattedDate.getDay().toString() + "-" + formattedDate.getMonth().toString() + "-" + formattedDate.getFullYear().toString();
+                var fecha = formattedDate.getDate() + '/' + (formattedDate.getMonth()+1) + '/' + formattedDate.getFullYear();
+                var idImagen = this.state.infoPaso1.image ? Math.random().toString(36).substring(7) : ''
+                db.ref("Comments").push({
+                    date: fecha,
+                    description: this.props.infoPaso1.text,
+                    id: Math.random().toString(36).substring(7),
+                    idImagen: idImagen,
+                    idEstablecimiento: this.props.infoPaso1.idEstablecimiento,
+                    idProducto: "",
+                    userName: "",
+                    urlImage: "",
+                }).then(() => {
+                    this.setState({ idImagen: idImagen });
+                    this.obtenerPuntaje();
+                }).catch((error) => {
+                    console.log("error")
+                })
+            } else {
+                this.setState({ textComentario: true });
+            }
+        });
+
+    }
+
+    toggleModal(averageScore, contieneFoto) {
+        this.props.cerrarModal(averageScore, contieneFoto, null);
+    }
+
+
+    render() {
+        let { image } = this.state;
+        return (
+            <Container style={{ backgroundColor: '#e97463' }}>
+                {this.state.loading ? (
+                    <Content>
+                        <View style={{paddingLeft: 20, paddingTop: 10}}>
+                        {this.state.rows.map((r) =>
+                            <Content key={r.id}>
+                                <Text style={{ fontSize: 20, color: 'white' }}>{r.pregunta}</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    {r.start.map((s) =>
+                                        <Icon key={s.id} active name={s.name} style={{ fontSize: 40, color: s.color }} onPress={() => this.pickStart(r.id, s.id)} />
+                                    )}
+                                </View>
+
+                            </Content>
+                        )}
+                        {this.state.textComentario && <Text onChangeText={this.handleChange2} style={styles.textStyleAlert}> Por favor responda todas las preguntas! </Text>}
+                        </View>
+                        <View style={styles.container2}>
+                            <View style={styles.buttonContainer}>
+                                <Button style={{ marginLeft: 10, marginRight: 10 }} danger onPress={this.setearValorPaso1}>
+                                    <Text style={styles.TextStyle} >Regresar</Text>
+                                </Button>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <Button style={{ marginLeft: 10, marginRight: 10 }} success onPress={this.validarCampos}>
+                                    <Text style={styles.TextStyle} onPress={this.guardarComentario} >Siguiente</Text>
+                                </Button>
+                            </View>
+                        </View>
+                    </Content>
+                ) : (
+                        <Content>
+                            <Spinner color='red' />
+                        </Content>
+                    )}
+            </Container>
+        );
+    }
 }
 const styles = StyleSheet.create({
-  textAreaContainer: {
-    borderWidth: 1,
-    padding: 5
-  },
-  textArea: {
-    height: 50,
-    justifyContent: "flex-start"
-  },
-  navBarLeftButton: {
-      paddingLeft: 100,
-      fontSize:80
-  },
-  textStyleAlert: {
-    color:"red"
-  },
-  container2: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom:10,
-    marginTop:60
-  },
-  buttonContainer: {
-    flex: 1,
-  },
-  TextStyle:{
-    color:'#fff',
-    textAlign:'center',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-}
+    textAreaContainer: {
+        borderWidth: 1,
+        padding: 5
+    },
+    textArea: {
+        height: 50,
+        justifyContent: "flex-start"
+    },
+    navBarLeftButton: {
+        paddingLeft: 100,
+        fontSize: 80
+    },
+    textStyleAlert: {
+        color: "red"
+    },
+    container2: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+        marginTop: 30
+    },
+    buttonContainer: {
+        flex: 1,
+    },
+    TextStyle: {
+        color: '#fff',
+        textAlign: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 })

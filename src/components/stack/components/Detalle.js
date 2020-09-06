@@ -182,7 +182,7 @@ export default class Detalle extends Component {
                             <Item key={index} style={{ borderBottomColor: '#e97463' }}>
                                 <View>
                                     <Image style={{ width: 90, height: 110 }} source={medalla.imagen}/>
-                                    <Text style={{ color: 'white' }}>{medalla.descripcion}</Text>
+                                    <Text style={{ color: 'white', fontSize: 17 }}>{medalla.descripcion}</Text>
                                 </View>
                             </Item>
                         )}
@@ -192,12 +192,12 @@ export default class Detalle extends Component {
                             <Item key={index} style={{ borderBottomColor: '#e97463' }}>
                                 <View>
                                     <Image style={{ width: 90, height: 110 }} source={medalla.imagen}/>
-                                    <Text style={{ color: 'white' }}>{medalla.descripcion}</Text>
+                                    <Text style={{ color: 'white', fontSize: 17 }}>{medalla.descripcion}</Text>
                                 </View>
                             </Item>
                         )}
                     </View>
-                    <Accordion style={{paddingTop: 15}} dataArray={this.state.dataArray}/>
+                    <Accordion style={{paddingTop: 15}} headerStyle={{backgroundColor: '#c94c38'}} contentStyle={{backgroundColor: 'white'}} dataArray={this.state.dataArray}/>
                 </ScrollView>
             </View>
         );

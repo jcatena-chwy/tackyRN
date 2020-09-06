@@ -333,7 +333,7 @@ export default class Map extends React.Component {
                     //Muestra ubicacion del usuario
                     showsUserLocation={true}
                     //Centra el mapa cuando arranca de acuerdo a la ubicacion del usuario
-                    followsUserLocation={true}
+                    followsUserLocation={false}
                 >
                     {this.state.establecimientos.map((establecimiento) =>
                         <MapView.Marker

@@ -281,23 +281,6 @@ export default class Comments extends Component {
                                     >
                                         {this.state.comments.map((comment, index) =>
                                             <List key={index}>
-                                                {/*<ListItem avatar>
-                                                    <Left>
-                                                    </Left>
-                                                    {comment.urlImage === "" ? (
-                                                        <Body>
-                                                            <Text style={{ color: 'white' }} note>{comment.description}</Text>
-                                                        </Body>
-                                                    ) : (
-                                                            <Body style={{flex:1}}>
-                                                                <Text style={{ color: 'white' }} note>{comment.description}</Text>
-                                                                <Image source={{ uri: comment.urlImage }} style={{ width: 100, height: 100 }} />
-                                                            </Body>
-                                                        )}
-                                                    <Right>
-                                                        <Text note>04/09/20</Text>
-                                                    </Right>
-                                                    </ListItem>*/}
                                                 <ListItem thumbnail onPress={() => {
                                                                 comment.urlImage === "" ? this.visualizarFoto(tackyLogo) : this.visualizarFoto({ uri: comment.urlImage })}}>
                                                     <Left>
@@ -308,8 +291,8 @@ export default class Comments extends Component {
                                                         }
                                                     </Left>
                                                     <Body>
-                                                        <Text style={{color: '#b8b8b8'}}>04/09/20</Text>
-                                                        <Text note numberOfLines={8} style={{color: 'white', textAlign: 'justify'}}>{comment.description}</Text>
+                                                    <Text style={{color: '#b8b8b8'}}>{comment.date}</Text>
+                                                        <Text note numberOfLines={10} style={{color: 'white', textAlign: 'justify'}}>{comment.description}</Text>
                                                     </Body>
                                                     <Right>
                                                     </Right>

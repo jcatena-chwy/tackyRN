@@ -118,19 +118,21 @@ export default class Paso1 extends Component {
                             </Right>
                         </ListItem>
                     </List>
-                    {!image && <Icon active name='image' onPress={this._pickImage} style={styles.navBarLeftButton} />}
-                    {!image && <Text style={{ fontSize: 20, color: 'white' }}>Publicar una foto </Text>}
-                    {this.props.image && <Text style={styles.textStyleAlert}> Por favor ingrese una imagen </Text>}
-                    {image &&
-                        <Image source={{ uri: image }} style={{ width: 200, height: 180, marginLeft: 30, marginTop: 5 }} />}
+                    <View style={{flex: 1, justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: 20}}>
+                        {!image && <Icon active name='image' onPress={this._pickImage} style={styles.navBarLeftButton} />}
+                        {!image && <Text style={{ fontSize: 20, color: 'white' }}>Publicar una foto </Text>}
+                        {this.props.image && <Text style={styles.textStyleAlert}> Por favor ingrese una imagen </Text>}
+                        {image &&
+                            <Image source={{ uri: image }} style={{ width: 200, height: 180, marginLeft: 30, marginTop: 5 }} />}
+                    </View>
                     <View style={styles.container2}>
                         <View style={styles.buttonContainer}>
-                            <Button style={{ float: 'right', marginLeft: 30 }} danger onPress={this.toggleModal}>
+                            <Button style={{ marginLeft: 10, marginRight: 10 }} danger onPress={this.toggleModal}>
                                 <Text style={styles.TextStyle} >Cerrar</Text>
                             </Button>
                         </View>
                         <View style={styles.buttonContainer}>
-                            <Button style={{ float: 'right', marginLeft: 25, marginRight: 5 }} success onPress={this.validarCampos}>
+                            <Button style={{ marginLeft: 10, marginRight: 10 }} success onPress={this.validarCampos}>
                                 <Text style={styles.TextStyle} onPress={this.validarCampos} >Siguiente</Text>
                             </Button>
                         </View>
@@ -151,7 +153,6 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start"
     },
     navBarLeftButton: {
-        paddingLeft: 100,
         fontSize: 80,
         color: 'white'
     },
