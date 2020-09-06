@@ -7,6 +7,7 @@ import Paso1 from "./Paso1"
 import Paso2 from './Paso2.js';
 import firebase from '../../config';
 import bgImage from '../../assets/fondoDePantalla.jpg'
+import tackyLogo from '../../assets/logoApp.png'
 
 export default class Comments extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ export default class Comments extends Component {
             paso1: true,
             image: false,
             imageUrl: "",
+            imagenSeleccionada: "",
             contieneTexto: false,
             textoPaso1: "",
             infoPaso1: {},
@@ -30,7 +32,8 @@ export default class Comments extends Component {
             posicion: 0,
             textComentario: false,
             averageScore: null,
-            contenido: false
+            contenido: false,
+            viewImage: false
         }
         this.toggleModal = this.toggleModal.bind(this);
         this.setPaso1 = this.setPaso1.bind(this);
@@ -41,6 +44,8 @@ export default class Comments extends Component {
         this.setearValorPaso1 = this.setearValorPaso1.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
         this.toggleModalandReloadList = this.toggleModalandReloadList.bind(this);
+        this.visualizarFoto = this.visualizarFoto.bind(this);
+        this.toggleImageModal = this.toggleImageModal.bind(this);
     }
 
     componentWillMount() {
@@ -239,6 +244,15 @@ export default class Comments extends Component {
             this.setState({ paso1: false, image: true });
         }
     }
+
+    visualizarFoto(photo) {
+        this.setState({ viewImage: true, imagenSeleccionada: photo });
+    }
+
+    toggleImageModal() {
+        this.setState({ viewImage: false, imagenSeleccionada: "" });
+    }
+
     render() {
         const navigation = this.props.navigation;
         return (
@@ -248,49 +262,69 @@ export default class Comments extends Component {
                         <View>
                             {this.state.comments.length === 0 ?
                                 <View style={styles.containerMain2} >
-                                    <Text style={{ color: 'white', fontSize: 14 }}>No existen comentarios vinculados al establecimiento</Text>
+                                    <Text style={{ color: 'white', fontSize: 15, textAlign: 'center', paddingTop: 20 }}>
+                                        No existen comentarios vinculados {"\n"} al establecimiento {"\n"}{"\n"} ¿Querés ser el primero en dejar uno? {"\n"}{"\n"} 😉
+                                    </Text>
                                     <View style={styles.bottomView}>
                                         <View style={styles.containerAddRecetaDetalle}>
                                             <Icon style={{ color: 'white' }} onPress={this.toggleModal} active name="ios-add" />
-                                            <Text style={{ color: 'white' }} onPress={this.toggleModal} >Agregar un comentario  </Text>
+                                            <Text style={{ color: 'white', marginLeft: 3, marginRight: 3 }} onPress={this.toggleModal} >Agregar un comentario  </Text>
                                         </View>
                                     </View>
                                 </View>
-                                : (
-                                    <View style={styles.containerMain2} >
-                                        <ScrollView
-                                            showsHorizontalScrollIndicator={false}
-                                            showsVerticalScrollIndicator={false}
-                                        >
-                                            {this.state.comments.map((comment, index) =>
-                                                <List key={index}>
-                                                    <ListItem avatar>
-                                                        <Left>
-                                                        </Left>
-                                                        {comment.urlImage === "" ? (
-                                                            <Body>
+                                :
+                                <View style={{flex: 1, flexDirection: 'column', alignContent: 'center', alignItems: 'center'}}>
+                                    <ScrollView
+                                        showsHorizontalScrollIndicator={false}
+                                        showsVerticalScrollIndicator={false}
+                                        style={{height: 500, width: 350}}
+                                    >
+                                        {this.state.comments.map((comment, index) =>
+                                            <List key={index}>
+                                                {/*<ListItem avatar>
+                                                    <Left>
+                                                    </Left>
+                                                    {comment.urlImage === "" ? (
+                                                        <Body>
+                                                            <Text style={{ color: 'white' }} note>{comment.description}</Text>
+                                                        </Body>
+                                                    ) : (
+                                                            <Body style={{flex:1}}>
                                                                 <Text style={{ color: 'white' }} note>{comment.description}</Text>
+                                                                <Image source={{ uri: comment.urlImage }} style={{ width: 100, height: 100 }} />
                                                             </Body>
-                                                        ) : (
-                                                                <Body>
-                                                                    <Image source={{ uri: comment.urlImage }} style={{ width: 200, height: 180 }} />
-                                                                    <Text style={{ color: 'white' }} note>{comment.description}</Text>
-                                                                </Body>
-                                                            )}
-                                                        <Right>
-                                                        </Right>
-                                                    </ListItem>
-                                                </List>
-                                            )}
-                                        </ScrollView>
-                                        <View style={styles.containerSection2}>
-                                            <View style={styles.containerAddRecetaDetalle}>
-                                                <Icon style={{ color: 'white' }} onPress={this.toggleModal} active name="ios-add" />
-                                                <Text style={{ color: 'white', marginLeft: 3, marginRight: 3 }} onPress={this.toggleModal} >Agregar un comentario  </Text>
-                                            </View>
+                                                        )}
+                                                    <Right>
+                                                        <Text note>04/09/20</Text>
+                                                    </Right>
+                                                    </ListItem>*/}
+                                                <ListItem thumbnail onPress={() => {
+                                                                comment.urlImage === "" ? this.visualizarFoto(tackyLogo) : this.visualizarFoto({ uri: comment.urlImage })}}>
+                                                    <Left>
+                                                        {comment.urlImage === "" ?
+                                                            <Thumbnail square source={tackyLogo} />
+                                                            :
+                                                            <Thumbnail square source={{ uri: comment.urlImage }} />
+                                                        }
+                                                    </Left>
+                                                    <Body>
+                                                        <Text style={{color: '#b8b8b8'}}>04/09/20</Text>
+                                                        <Text note numberOfLines={8} style={{color: 'white', textAlign: 'justify'}}>{comment.description}</Text>
+                                                    </Body>
+                                                    <Right>
+                                                    </Right>
+                                                </ListItem>
+                                            </List>
+                                        )}
+                                    </ScrollView>
+                                    <View style={styles.containerSection2}>
+                                        <View style={styles.containerAddRecetaDetalle}>
+                                            <Icon style={{ color: 'white' }} onPress={this.toggleModal} active name="ios-add" />
+                                            <Text style={{ color: 'white', marginLeft: 3, marginRight: 3 }} onPress={this.toggleModal} >Agregar un comentario  </Text>
                                         </View>
                                     </View>
-                                )}
+                                </View>
+                            }
                         </View>
                         <Modal style={styles.container} isVisible={this.state.isModalVisible}>
                             <View style={styles.content2}>
@@ -316,6 +350,25 @@ export default class Comments extends Component {
                             <View style={styles.contentSpinner}>
                                 <Spinner color='red' />
                             </View>
+                        </Modal>
+                        <Modal style={styles.containerModal} isVisible={this.state.viewImage} >
+                            {!this.state.viewImage && 
+                            <View style={styles.contentModal}>
+                                <Spinner color='red' />
+                            </View>}
+                            {this.state.viewImage && 
+                            <View style={styles.contentModal}>
+                                <Image 
+                                    source={ this.state.imagenSeleccionada } 
+                                    style={{ width: 200, height: 200, marginTop: 10 }}>
+                                </Image>
+                                <Body>
+                                    <Button danger style={{ width: 90, marginTop: 10, flex: 1, alignItems: 'center', justifyContent: 'center' }} onPress={this.toggleImageModal}>
+                                        <Text style={{ fontSize: 20, color: "white"}}>Cerrar</Text>
+                                    </Button>
+                                </Body>
+
+                            </View>}
                         </Modal>
                     </View>
                     : (
@@ -397,8 +450,28 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute', //Here is the trick
-        bottom: 0, //Here is the trick
-        marginLeft: 20,
-        marginBottom: 5,
+        bottom: 25, //Here is the trick
     },
+    containerModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        shadowRadius: 10,
+        width: 280,
+        height: 280,
+        left: 30 
+    },
+    contentModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        backgroundColor: 'white',
+        padding: 22,
+        borderRadius: 4,
+        width: 280,
+        maxHeight: 300,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    }
 });
