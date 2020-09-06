@@ -15,7 +15,7 @@ class LocationItem extends PureComponent {
         /*const res = await this.props.fetchDetails(this.props.place_id)
         
         Alert.alert(JSON.stringify(res))*/
-        this.props.changeMapLocationFocus(item.latitude, item.longitude)
+        this.props.changeMapLocationFocus(item.latitude, item.longitude, item.id)
         this.props.hideLocationItem(item.name)
     }
 

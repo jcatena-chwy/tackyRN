@@ -40,6 +40,7 @@ export default class Map extends React.Component {
             dbCopia: null,
             cantCall: 0
         }
+        this.markersRef = [];
         this.guidGenerator = this.guidGenerator.bind(this)
         this.cargarLista = this.cargarLista.bind(this);
         this.getPlace = this.getPlace.bind(this);
@@ -59,6 +60,12 @@ export default class Map extends React.Component {
         //this.guardarEstablecimiento();
     }
 
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({isModalVisibleSpinner: !this.state.isModalVisibleSpinner})
+        }, 5000)
+    }
+
     guardarScore() {
         const db = firebase.database()
         db.ref("Scores").push({
@@ -74,8 +81,6 @@ export default class Map extends React.Component {
             console.log("error")
         })
     }
-
-
 
     guardarEstablecimiento() {
         const db = firebase.database()
@@ -108,7 +113,7 @@ export default class Map extends React.Component {
                     var establecimientos = []
                     var jsonEstablecimientos = []
                     jsonEstablecimientos = data.toJSON()
-                    i = 0;
+                    let i = 0;
                     for (var key in jsonEstablecimientos) {
                         var obj = jsonEstablecimientos[key];
                         obj.id = jsonEstablecimientos[key].id
@@ -124,7 +129,7 @@ export default class Map extends React.Component {
                         establecimientos[i] = obj
                         i = i + 1;
                     }
-                    this.setState({ establecimientos: establecimientos, isModalVisibleSpinner: !this.state.isModalVisibleSpinner });
+                    this.setState({ establecimientos: establecimientos });
                 })
             });
         }, 1000)
@@ -306,8 +311,11 @@ export default class Map extends React.Component {
             })
     }
 
-    changeMapLocationFocus = (lat, long) => {
+    changeMapLocationFocus = (lat, long, id) => {
         this.setState({ latitude: lat, longitude: long });
+        if (id != undefined && id != null) {
+            this.markersRef[id].showCallout();
+        }
     }
 
     render() {
@@ -339,6 +347,7 @@ export default class Map extends React.Component {
                             title={establecimiento.name}
                             description={establecimiento.address}
                             onCalloutPress={() => this.getPlace(establecimiento)}
+                            ref={ref => this.markersRef[establecimiento.id] = ref}
                             pinColor={ establecimiento.type === "Restaurant" ? "red" : "#008080" }
                         >
                         </MapView.Marker>
