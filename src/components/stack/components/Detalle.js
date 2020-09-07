@@ -147,7 +147,7 @@ export default class Detalle extends Component {
         schedule = ""
         for (var key in this.state.schedule) {
             var obj = this.state.schedule[key];
-            schedule = schedule + obj.Dia + ":" + obj.Horario + "\n"
+            schedule = schedule + obj.Dia + " : " + obj.Horario + "\n"
         }
 
         const dataArray = [
@@ -197,7 +197,12 @@ export default class Detalle extends Component {
                             </Item>
                         )}
                     </View>
-                    <Accordion style={{paddingTop: 15}} headerStyle={{backgroundColor: '#c94c38'}} contentStyle={{backgroundColor: 'white'}} dataArray={this.state.dataArray}/>
+                    <Accordion 
+                        style={{paddingTop: 15}} 
+                        headerStyle={{backgroundColor: '#c94c38'}} 
+                        contentStyle={{backgroundColor: '#ffb2a6'}}
+                        dataArray={this.state.dataArray}>
+                    </Accordion>
                 </ScrollView>
             </View>
         );

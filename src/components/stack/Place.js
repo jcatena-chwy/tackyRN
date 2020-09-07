@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, ImageBackground } from 'react-native';
-import { Card, Spinner, Button } from 'native-base';
+import { Card, Spinner, Button, Body } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import Detalle from './components/Detalle.js';
 import Comentarios from './components/Comentarios.js';
@@ -218,7 +218,12 @@ export default class Place extends Component {
                         </Modal>
                         <Modal style={styles.containerDetalle} isVisible={this.state.isModalDetalle}>
                             <Detalle score={this.state.place.score} schedule={this.state.place.schedule} phone={this.state.place.phone}></Detalle>
-                            <Text onPress={() => this.toggleModalDetalle()} style={{ fontSize: 20, color: "white", left: 8, bottom: 50}}>Cerrar</Text>
+                            {/*<Text onPress={() => this.toggleModalDetalle()} style={{ fontSize: 20, color: "white", left: 8, bottom: 50}}>Cerrar</Text>*/}
+                            <Body>
+                                <Button onPress={() => this.toggleModalDetalle()} danger style={{width: 100, justifyContent: 'center', alignContent: 'center'}}>
+                                    <Text style={{ fontSize: 20, color: "white"}}>Cerrar</Text>
+                                </Button>
+                            </Body>
                         </Modal>
                         <Modal style={styles.containerProducto} isVisible={this.state.isModalProducto}>
                             <Productos navigation={this.state.navigation} idEstablecimiento={this.state.place.id} name={this.state.place.name} products={this.state.place.products} getProducts={this.getProducts}></Productos>
