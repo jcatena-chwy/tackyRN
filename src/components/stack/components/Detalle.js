@@ -9,8 +9,8 @@ import Modal from "react-native-modal";
 import firebase from '../../../config';
 const imag = ''
 const dataArray = [
-    { title: "Horarios", content: "Lorem ipsum dolor sit amet" },
-    { title: "Telefono", content: "Lorem ipsum dolor sit amet" },
+    { title: "Horarios", content: "" },
+    { title: "Teléfono", content: "" },
 ];
 
 import { YellowBox } from 'react-native';
@@ -34,7 +34,7 @@ export default class Detalle extends Component {
             ],
             dataArray: [
                 { title: "Horarios", content: "" },
-                { title: "Telefono", content: "" },
+                { title: "Teléfono", content: "" },
             ]
         }
         this.showModal = this.showModal.bind(this);
@@ -152,7 +152,7 @@ export default class Detalle extends Component {
 
         const dataArray = [
             { title: "Horarios", content: schedule },
-            { title: "Telefono", content: this.state.phone },
+            { title: "Teléfono", content: this.state.phone },
         ];
         this.setState({ dataArray: dataArray });
     }

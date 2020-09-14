@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
-import { Button, Icon, Container, Content } from 'native-base';
+import { Button, Icon, Container, Content, Body } from 'native-base';
 import Modal from "react-native-modal";
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import firebase from '../../../config';
@@ -125,30 +125,32 @@ export default class ModalProducto extends Component {
         let { isTextProduct } = this.state;
         return (
             <View style={styles.content}>
-                {!image && <Icon active name='image' onPress={() => this._pickImage()} style={{ fontSize: 80, color:'white', left:50 }} />}
-                {imageText && <Text style={{ color: 'red', fontSize: 15 }} >Publicar foto del Plato Terminado</Text>}
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-                <TextInput
-                    style={styles.textArea}
-                    underlineColorAndroid="transparent"
-                    placeholder="Escribir..."
-                    placeholderTextColor="white"
-                    numberOfLines={3}
-                    onChangeText={this.handleChange}
-                    multiline={true}
-                />
-                {isTextProduct && <Text style={{ color: 'red', fontSize: 12 }} >Escriba un titulo</Text>}
-                <View style={styles.container2}>
-                    <View style={styles.buttonContainer}>
-                        <Button style={{width:120, marginLeft:10}} danger onPress={this.toggleModalAddProducto}>
+                <View style={{marginTop: 250}}>
+                    {!image && <Icon active name='image' onPress={() => this._pickImage()} style={{ fontSize: 80, color:'white'}} />}
+                    {imageText && <Text style={{ color: 'red', fontSize: 15 }} >Publicar foto del Plato Terminado</Text>}
+                    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                </View>
+                <View style={styles.textContainer}>
+                    <TextInput
+                        style={styles.textArea}
+                        underlineColorAndroid="transparent"
+                        placeholder="Escribir el nombre del producto"
+                        placeholderTextColor="#e1e1e1"
+                        numberOfLines={3}
+                        onChangeText={this.handleChange}
+                        multiline={true}
+                    />
+                    {isTextProduct && <Text style={{ color: 'red', fontSize: 16 }} >Escriba un nombre para el producto</Text>}
+                </View>
+                <View>
+                    <Body style={styles.container2}>
+                        <Button style={{width:120, marginLeft: 10, marginRight: 10}} danger onPress={this.toggleModalAddProducto}>
                             <Text onPress={this.toggleModalAddProducto} style={styles.TextStyle} >Cerrar</Text>
                         </Button>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button style={{width:120}} success onPress={this.validarCampos}>
+                        <Button style={{width:120, marginLeft: 10, marginRight: 10}} success onPress={this.validarCampos}>
                             <Text onPress={this.validarCampos} style={styles.TextStyle} >Guardar</Text>
                         </Button>
-                    </View>
+                    </Body>
                 </View>
             </View>
         );
@@ -213,6 +215,9 @@ const styles = StyleSheet.create({
         margin: 0,
     },
     content: {
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#e97463', 
         // padding: 22,
         borderRadius: 4,
@@ -230,12 +235,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    container2: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 60
-    },
     buttonContainer: {
         flex: 1,
         width:50
@@ -251,10 +250,11 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     container2: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 10,
+        alignContent: 'center',
         marginTop: 60
     },
     buttonContainer: {
@@ -267,6 +267,19 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    textArea: {
+        color: 'white',
+        fontSize: 16,
+        width: 250,
+        height: 50,
+        marginLeft: 10
+    },
+    textContainer: {
+        borderStyle: 'solid',
+        borderWidth: 2,
+        borderColor: 'grey',
+        borderRadius: 4,
     }
 
 });

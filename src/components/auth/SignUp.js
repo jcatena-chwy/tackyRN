@@ -28,9 +28,9 @@ export default class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: 'pepe@gmail.com',
-            password: 'hola123',
-            confirmedPassword: 'hola123',
+            email: '',
+            password: '',
+            confirmedPassword: '',
             isModalVisibleSpinner: false
         };
         this.SignUp = this.SignUp.bind(this);
@@ -86,6 +86,9 @@ export default class SignUp extends Component {
                             style={styles.input}
                             placeholder="E-mail"
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
+                            autoCapitalize='none'
+                            autoCompleteType='off'
+                            keyboardType='email-address'
                             underlineColorAndroid='transparent'
                             onChangeText={email => this.setState({ email })}
                         >
@@ -99,6 +102,7 @@ export default class SignUp extends Component {
                             style={styles.input}
                             placeholder="Contraseña"
                             secureTextEntry={true}
+                            textContentType="newPassword"
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
                             onChangeText={password => this.setState({ password })}
@@ -113,6 +117,7 @@ export default class SignUp extends Component {
                             style={styles.input}
                             placeholder="Confirmar Contraseña"
                             secureTextEntry={true}
+                            textContentType="newPassword"
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
                             onChangeText={confirmedPassword => this.setState({ confirmedPassword })}
@@ -136,7 +141,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#F5FCFF',
+        paddingBottom: 80
     },
     logoContainer: {
         alignItems: 'center',

@@ -12,9 +12,6 @@ class LocationItem extends PureComponent {
     }
     
     _handlePress = (item) => {
-        /*const res = await this.props.fetchDetails(this.props.place_id)
-        
-        Alert.alert(JSON.stringify(res))*/
         this.props.changeMapLocationFocus(item.latitude, item.longitude, item.id)
         this.props.hideLocationItem(item.name)
     }
@@ -30,7 +27,7 @@ class LocationItem extends PureComponent {
                         {this.state.locItem.name}
                     </Text>
                     <Text style={styles.itemAddress}>
-                        {this.state.locItem.address}
+                        {this.state.locItem.address + ', ' + this.state.locItem.city + ', ' + this.state.locItem.province}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -60,7 +57,8 @@ const styles = StyleSheet.create({
         flexDirection : 'column'
     },
     itemAddress : {
-        color : 'gray'
+        color : 'gray',
+        fontSize: 10
     }
 })
 

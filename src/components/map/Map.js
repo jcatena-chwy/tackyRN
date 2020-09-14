@@ -6,6 +6,7 @@ import restaurantes from '../request/restaurantes.json'
 import firebase from '../../config';
 import Modal from "react-native-modal";
 import MapSearchBar from '../mapSearchBar/MapSearchBar';
+import TopPlacesSlider from '../topPlaces/TopPlacesSlider';
 import Footer from '../footer/Footer'
 import { Spinner, Icon } from 'native-base';
 import bgImage from '../../assets/camera.png'
@@ -40,6 +41,7 @@ export default class Map extends React.Component {
             dbCopia: null,
             cantCall: 0
         }
+        this.mapRef = React.createRef();
         this.markersRef = [];
         this.guidGenerator = this.guidGenerator.bind(this)
         this.cargarLista = this.cargarLista.bind(this);
@@ -63,7 +65,7 @@ export default class Map extends React.Component {
     componentDidMount() {
         setTimeout(() => {
             this.setState({isModalVisibleSpinner: !this.state.isModalVisibleSpinner})
-        }, 5000)
+        }, 10000)
     }
 
     guardarScore() {
@@ -313,6 +315,13 @@ export default class Map extends React.Component {
 
     changeMapLocationFocus = (lat, long, id) => {
         this.setState({ latitude: lat, longitude: long });
+        /*let r = {
+            latitude: lat,
+            longitude: long,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+        }
+        this.mapRef.animateToRegion(r, 2000);*/
         if (id != undefined && id != null) {
             this.markersRef[id].showCallout();
         }
@@ -324,6 +333,7 @@ export default class Map extends React.Component {
             <View style={styles.container}>
 
                 <MapView style={styles.map}
+                    ref={ref => this.mapRef = ref}
                     region={{
                         latitude: this.state.latitude,
                         longitude: this.state.longitude,
@@ -333,7 +343,7 @@ export default class Map extends React.Component {
                     //Muestra ubicacion del usuario
                     showsUserLocation={true}
                     //Centra el mapa cuando arranca de acuerdo a la ubicacion del usuario
-                    followsUserLocation={false}
+                    followsUserLocation={true}
                 >
                     {this.state.establecimientos.map((establecimiento) =>
                         <MapView.Marker
@@ -345,7 +355,7 @@ export default class Map extends React.Component {
                             }}
                             key={establecimiento.id}
                             title={establecimiento.name}
-                            description={establecimiento.address}
+                            description={establecimiento.address + ', ' + establecimiento.city}
                             onCalloutPress={() => this.getPlace(establecimiento)}
                             ref={ref => this.markersRef[establecimiento.id] = ref}
                             pinColor={ establecimiento.type === "Restaurant" ? "red" : "#008080" }
@@ -354,6 +364,7 @@ export default class Map extends React.Component {
                     )}
                 </MapView>
                 <MapSearchBar places={this.state.establecimientos} changeMapLocationFocus={this.changeMapLocationFocus} />
+                <TopPlacesSlider  places={this.state.establecimientos} changeMapLocationFocus={this.changeMapLocationFocus}/>
                 <Modal style={styles.containerSpinner} isVisible={this.state.isModalVisibleSpinner}>
                     <View style={styles.contentSpinner}>
                         <Spinner color='red' />

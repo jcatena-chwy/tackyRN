@@ -94,7 +94,7 @@ export default class Paso1 extends Component {
     render() {
         let { image } = this.state;
         return (
-            <Container style={{ backgroundColor: '#e97463' }}>
+            <Container style={{ backgroundColor: '#e97463', height: 400}}>
                 <Content>
                     <List>
                         <ListItem avatar>

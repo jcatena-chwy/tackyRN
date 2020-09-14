@@ -161,6 +161,8 @@ const styles = StyleSheet.create({
     rightCol : {
         flex : 2,
         right: 6,
+        paddingRight: 5,
+        marginLeft: 10,
         borderColor : '#ededed'
     },
     resultList : {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import recetas from '../request/recetas.json'
-import { Text, SearchBar, View, StyleSheet, Image, Styles, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import firebase from '../../config';
 import Modal from "react-native-modal";
 import ImageOverlay from "react-native-image-overlay";
@@ -11,9 +11,8 @@ import bgImage from '../../assets/fondoDePantalla.jpg'
 YellowBox.ignoreWarnings(['Setting a timer']);
 YellowBox.ignoreWarnings(['Warning']);
 YellowBox.ignoreWarnings(['Remote']);
-import { Container, Spinner, Header, Content, List, ListItem, Thumbnail, Left, Body, Right, Button, Icon, Input, Item, /*Card, CardItem*/ } from 'native-base';
+import { Icon, Input } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Card, theme } from 'galio-framework';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -177,63 +176,23 @@ export default class CookBook extends Component {
                     >
                         {this.state.recetas.map((receta) =>
                             <View showsHorizontalScrollIndicator={false} key={receta.id} style={styles.containerSecundary}>
-                                <ImageBackground source={bgImage} style={styles.containerThrid}>
+                                <ImageBackground source={bgImage} style={styles.containerThird}>
                                     <Image source={{ uri: receta.imageName }} style={styles.image} />
                                 </ImageBackground>
-                                <ImageBackground source={bgImage} style={styles.containerText}>
+                                <View style={styles.containerText}>
                                     <Text style={styles.titleText}>{receta.title}</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                        {receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 10 }}>{receta.time + " "}</Text>}
-                                        {receta.ingredients.cantidad != undefined && <Icon style={{ color: 'white', fontSize: 10 }} name="time" />}
-                                        {receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 10 }}>{"   " + receta.ingredients.cantidad + " Ingredientes"}</Text>}
+                                        {receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 16 }}>{receta.time + " "}</Text>}
+                                        {receta.ingredients.cantidad != undefined && <Icon style={{ color: 'white', fontSize: 16 }} name="time" />}
+                                        {receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 16 }}>{"   " + receta.ingredients.cantidad + " Ingredientes"}</Text>}
                                     </View>
-                                </ImageBackground>
+                                </View>
                                 <ImageBackground source={bgImage} style={styles.containerVer}>
                                     <TouchableOpacity onPress={() => navigation.navigate('CookBookDetail', { receta })} style={styles.btnVer}>
                                         <Text onPress={() => navigation.navigate('CookBookDetail', { receta })} style={styles.titleText}>Ver</Text>
                                     </TouchableOpacity>
                                 </ImageBackground>
                             </View>
-
-                            /*<Card style={{ width: (WIDTH - 40), marginBottom: 15 }} key={receta.id}>
-                                <CardItem cardBody>
-                                    <Image source={{ uri: receta.imageName }} style={{ height: 200, width: 300, flex: 1 }} />
-                                </CardItem>
-                                <CardItem>
-                                    <Left>
-                                        <Button transparent>
-                                            <Icon active name="thumbs-up" />
-                                            <Text>12 Likes</Text>
-                                        </Button>
-                                    </Left>
-                                    <Body>
-                                        <Button transparent>
-                                            <Icon active name="chatbubbles" />
-                                            <Text>4 Comments</Text>
-                                        </Button>
-                                    </Body>
-                                    <Right>
-                                        <Text>11h ago</Text>
-                                    </Right>
-                                </CardItem>
-                            </Card>*/
-
-                            /*<TouchableOpacity key={receta.id} onPress={() => navigation.navigate('CookBookDetail', { receta })}>
-                                <Card
-                                    
-                                    flex
-                                    borderless
-                                    style={{ width: (WIDTH - 40), backgroundColor: 'white', marginBottom: 15 }}
-                                    title={receta.title}
-                                    caption={"Tiempo: " + receta.time + "  " + "Ingredientes: " + receta.ingredients.cantidad}
-                                    //location="Los Angeles, CA"
-                                    avatar="http://i.pravatar.cc/100?id=skater"
-                                    //imageStyle={styles.cardImageRadius}
-                                    //imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
-                                    image={receta.imageName}
-                                    onPress={() => navigation.navigate('CookBookDetail', { receta })}
-                                />
-                            </TouchableOpacity>*/
                         )}
                     </ScrollView>
                     <View style={styles.containerSection2}>
@@ -257,7 +216,7 @@ const styles = StyleSheet.create({
     containerSecundary: {
         backgroundColor: '#ea8073',
         marginTop: 10,
-        marginBottom: 10,
+        marginBottom: 20,
         marginRight: 10,
         marginLeft: 10,
         flex: 1,
@@ -267,8 +226,7 @@ const styles = StyleSheet.create({
         width: 250,
         height: 250,
     },
-    containerThrid: {
-        backgroundColor: 'red',
+    containerThird: {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
@@ -278,9 +236,9 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     containerText: {
-        backgroundColor: 'red',
-        width: 130,
-        height: 40,
+        width: 'auto',
+        height: 'auto',
+        padding: 5
     },
     containerVer: {
         borderRadius: 20,
@@ -345,5 +303,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         color: 'white',
+        fontSize: 18
     }
 });

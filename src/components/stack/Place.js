@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, ImageBackground } from 'react-native';
 import { Card, Spinner, Button, Body } from 'native-base';
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating } from 'react-native-ratings';
 import Detalle from './components/Detalle.js';
 import Comentarios from './components/Comentarios.js';
 import Productos from './components/Productos.js';
@@ -9,6 +9,7 @@ import Modal from "react-native-modal";
 import firebase from '../../config';
 import bgImage from '../../assets/fondoDePantalla.jpg'
 import { Ionicons } from '@expo/vector-icons';
+
 export default class Place extends Component {
     constructor(props) {
         super(props);
@@ -178,7 +179,7 @@ export default class Place extends Component {
                                 <Image source={{ uri: this.state.place.imageUri }} style={styles.image} />
                             </ImageBackground>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ fontSize: 18, top: 5, right: 5, color: 'white' }}>{this.state.place.score.averageScore}</Text>
+                                <Text style={{ fontSize: 18, top: 5, right: 5, color: 'white' }}>{this.state.place.score.averageScore}  </Text>
                                 <Rating
                                     ratingCount={5}
                                     fractions={2}
@@ -190,7 +191,7 @@ export default class Place extends Component {
                                     readonly={true}
                                     showReadOnlyText={true}
                                 />
-                                <Text style={{ fontSize: 14, top: 5, right: 5, color: 'white' }} >{"(" + this.state.place.cantidadComentarios + ")"}</Text>
+                                <Text style={{ fontSize: 18, top: 5, right: 5, color: 'white' }} >{"  (" + this.state.place.cantidadComentarios + ")"}</Text>
                             </View>
                         </View>
                         <Card style={{ width: 250, height: 100, borderRadius: 20, backgroundColor: '#e97463', borderWidth: 1, overflow: 'hidden', borderColor: 'white', marginBottom: 18, marginTop: 18 }}>
@@ -218,7 +219,6 @@ export default class Place extends Component {
                         </Modal>
                         <Modal style={styles.containerDetalle} isVisible={this.state.isModalDetalle}>
                             <Detalle score={this.state.place.score} schedule={this.state.place.schedule} phone={this.state.place.phone}></Detalle>
-                            {/*<Text onPress={() => this.toggleModalDetalle()} style={{ fontSize: 20, color: "white", left: 8, bottom: 50}}>Cerrar</Text>*/}
                             <Body>
                                 <Button onPress={() => this.toggleModalDetalle()} danger style={{width: 100, justifyContent: 'center', alignContent: 'center'}}>
                                     <Text style={{ fontSize: 20, color: "white"}}>Cerrar</Text>

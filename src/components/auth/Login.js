@@ -109,6 +109,9 @@ export default class FormLogin extends Component {
                         style={styles.input}
                         placeholder="E-mail"
                         placeholderTextColor={'rgba(255,255,255,0.7)'}
+                        autoCapitalize='none'
+                        autoCompleteType='off'
+                        keyboardType='email-address'
                         underlineColorAndroid='transparent'
                         onChangeText={email => this.setState({ email })}
                     >
@@ -122,6 +125,7 @@ export default class FormLogin extends Component {
                         style={styles.input}
                         placeholder="Contraseña"
                         secureTextEntry={true}
+                        textContentType="newPassword"
                         placeholderTextColor={'rgba(255,255,255,0.7)'}
                         underlineColorAndroid='transparent'
                         onChangeText={password => this.setState({ password })}
