@@ -182,18 +182,18 @@ export default class CookBookDetail extends Component {
                             <ImageBackground source={bgImage} style={styles.containerThrid}>
                                 <Image source={{ uri: this.state.receta.imageName }} style={styles.image} />
                             </ImageBackground>
-                            <ImageBackground source={bgImage} style={styles.containerText}>
+                            <View style={styles.containerText}>
                                 <Text style={styles.titleText}>{this.state.receta.title}</Text>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                    {this.state.receta != undefined && <Text style={{ color: 'white', fontSize: 10 }}>{this.state.receta.time + " "}</Text>}
-                                    {this.state.receta.ingredients.cantidad != undefined && <Icon style={{ color: 'white', fontSize: 10 }} name="time" />}
-                                    {this.state.receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 10 }}>{"   " + this.state.receta.ingredients.cantidad + " Ingredientes"}</Text>}
+                                        {this.state.receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 16 }}>{this.state.receta.time + " "}</Text>}
+                                        {(this.state.receta.time != undefined && this.state.receta.time != '') && <Icon style={{ color: 'white', fontSize: 16 }} name="time" />}
+                                        {this.state.receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 16 }}>{"   " + this.state.receta.ingredients.cantidad + " Ingredientes"}</Text>}
                                 </View>
-                            </ImageBackground>
+                            </View>
                             <ImageBackground source={bgImage} style={styles.containerVer}>
-                                <TouchableOpacity style={styles.btnVer}>
-                                    <Text style={styles.titleText}>Ingredientes</Text>
-                                </TouchableOpacity>
+                                <View style={styles.ingredientsView}>
+                                    <Text style={styles.ingredientsText}>Ingredientes</Text>
+                                </View>
                             </ImageBackground>
                         </View>
                         <View style={styles.textAreaContainer} >
@@ -350,7 +350,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 12,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        textAlign: 'justify'
     },
     containerSecundary: {
         backgroundColor: '#ea8073',
@@ -374,9 +375,9 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     containerText: {
-        backgroundColor: 'red',
-        width: 130,
-        height: 40,
+        width: 'auto',
+        height: 'auto',
+        padding: 5
     },
     containerVer: {
         borderRadius: 20,
@@ -391,10 +392,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: "center"
     },
-    btnVer: {
+    ingredientsView: {
         width: 100,
         overflow: "hidden",
-        borderRadius: 20,
+        borderRadius: 20
     },
     containerSection1: {
         backgroundColor: 'transparent',
@@ -438,6 +439,7 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     titleText: {
+        fontSize: 18,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -450,5 +452,13 @@ const styles = StyleSheet.create({
     textAreaSteps: {
         fontSize: 12,
         color: 'white',
+    },
+    ingredientsText: {
+        fontSize: 15,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
+        marginVertical: 2
     }
 }); 

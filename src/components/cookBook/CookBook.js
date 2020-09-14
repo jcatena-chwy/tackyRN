@@ -166,7 +166,7 @@ export default class CookBook extends Component {
                         <View style={styles.containerSearchReceta}>
                             <Input style={{
                                 fontSize: 14, textAlign: 'center',
-                            }} placeholder='Buscá productos por nombre' placeholderTextColor='#e1e1e1' onChange={text => this.filtrarLista(text)} />
+                            }} placeholder='Buscá recetas por nombre' placeholderTextColor='#e1e1e1' onChange={text => this.filtrarLista(text)} />
                             <Icon style={{ color: 'white', marginRight: 30 }} name="search" />
                         </View>
                     </View>
@@ -183,7 +183,7 @@ export default class CookBook extends Component {
                                     <Text style={styles.titleText}>{receta.title}</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                         {receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 16 }}>{receta.time + " "}</Text>}
-                                        {receta.ingredients.cantidad != undefined && <Icon style={{ color: 'white', fontSize: 16 }} name="time" />}
+                                        {(receta.time != undefined && receta.time != '') && <Icon style={{ color: 'white', fontSize: 16 }} name="time" />}
                                         {receta.ingredients.cantidad != undefined && <Text style={{ color: 'white', fontSize: 16 }}>{"   " + receta.ingredients.cantidad + " Ingredientes"}</Text>}
                                     </View>
                                 </View>
@@ -198,7 +198,7 @@ export default class CookBook extends Component {
                     <View style={styles.containerSection2}>
                         <View style={styles.containerAddRecetaDetalle}>
                             <Icon style={{ color: 'white' }} onPress={() => navigation.navigate('DetalleReceta')} active name="ios-add" />
-                            <Text style={styles.textAddReceta} onPress={() => navigation.navigate('DetalleReceta')} >Agrega tu Receta </Text>
+                            <Text style={styles.textAddReceta} onPress={() => navigation.navigate('DetalleReceta')} >Agregá tu receta </Text>
                         </View>
                     </View>
                 </View>
