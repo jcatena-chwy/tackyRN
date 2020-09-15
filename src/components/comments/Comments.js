@@ -325,6 +325,7 @@ export default class Comments extends Component {
                                         <Paso2 infoPaso1={this.state.infoPaso1}
                                             regresarPaso1={this.setearValorPaso1}
                                             cerrarModal={this.toggleModalandReloadList}
+                                            cantComentarios={this.props.navigation.state.params.cantComentarios}
                                         ></Paso2>
                                     )}
                             </View>

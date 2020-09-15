@@ -188,7 +188,11 @@ export default class Paso2 extends Component {
         const db = firebase.database().ref('Scores/' + puntaje.key)
         var averageScore = this.actualizarPromedio();
         averageScore = puntaje.averageScore + averageScore
-        averageScore = parseFloat((averageScore / 2).toFixed(2))
+        if(this.props.cantComentarios == 0){
+            averageScore = parseFloat((averageScore).toFixed(2))
+        } else {
+            averageScore = parseFloat((averageScore / 2).toFixed(2))
+        }    
         db.update({
             foodScore: puntaje.foodScore,
             serviceScore: puntaje.serviceScore,

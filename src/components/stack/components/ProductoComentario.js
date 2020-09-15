@@ -47,6 +47,7 @@ export default class ProductoComentario extends Component {
         this.guardarComentario = this.guardarComentario.bind(this);
         this.obtenerKeyPuntaje = this.obtenerKeyPuntaje.bind(this);
         this.actualizarListaComentarios = this.actualizarListaComentarios.bind(this);
+
     }
 
     componentWillMount() {
@@ -211,7 +212,12 @@ export default class ProductoComentario extends Component {
             }
             averageScore = averageScore + cont;
         }
-        return parseFloat(((averageScore + score) / 2).toFixed(2))
+        if(this.state.comments.length > 0){
+            return parseFloat(((averageScore + score) / 2).toFixed(2))
+        } else {
+            return parseFloat(((averageScore + score)).toFixed(2))
+        }
+
     }
 
     guardarComentario() {

@@ -166,6 +166,7 @@ export default class Place extends Component {
         var idComments = this.state.place.id
         var name = this.state.place.name
         var score = this.state.place.score.id
+        var cantComentarios = this.state.place.cantidadComentarios
         return (
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
                 <ScrollView
@@ -203,8 +204,8 @@ export default class Place extends Component {
                         </Card>
                         <Card style={{ width: 150, height: 30, borderRadius: 20, backgroundColor: '#e97463', borderWidth: 1, overflow: 'hidden', borderColor: 'white' }} >
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
-                                <Text onPress={() => this.props.navigation.navigate('Comments', { idComments, name, score })} style={{ color: 'white' }}>{"+ " + this.state.place.cantidadComentarios}</Text>
-                                <Text onPress={() => this.props.navigation.navigate('Comments', { idComments, name, score })} style={{ color: 'white' }}>{this.props.comentarios} Comentarios</Text>
+                                <Text onPress={() => this.props.navigation.navigate('Comments', { idComments, name, score, cantComentarios })} style={{ color: 'white' }}>{"+ " + this.state.place.cantidadComentarios}</Text>
+                                <Text onPress={() => this.props.navigation.navigate('Comments', { idComments, name, score, cantComentarios })} style={{ color: 'white' }}>{this.props.comentarios} Comentarios</Text>
                             </View>
                         </Card>
                         <Card style={{ width: 150, height: 30, borderRadius: 20, backgroundColor: '#e97463', borderWidth: 1, overflow: 'hidden', borderColor: 'white' }} >
