@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     content: {
         backgroundColor: '#e97463',
         padding: 22,
-        borderRadius: 4,
+        borderRadius: 20,
         width: 330,
         height: 550,
         borderColor: 'rgba(0, 0, 0, 0.1)',

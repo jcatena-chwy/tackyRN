@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         shadowRadius: 10,
-        width: 350,
+        width: 340,
         height: 280,
         backgroundColor: '#e97463',
         borderColor: 'white',
