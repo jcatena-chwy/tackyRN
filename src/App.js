@@ -44,6 +44,18 @@ class NavigationDrawerStructure extends Component {
 }
 
 const MainNavigator = createStackNavigator({
+    Login: {
+        screen: Login,
+        navigationOptions: ({ navigation }) => ({
+            headerStyle: {
+                backgroundColor: '#e43753',
+                height: 0,
+                borderWidth: 0.1,
+                borderColor: 'transparent'
+            },
+            headerLeft: null
+        })
+    },
     Map: {
         screen: Mapa,
         navigationOptions: ({ navigation }) => ({
@@ -73,18 +85,6 @@ const MainNavigator = createStackNavigator({
                 backgroundColor: '#e97463',
                 height: 73
             },
-        })
-    },
-    Login: {
-        screen: Login,
-        navigationOptions: ({ navigation }) => ({
-            headerStyle: {
-                backgroundColor: '#e43753',
-                height: 0,
-                borderWidth: 0.1,
-                borderColor: 'transparent'
-            },
-            headerLeft: null
         })
     },
     SignUp: {

@@ -13,8 +13,8 @@ import bgImage from '../../assets/camera.png'
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
+const LATITUDE = -34.617352;
+const LONGITUDE = -58.381821;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
@@ -30,8 +30,8 @@ export default class Map extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            latitude: -34.742569,
-            longitude: -58.385842,
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
             latitudeDelta: 0.015,
             longitudeDelta: 0.015,
             error: null,
@@ -315,13 +315,7 @@ export default class Map extends React.Component {
 
     changeMapLocationFocus = (lat, long, id) => {
         this.setState({ latitude: lat, longitude: long });
-        /*let r = {
-            latitude: lat,
-            longitude: long,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
-        }
-        this.mapRef.animateToRegion(r, 2000);*/
+
         if (id != undefined && id != null) {
             this.markersRef[id].showCallout();
         }

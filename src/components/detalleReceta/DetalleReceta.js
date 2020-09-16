@@ -107,9 +107,9 @@ export default class DetalleReceta extends Component {
                         ></Header>
                         <Photo isImageToGalery={this.guardarImagenPrincipal} tituloReceta={this.state.tituloReceta} ></Photo>
                         <TouchableOpacity onPress={this.validarReceta} style={styles.btnLogin}>
-                            <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row', justifyContent:'center', alignContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ marginTop: 4, marginLeft: 10, marginRight: 20, color: 'white', fontWeight: '400', fontSize: 15 }}>Titulo de la receta: </Text>
-                                <TextInput style={{ color: '#bbb', fontSize: 12, marginTop: 1 }} name="tituloReceta" onChangeText={this.handleChange} value={this.state.tituloReceta} placeholderStyle={{ fontFamily: "italic", borderColor: 'red' }} placeholder="Chips de queso sin tacc" placeholderTextColor='#e1e1e1' />
+                                <TextInput style={{ color: 'white', fontSize: 15, marginTop: 4, width: 160 }} name="tituloReceta" onChangeText={this.handleChange} value={this.state.tituloReceta} placeholderStyle={{ fontFamily: "italic", borderColor: 'red' }} placeholder="Chips de queso sin tacc" placeholderTextColor='#e1e1e1' />
                             </View>
                         </TouchableOpacity>
 

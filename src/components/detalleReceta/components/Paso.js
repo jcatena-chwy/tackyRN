@@ -381,7 +381,7 @@ export default class Paso extends React.Component {
                 <TouchableOpacity onPress={this.validarReceta} style={styles.btnLogin}>
                     <Text style={{ fontSize: 20, color: 'white' }}>Preparación</Text>
                 </TouchableOpacity>
-                <TextInput onChangeText={(text) => this.handleChangeTime(text)} style={{ textAlign: 'right', fontSize: 15 }} placeholder='Tiempo'></TextInput>
+                <TextInput onChangeText={(text) => this.handleChangeTime(text)} style={{ textAlign: 'left', fontSize: 15 }} placeholderTextColor='#e1e1e1' placeholder='Tiempo en minutos'></TextInput>
                 {this.state.steps.map((r) =>
                     <Card key={r.orden} style={{ width: 350, borderRadius: 20, borderWidth: 1, overflow: 'hidden', borderColor: 'white' }}>
                         <ImageBackground source={bgImage} style={styles.backgroundContainer} style={{ height: 200, borderRadius: 20, borderWidth: 1, overflow: 'hidden', borderColor: 'white' }} >
